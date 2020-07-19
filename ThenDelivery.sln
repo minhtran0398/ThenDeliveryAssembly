@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThenDelivery.Server", "ThenDelivery\Server\ThenDelivery.Server.csproj", "{213FAB57-EB1C-4C96-A282-6531D1F4A09D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThenDelivery.Server", "ThenDelivery\Server\ThenDelivery.Server.csproj", "{213FAB57-EB1C-4C96-A282-6531D1F4A09D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThenDelivery.Client", "ThenDelivery\Client\ThenDelivery.Client.csproj", "{00728E5E-5D46-49F6-8788-1638AAE2F797}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThenDelivery.Client", "ThenDelivery\Client\ThenDelivery.Client.csproj", "{00728E5E-5D46-49F6-8788-1638AAE2F797}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThenDelivery.Shared", "ThenDelivery\Shared\ThenDelivery.Shared.csproj", "{B5BC41DB-32CD-445B-BCD3-251E90A917C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThenDelivery.Shared", "ThenDelivery\Shared\ThenDelivery.Shared.csproj", "{B5BC41DB-32CD-445B-BCD3-251E90A917C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

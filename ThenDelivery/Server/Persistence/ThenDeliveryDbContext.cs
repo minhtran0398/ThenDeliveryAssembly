@@ -41,8 +41,6 @@ namespace ThenDelivery.Server.Data
 						entry.Entity.LastModified = currentTime;
 						break;
 					case EntityState.Deleted:
-						entry.Entity.LastModifiedBy = _currentUserService.UserName;
-						entry.Entity.LastModified = currentTime;
 						entry.Entity.IsDeleted = true;
 						break;
 				}

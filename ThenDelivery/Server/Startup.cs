@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
 using ThenDelivery.Server.Application.Common.Interfaces;
 using ThenDelivery.Server.Data;
 using ThenDelivery.Server.Services;
@@ -36,10 +38,21 @@ namespace ThenDelivery.Server
 				options.Password.RequireUppercase = false;
 				options.Password.RequireLowercase = false;
 				options.Password.RequireNonAlphanumeric = false;
-			}).AddEntityFrameworkStores<ThenDeliveryDbContext>();
+			}).AddRoles<IdentityRole>().AddEntityFrameworkStores<ThenDeliveryDbContext>();
 
-			services.AddIdentityServer().AddApiAuthorization<User, ThenDeliveryDbContext>();
+			// Configure identity server to put the role claim into the id token 
+			// and the access token and prevent the default mapping for roles 
+			// in the JwtSecurityTokenHandler.
+			services
+				.AddIdentityServer()
+				.AddApiAuthorization<User, ThenDeliveryDbContext>(options => {
+					options.IdentityResources["openid"].UserClaims.Add("role");
+					options.ApiResources.Single().UserClaims.Add("role");
+				});
 			services.AddAuthentication().AddIdentityServerJwt();
+			// Need to do this as it maps "role" to ClaimTypes.Role and causes issues
+			System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler
+				 .DefaultInboundClaimTypeMap.Remove("role");
 
 			#region additional services
 			services.AddTransient<ICurrentUserService, CurrentUserService>();
