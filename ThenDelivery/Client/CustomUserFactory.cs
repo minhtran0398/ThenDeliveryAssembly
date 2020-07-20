@@ -7,29 +7,34 @@ using System.Threading.Tasks;
 
 namespace ThenDelivery.Client
 {
-   public class RolesClaimsPrincipalFactory : AccountClaimsPrincipalFactory<RemoteUserAccount>
+   public class CustomUserFactory
+       : AccountClaimsPrincipalFactory<RemoteUserAccount>
    {
-      public RolesClaimsPrincipalFactory(IAccessTokenProviderAccessor accessor)
-         : base(accessor)
+      public CustomUserFactory(IAccessTokenProviderAccessor accessor)
+          : base(accessor)
       {
-
       }
 
-      public override async ValueTask<ClaimsPrincipal> CreateUserAsync(
-          RemoteUserAccount account, RemoteAuthenticationUserOptions options)
+      public async override ValueTask<ClaimsPrincipal> CreateUserAsync(
+          RemoteUserAccount account,
+          RemoteAuthenticationUserOptions options)
       {
          var user = await base.CreateUserAsync(account, options);
+
          if (user.Identity.IsAuthenticated)
          {
             var identity = (ClaimsIdentity)user.Identity;
             var roleClaims = identity.FindAll(identity.RoleClaimType);
+
             if (roleClaims != null && roleClaims.Any())
             {
                foreach (var existingClaim in roleClaims)
                {
                   identity.RemoveClaim(existingClaim);
                }
+
                var rolesElem = account.AdditionalProperties[identity.RoleClaimType];
+
                if (rolesElem is JsonElement roles)
                {
                   if (roles.ValueKind == JsonValueKind.Array)
@@ -46,6 +51,7 @@ namespace ThenDelivery.Client
                }
             }
          }
+
          return user;
       }
    }

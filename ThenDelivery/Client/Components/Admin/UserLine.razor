@@ -1,0 +1,38 @@
+﻿@inherits UserLineBase
+
+@if (UserItem != null)
+{
+	<tr>
+		<td>@UserItem.UserName</td>
+		<td>@UserItem.Email</td>
+		<td>@UserItem.IsEmailConfirmed</td>
+		<td>@UserItem.BirthDate.ToString("dd/MM/yyyy")</td>
+		<td>@UserItem.PhoneNumber</td>
+		<td>@UserItem.IsPhoneNumberConfirmed</td>
+		<td>
+			@if (UserItem.RoleList != null)
+			{
+				@foreach (var role in UserItem.RoleList)
+				{
+					switch (role.RoleName)
+					{
+						case Const.Role.AdministrationRole:
+							<span class="badge badge-pill badge-primary">@Const.Role.AdministrationRole</span>
+							break;
+						case Const.Role.UserRole:
+							<span class="badge badge-pill badge-success">@Const.Role.UserRole</span>
+							break;
+						case Const.Role.MerchantRole:
+							<span class="badge badge-pill badge-info">@Const.Role.MerchantRole</span>
+							break;
+						case Const.Role.ShipperRole:
+							<span class="badge badge-pill badge-warning">@Const.Role.ShipperRole</span>
+							break;
+					}
+				}
+			}
+		</td>
+		<td><button class="btn btn-primary" @onclick="HandleOnEdit" @onclick:stopPropagation>Edit</button></td>
+		<td><button class="btn btn-danger" @onclick="HandleOnDelete" @onclick:stopPropagation>Delete</button></td>
+	</tr>
+}

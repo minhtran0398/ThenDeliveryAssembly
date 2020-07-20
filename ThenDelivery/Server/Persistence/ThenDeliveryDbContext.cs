@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace ThenDelivery.Server.Data
 {
@@ -59,6 +60,14 @@ namespace ThenDelivery.Server.Data
 			modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
 			modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 			modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
+
+			modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole>
+			{
+				new IdentityRole(Const.Role.UserRole),
+				new IdentityRole(Const.Role.ShipperRole),
+				new IdentityRole(Const.Role.MerchantRole),
+				new IdentityRole(Const.Role.AdministrationRole),
+			});
 		}
 
 		public DbSet<City> Cities { get; set; }
