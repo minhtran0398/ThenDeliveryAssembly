@@ -22,6 +22,8 @@ namespace ThenDelivery.Client
 				.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>()
 				.CreateClient("ThenDelivery.ServerAPI"));
 
+			builder.Services.AddDevExpressBlazor();
+
 			builder.Services
 				.AddApiAuthorization()
 				.AddAccountClaimsPrincipalFactory<CustomUserFactory>();
