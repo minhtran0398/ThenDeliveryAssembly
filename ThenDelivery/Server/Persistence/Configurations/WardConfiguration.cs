@@ -18,7 +18,7 @@ namespace ThenDelivery.Server.Persistence.Configurations
                 .HasMaxLength(5)
                 .IsFixedLength();
 
-         builder.Property(e => e.WardCode)
+         builder.Property(e => e.DistrictCode)
                 .HasColumnName("DistrictCode")
                 .HasMaxLength(3)
                 .IsFixedLength();

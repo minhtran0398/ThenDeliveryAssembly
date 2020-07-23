@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ThenDelivery.Server.Data;
+using ThenDelivery.Server.Persistence;
 
 namespace ThenDelivery.Server.Persistence.Migrations
 {
@@ -130,26 +130,26 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4f3fe4b4-39c6-4089-90fe-b472df905aff",
-                            ConcurrencyStamp = "e7eebba0-2e60-4640-af56-53e56048306d",
+                            Id = "0f1fbf4e-1b0c-42cb-ada4-b2b845d8b8da",
+                            ConcurrencyStamp = "ac4de763-aada-4d2d-a5fa-9218e648aa35",
                             Name = "User"
                         },
                         new
                         {
-                            Id = "37dcef92-6c89-4315-821f-e0bf04f5b61a",
-                            ConcurrencyStamp = "21d096ee-1384-4cc9-968c-5000dff49ba9",
+                            Id = "87900f5c-4055-49ca-b966-874f8ea827be",
+                            ConcurrencyStamp = "a8a3b910-4df0-48dd-9689-5a60e97f77d1",
                             Name = "Shipper"
                         },
                         new
                         {
-                            Id = "7dfdeb25-031a-4572-9df8-4345737fc4e3",
-                            ConcurrencyStamp = "2bc5109c-25b2-42b0-ae6c-299a57dd4c1d",
+                            Id = "f1e72b88-0ec1-4405-89c2-702f06916f49",
+                            ConcurrencyStamp = "c624c6d0-c0dd-4ad4-87a5-6858a020b594",
                             Name = "Merchant"
                         },
                         new
                         {
-                            Id = "52881830-e455-43b9-94da-0e3940d19e87",
-                            ConcurrencyStamp = "97b944b4-8d0a-4603-97cf-1cedb8f7d01a",
+                            Id = "2d567007-aa95-43a0-83de-f6d7002ab189",
+                            ConcurrencyStamp = "3873ff06-a85d-4d4d-9b20-5318f5b5b391",
                             Name = "Administrator"
                         });
                 });
@@ -345,14 +345,16 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.District", b =>
                 {
                     b.Property<string>("DistrictCode")
+                        .HasColumnName("DistrictCode")
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(3);
+
+                    b.Property<string>("CityCode")
                         .HasColumnName("CityCode")
                         .HasColumnType("nchar(2)")
                         .IsFixedLength(true)
                         .HasMaxLength(2);
-
-                    b.Property<string>("CityCode")
-                        .HasColumnName("District_CityCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -916,10 +918,10 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Ward", b =>
                 {
                     b.Property<string>("WardCode")
-                        .HasColumnName("DistrictCode")
-                        .HasColumnType("nchar(3)")
+                        .HasColumnName("WardCode")
+                        .HasColumnType("nchar(5)")
                         .IsFixedLength(true)
-                        .HasMaxLength(3);
+                        .HasMaxLength(5);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -929,8 +931,10 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("DistrictCode")
-                        .HasColumnName("Ward_DistrictCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("DistrictCode")
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(3);
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
