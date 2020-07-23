@@ -18,6 +18,11 @@ namespace ThenDelivery.Server.Persistence.Configurations
                 .HasMaxLength(3)
                 .IsFixedLength();
 
+         builder.Property(e => e.DistrictCode)
+                .HasColumnName("CityCode")
+                .HasMaxLength(2)
+                .IsFixedLength();
+
          builder.Property(e => e.Name)
                .HasColumnName("Name")
                .HasMaxLength(64)

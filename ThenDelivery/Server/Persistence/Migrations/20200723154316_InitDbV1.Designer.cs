@@ -10,8 +10,8 @@ using ThenDelivery.Server.Data;
 namespace ThenDelivery.Server.Persistence.Migrations
 {
     [DbContext(typeof(ThenDeliveryDbContext))]
-    [Migration("20200723085658_InitDbV2")]
-    partial class InitDbV2
+    [Migration("20200723154316_InitDbV1")]
+    partial class InitDbV1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,6 +128,32 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "4f3fe4b4-39c6-4089-90fe-b472df905aff",
+                            ConcurrencyStamp = "e7eebba0-2e60-4640-af56-53e56048306d",
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = "37dcef92-6c89-4315-821f-e0bf04f5b61a",
+                            ConcurrencyStamp = "21d096ee-1384-4cc9-968c-5000dff49ba9",
+                            Name = "Shipper"
+                        },
+                        new
+                        {
+                            Id = "7dfdeb25-031a-4572-9df8-4345737fc4e3",
+                            ConcurrencyStamp = "2bc5109c-25b2-42b0-ae6c-299a57dd4c1d",
+                            Name = "Merchant"
+                        },
+                        new
+                        {
+                            Id = "52881830-e455-43b9-94da-0e3940d19e87",
+                            ConcurrencyStamp = "97b944b4-8d0a-4603-97cf-1cedb8f7d01a",
+                            Name = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -321,10 +347,14 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.District", b =>
                 {
                     b.Property<string>("DistrictCode")
-                        .HasColumnName("DistrictCode")
-                        .HasColumnType("nchar(3)")
+                        .HasColumnName("CityCode")
+                        .HasColumnType("nchar(2)")
                         .IsFixedLength(true)
-                        .HasMaxLength(3);
+                        .HasMaxLength(2);
+
+                    b.Property<string>("CityCode")
+                        .HasColumnName("District_CityCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -888,10 +918,10 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Ward", b =>
                 {
                     b.Property<string>("WardCode")
-                        .HasColumnName("WardCode")
-                        .HasColumnType("nchar(5)")
+                        .HasColumnName("DistrictCode")
+                        .HasColumnType("nchar(3)")
                         .IsFixedLength(true)
-                        .HasMaxLength(5);
+                        .HasMaxLength(3);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -899,6 +929,10 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<string>("DistrictCode")
+                        .HasColumnName("Ward_DistrictCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
