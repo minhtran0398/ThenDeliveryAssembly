@@ -1,2 +1,73 @@
 ﻿@inherits MerchantRegisterFormBase
 
+<EditForm Model="MerchantModel"
+			OnSubmit="HandleOnSubmit">
+	<DataAnnotationsValidator />
+
+	<div class="row">
+		<div class="col-md-6 row-item">
+			<label>Name: </label>
+			<DxTextBox Text="@MerchantModel.Name"
+						  TextExpression="() => MerchantModel.Name" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Tax Code: </label>
+			<DxTextBox Text="@MerchantModel.TaxCode"
+						  TextExpression="() => MerchantModel.TaxCode" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Phone Number: </label>
+			<DxTextBox Text="@MerchantModel.PhoneNumber"
+						  TextExpression="() => MerchantModel.PhoneNumber" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Search Key: </label>
+			<DxTextBox Text="@MerchantModel.SearchKey"
+						  TextExpression="() => MerchantModel.SearchKey" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Open time: </label>
+			<CustomTimeEdit InputTime="@MerchantModel.OpenTime" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Close time: </label>
+			<CustomTimeEdit InputTime="@MerchantModel.CloseTime" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Description: </label>
+			<DxTextBox Text="@MerchantModel.Description"
+						  TextExpression="() => MerchantModel.Description" />
+		</div>
+		<div class="col-md-4 row-item">
+			<label>City: </label>
+			<DxComboBox NullText="Select city ..."
+							Data="CityList"
+							SelectedItem="@MerchantModel.City"
+							SelectedItemExpression="() => MerchantModel.City" />
+		</div>
+		<div class="col-md-4 row-item">
+			<label>District: </label>
+			<DxComboBox NullText="Select district ..."
+							Data="DistrictList"
+							SelectedItem="@MerchantModel.District"
+							SelectedItemExpression="() => MerchantModel.District" />
+		</div>
+		<div class="col-md-4 row-item">
+			<label>Ward: </label>
+			<DxComboBox NullText="Select ward ..."
+							Data="WardList"
+							SelectedItem="@MerchantModel.Ward"
+							SelectedItemExpression="() => MerchantModel.Ward" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Store number: </label>
+			<DxTextBox Text="@MerchantModel.HouseNumber"
+						  TextExpression="() => MerchantModel.HouseNumber" />
+		</div>
+
+		<div class="col-md-12">
+			<DxButton SubmitFormOnClick="true" Text="Submit" RenderStyle="@ButtonRenderStyle.Secondary" />
+		</div>
+	</div>
+
+</EditForm>

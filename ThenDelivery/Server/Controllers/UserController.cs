@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ThenDelivery.Server.Application.UserController.Commands;
+using ThenDelivery.Server.Application.UserController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
 

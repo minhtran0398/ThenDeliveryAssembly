@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\UserController\Queries\" />
+    <Folder Include="Application\UserController\Commands\" />
     <Folder Include="Persistence\Configurations\" />
   </ItemGroup>
 

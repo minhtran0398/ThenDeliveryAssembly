@@ -2,25 +2,24 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Components.Admin
 {
 	[Authorize(Roles = Const.Role.AdministrationRole)]
-	public class UserListBase : ComponentBase
+	public class UserListBase : CustomComponentBase<UserListBase>
 	{
 		#region Inject
-		[Inject] public ILogger<UserListBase> Logger { get; set; }
-		[Inject] public HttpClient HttpClient { get; set; }
-		[Inject] public NavigationManager NavigationManager { get; set; }
+		
 		#endregion
 
 		#region Properties
-		public string BaseUrl { get; set; }
 		protected List<UserDto> UserList { get; set; }
 		#endregion
 
@@ -28,13 +27,8 @@ namespace ThenDelivery.Client.Components.Admin
 		protected override async Task OnInitializedAsync()
 		{
 			Logger.LogDebug("Life Cycle - OnInitializedAsync");
-			SetupProperties();
 
-			HttpResponseMessage response = await HttpClient.GetAsync($"{BaseUrl}api/user");
-			if(response.IsSuccessStatusCode)
-			{
-				UserList = await response.Content.ReadFromJsonAsync<List<UserDto>>();
-			}
+			UserList = (await HttpClient.CustomGetAsync<UserDto>($"{BaseUrl}api/user")).ToList();
 		}
 		#endregion
 
@@ -51,11 +45,7 @@ namespace ThenDelivery.Client.Components.Admin
 		#endregion
 
 		#region Methods
-		private void SetupProperties()
-		{
-			BaseUrl = NavigationManager.BaseUri;
-			Logger.LogDebug(BaseUrl);
-		}
+		
 		#endregion
 	}
 }

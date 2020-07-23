@@ -21,10 +21,10 @@
 				</NavLink>
 			</li>
 		</AuthorizeView>
-		<AuthorizeView Roles="@(Const.Role.MerchantRole, Const.Role.UserRole)">
+		<AuthorizeView Roles=@($"{Const.Role.MerchantRole}, {Const.Role.UserRole}")>
 			<li class="nav-item px-3">
 				<NavLink class="nav-link" href="merchant-register">
-					<span class="oi oi-plus" aria-hidden="true"></span> Users
+					<span class="oi oi-plus" aria-hidden="true"></span> Merchant register
 				</NavLink>
 			</li>
 		</AuthorizeView>
