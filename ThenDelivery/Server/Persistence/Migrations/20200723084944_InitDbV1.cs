@@ -11,13 +11,13 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    CityCode = table.Column<string>(type: "char", maxLength: 2, nullable: false),
+                    CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
                     CityLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
@@ -35,7 +35,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,7 +69,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,13 +80,13 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "Districts",
                 columns: table => new
                 {
-                    DistrictCode = table.Column<string>(type: "char", maxLength: 3, nullable: false),
+                    DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
                     DistrictLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
@@ -100,7 +100,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     FeaturedDishCategoryId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,20 +118,20 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
+                    UserId = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     Avatar = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
                     CoverPicture = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
-                    TaxCode = table.Column<string>(type: "char", maxLength: 10, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "char", maxLength: 16, nullable: false),
-                    OpenTime = table.Column<string>(type: "char", maxLength: 4, nullable: false),
-                    CloseTime = table.Column<string>(type: "char", maxLength: 4, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar", maxLength: 256, nullable: false),
-                    SearchKey = table.Column<string>(type: "nvarchar", maxLength: 20, nullable: false),
-                    CityCode = table.Column<string>(type: "char", maxLength: 2, nullable: false),
-                    DistrictCode = table.Column<string>(type: "char", maxLength: 3, nullable: false),
-                    WardCode = table.Column<string>(type: "char", maxLength: 5, nullable: false),
-                    HouseNumber = table.Column<string>(type: "nvarchar", maxLength: 256, nullable: false)
+                    TaxCode = table.Column<string>(fixedLength: true, maxLength: 10, nullable: false),
+                    PhoneNumber = table.Column<string>(fixedLength: true, maxLength: 16, nullable: false),
+                    OpenTime = table.Column<string>(fixedLength: true, maxLength: 4, nullable: false),
+                    CloseTime = table.Column<string>(fixedLength: true, maxLength: 4, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: false),
+                    SearchKey = table.Column<string>(maxLength: 20, nullable: false),
+                    CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
+                    DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
+                    WardCode = table.Column<string>(fixedLength: true, maxLength: 5, nullable: false),
+                    HouseNumber = table.Column<string>(maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,7 +144,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     MerchantTypeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,11 +181,11 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
-                    ShipperId = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: true),
+                    UserId = table.Column<string>(maxLength: 128, nullable: false),
+                    ShipperId = table.Column<string>(maxLength: 128, nullable: true),
                     ShippingAddressId = table.Column<int>(type: "int", nullable: true),
                     OrderDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar", maxLength: 256, nullable: true),
+                    Note = table.Column<string>(maxLength: 256, nullable: true),
                     ReceiveVia = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
@@ -217,9 +217,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     ProductId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MerchantMenuId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(maxLength: 128, nullable: false),
                     OrderCount = table.Column<int>(type: "int", nullable: false),
                     FavoriteCount = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "smallmoney", nullable: false),
@@ -250,11 +250,11 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     ShippingAddressId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
-                    CityCode = table.Column<string>(type: "char", maxLength: 2, nullable: false),
-                    DistrictCode = table.Column<string>(type: "char", maxLength: 3, nullable: false),
-                    WardCode = table.Column<string>(type: "char", maxLength: 5, nullable: false),
-                    HouseNumber = table.Column<string>(type: "nvarchar", maxLength: 256, nullable: false)
+                    UserId = table.Column<string>(maxLength: 128, nullable: false),
+                    CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
+                    DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
+                    WardCode = table.Column<string>(fixedLength: true, maxLength: 5, nullable: false),
+                    HouseNumber = table.Column<string>(maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -268,8 +268,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     StoreMenuId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MerchantId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar", maxLength: 256, nullable: false)
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -283,7 +283,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     ToppingId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
                     UnitPrice = table.Column<decimal>(type: "smallmoney", nullable: false)
                 },
                 constraints: table =>
@@ -332,7 +332,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -343,13 +343,13 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "Wards",
                 columns: table => new
                 {
-                    WardCode = table.Column<string>(type: "char", maxLength: 5, nullable: false),
+                    WardCode = table.Column<string>(fixedLength: true, maxLength: 5, nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
                     WardLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
