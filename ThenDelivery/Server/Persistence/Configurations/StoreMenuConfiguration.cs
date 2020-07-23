@@ -19,13 +19,11 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.Name)
 					.HasColumnName("Name")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(128)
 					.IsRequired(true);
 
 			builder.Property(e => e.Description)
 					.HasColumnName("Description")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(256)
 					.IsRequired(true);
 		}

@@ -15,12 +15,11 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
          builder.Property(e => e.CityCode)
                 .HasColumnName("CityCode")
-                .HasColumnType("char")
-                .HasMaxLength(2);
+                .HasMaxLength(2)
+                .IsFixedLength();
 
          builder.Property(e => e.Name)
                .HasColumnName("Name")
-               .HasColumnType("nvarchar")
                .HasMaxLength(64)
                .IsRequired(true);
 

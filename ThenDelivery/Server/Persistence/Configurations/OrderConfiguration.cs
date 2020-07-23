@@ -14,13 +14,11 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.UserId)
 					.HasColumnName("UserId")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(128)
 					.IsRequired(true);
 
 			builder.Property(e => e.ShipperId)
 					.HasColumnName("ShipperId")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(128)
 					.IsRequired(false);
 
@@ -31,7 +29,6 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.Note)
 					.HasColumnName("Note")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(256)
 					.IsRequired(false);
 

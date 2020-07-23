@@ -240,7 +240,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     b.Property<string>("CityCode")
                         .HasColumnName("CityCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(2)")
+                        .IsFixedLength(true)
                         .HasMaxLength(2);
 
                     b.Property<byte>("CityLevelId")
@@ -265,7 +266,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("CityCode");
@@ -300,7 +301,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("CityLevelId");
@@ -315,7 +316,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     b.Property<string>("DistrictCode")
                         .HasColumnName("DistrictCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
                         .HasMaxLength(3);
 
                     b.Property<DateTime>("Created")
@@ -340,7 +342,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("DistrictCode");
@@ -375,7 +377,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("DistrictLevelId");
@@ -396,7 +398,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("FeaturedDishCategoryId");
@@ -422,13 +424,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("CityCode")
                         .IsRequired()
                         .HasColumnName("CityCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(2)")
+                        .IsFixedLength(true)
                         .HasMaxLength(2);
 
                     b.Property<string>("CloseTime")
                         .IsRequired()
                         .HasColumnName("CloseTime")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(4)")
+                        .IsFixedLength(true)
                         .HasMaxLength(4);
 
                     b.Property<string>("CoverPicture")
@@ -445,19 +449,20 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnName("Description")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("DistrictCode")
                         .IsRequired()
                         .HasColumnName("DistrictCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
                         .HasMaxLength(3);
 
                     b.Property<string>("HouseNumber")
                         .IsRequired()
                         .HasColumnName("HouseNumber")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<bool>("IsDeleted")
@@ -472,43 +477,47 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("OpenTime")
                         .IsRequired()
                         .HasColumnName("OpenTime")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(4)")
+                        .IsFixedLength(true)
                         .HasMaxLength(4);
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnName("PhoneNumber")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(16)")
+                        .IsFixedLength(true)
                         .HasMaxLength(16);
 
                     b.Property<string>("SearchKey")
                         .IsRequired()
                         .HasColumnName("SearchKey")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
                     b.Property<string>("TaxCode")
                         .IsRequired()
                         .HasColumnName("TaxCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true)
                         .HasMaxLength(10);
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnName("UserId")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("WardCode")
                         .IsRequired()
                         .HasColumnName("WardCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(5)")
+                        .IsFixedLength(true)
                         .HasMaxLength(5);
 
                     b.HasKey("MerchantId");
@@ -526,7 +535,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("MerchantTypeId");
@@ -561,7 +570,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnName("Note")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<DateTime>("OrderDateTime")
@@ -574,7 +583,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
                     b.Property<string>("ShipperId")
                         .HasColumnName("ShipperId")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<int?>("ShippingAddressId")
@@ -584,7 +593,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnName("UserId")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("OrderId");
@@ -638,7 +647,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnName("Description")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<int>("FavoriteCount")
@@ -661,7 +670,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<int>("OrderCount")
@@ -687,31 +696,34 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("CityCode")
                         .IsRequired()
                         .HasColumnName("CityCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(2)")
+                        .IsFixedLength(true)
                         .HasMaxLength(2);
 
                     b.Property<string>("DistrictCode")
                         .IsRequired()
                         .HasColumnName("DistrictCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
                         .HasMaxLength(3);
 
                     b.Property<string>("HouseNumber")
                         .IsRequired()
                         .HasColumnName("HouseNumber")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnName("UserId")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("WardCode")
                         .IsRequired()
                         .HasColumnName("WardCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(5)")
+                        .IsFixedLength(true)
                         .HasMaxLength(5);
 
                     b.HasKey("ShippingAddressId");
@@ -729,7 +741,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnName("Description")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<int>("MerchantId")
@@ -739,7 +751,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("StoreMenuId");
@@ -757,7 +769,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.Property<int>("ProductId")
@@ -861,7 +873,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     b.Property<string>("WardCode")
                         .HasColumnName("WardCode")
-                        .HasColumnType("char")
+                        .HasColumnType("nchar(5)")
+                        .IsFixedLength(true)
                         .HasMaxLength(5);
 
                     b.Property<DateTime>("Created")
@@ -882,7 +895,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.Property<byte>("WardLevelId")
@@ -921,7 +934,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("nvarchar")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("WardLevelId");

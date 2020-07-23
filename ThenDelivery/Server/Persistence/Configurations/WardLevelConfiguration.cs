@@ -19,7 +19,6 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
          builder.Property(e => e.Name)
                .HasColumnName("Name")
-               .HasColumnType("nvarchar")
                .HasMaxLength(64)
                .IsRequired(true);
       }

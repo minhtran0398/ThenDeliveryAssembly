@@ -14,31 +14,29 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.UserId)
 					.HasColumnName("UserId")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(128)
 					.IsRequired(true);
 
 			builder.Property(e => e.CityCode)
 					.HasColumnName("CityCode")
-					.HasColumnType("char")
 					.HasMaxLength(2)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.DistrictCode)
 					.HasColumnName("DistrictCode")
-					.HasColumnType("char")
 					.HasMaxLength(3)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.WardCode)
 					.HasColumnName("WardCode")
-					.HasColumnType("char")
 					.HasMaxLength(5)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.HouseNumber)
 					.HasColumnName("HouseNumber")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(256)
 					.IsRequired(true);
 		}
