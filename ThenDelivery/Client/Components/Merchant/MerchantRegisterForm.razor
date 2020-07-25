@@ -41,6 +41,7 @@
 		<div class="col-md-4 row-item">
 			<label>City: </label>
 			<DxComboBox NullText="Select city ..."
+							TextFieldName="DisplayText"
 							Data="CityList"
 							SelectedItem="@MerchantModel.City"
 							SelectedItemExpression="() => MerchantModel.City" />
@@ -48,6 +49,7 @@
 		<div class="col-md-4 row-item">
 			<label>District: </label>
 			<DxComboBox NullText="Select district ..."
+							TextFieldName="DisplayText"
 							Data="DistrictList"
 							SelectedItem="@MerchantModel.District"
 							SelectedItemExpression="() => MerchantModel.District" />
@@ -55,6 +57,7 @@
 		<div class="col-md-4 row-item">
 			<label>Ward: </label>
 			<DxComboBox NullText="Select ward ..."
+							TextFieldName="DisplayText"
 							Data="WardList"
 							SelectedItem="@MerchantModel.Ward"
 							SelectedItemExpression="() => MerchantModel.Ward" />
