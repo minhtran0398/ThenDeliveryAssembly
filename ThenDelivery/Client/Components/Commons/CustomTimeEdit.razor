@@ -2,4 +2,4 @@
 
 <DxTextBox Text="@InputTime.TimeString"
 			  TextExpression="() => InputTime.TimeString"
-			  TextChanged="HandleTimeChanged"/>
+			  TextChanged="async (newValue) => await HandleTimeChanged(newValue)"/>

@@ -29,6 +29,11 @@ namespace ThenDelivery.Shared.Helper
 			_hour = hour;
 		}
 
+		public static CustomTime Parse(string timeString)
+		{
+			return new CustomTime();
+		}
+
 		public string TimeString
 		{
 			get

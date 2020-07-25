@@ -1,41 +1,48 @@
 ﻿@inherits MerchantRegisterFormBase
 
 <EditForm Model="MerchantModel"
-			OnSubmit="HandleOnSubmit">
+			OnSubmit="async () => await HandleOnSubmit()">
 	<DataAnnotationsValidator />
 
 	<div class="row">
 		<div class="col-md-6 row-item">
 			<label>Name: </label>
 			<DxTextBox Text="@MerchantModel.Name"
+						  TextChanged="HandleMerchantNameChanged"
 						  TextExpression="() => MerchantModel.Name" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Tax Code: </label>
 			<DxTextBox Text="@MerchantModel.TaxCode"
+						  TextChanged="HandleTaxCodeChanged"
 						  TextExpression="() => MerchantModel.TaxCode" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Phone Number: </label>
 			<DxTextBox Text="@MerchantModel.PhoneNumber"
+						  TextChanged="HandlePhoneNumberChanged"
 						  TextExpression="() => MerchantModel.PhoneNumber" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Search Key: </label>
 			<DxTextBox Text="@MerchantModel.SearchKey"
+						  TextChanged="HandleSearchKeyChanged"
 						  TextExpression="() => MerchantModel.SearchKey" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Open time: </label>
-			<CustomTimeEdit InputTime="@MerchantModel.OpenTime" />
+			<CustomTimeEdit InputTime="@MerchantModel.OpenTime"
+								 TimeChanged="HandleOpenTimeChanged"/>
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Close time: </label>
-			<CustomTimeEdit InputTime="@MerchantModel.CloseTime" />
+			<CustomTimeEdit InputTime="@MerchantModel.CloseTime"
+								 TimeChanged="HandleCloseTimeChanged"/>
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Description: </label>
 			<DxTextBox Text="@MerchantModel.Description"
+						  TextChanged="HandleDescriptionChanged"
 						  TextExpression="() => MerchantModel.Description" />
 		</div>
 		<div class="col-md-4 row-item">
@@ -44,6 +51,7 @@
 							TextFieldName="DisplayText"
 							Data="CityList"
 							SelectedItem="@MerchantModel.City"
+							SelectedItemChanged="HandleSelectedCityChanged"
 							SelectedItemExpression="() => MerchantModel.City" />
 		</div>
 		<div class="col-md-4 row-item">
@@ -52,6 +60,7 @@
 							TextFieldName="DisplayText"
 							Data="DistrictList"
 							SelectedItem="@MerchantModel.District"
+							SelectedItemChanged="HandleSelectedDistrictChanged"
 							SelectedItemExpression="() => MerchantModel.District" />
 		</div>
 		<div class="col-md-4 row-item">
@@ -60,11 +69,14 @@
 							TextFieldName="DisplayText"
 							Data="WardList"
 							SelectedItem="@MerchantModel.Ward"
+							SelectedItemChanged="HandleSelectedWardChanged"
 							SelectedItemExpression="() => MerchantModel.Ward" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Store number: </label>
 			<DxTextBox Text="@MerchantModel.HouseNumber"
+						  NullText="Enter merchant name"
+						  TextChanged="HandleHouseNumberChanged"
 						  TextExpression="() => MerchantModel.HouseNumber" />
 		</div>
 
