@@ -85,5 +85,7 @@ namespace ThenDelivery.Server.Persistence
 		public DbSet<Topping> Toppings { get; set; }
 		public DbSet<Ward> Wards { get; set; }
 		public DbSet<WardLevel> WardLevels { get; set; }
+		public DbSet<MerchantTypeMerchant> MerchantTypeMerchants { get; set; }
+		public DbSet<FeaturedDishCategoryMerchant> FeaturedDishCategoryMerchants { get; set; }
 	}
 }
