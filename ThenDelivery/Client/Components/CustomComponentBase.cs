@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace ThenDelivery.Client.Components
 {

@@ -5,3 +5,62 @@
 .main-content{
 	padding-bottom: 32px;
 }
+
+/* Create menu */
+.menu-create-group {
+	padding: 20px;
+	border: 1px solid #e6ecf3;
+	margin: 20px 0;
+	height: 400px;
+	overflow-y: scroll;
+}
+
+.register-shop__form-body {
+	width: 95%;
+}
+
+.menu-create-group__title {
+	font-size: 16px;
+	font-weight: 600;
+	color: #232831;
+	margin-top: 0;
+}
+
+.menu-create-group__list {
+	list-style-type: none;
+}
+
+.menu-create-group__list li {
+	display: flex;
+	align-items: center;
+}
+
+.menu-create-group__list li span {
+	flex: 1 1;
+}
+
+.menu-create-group__item-button{
+	float: right;
+	margin-left: 5px;
+}
+
+.menu-create-group__input--form {
+	display: flex;
+	width: 100%;
+}
+
+.input--full-width, .input--full-width > input {
+	width: 100%;
+	padding-right: 5px;
+}
+
+.register-shop__form-footer {
+	display: flex;
+	justify-content: flex-end;
+	margin-right: 20px;
+}
+
+.register-shop__form-footer-button{
+	margin-left: 5px;
+}
+/* End create menu */

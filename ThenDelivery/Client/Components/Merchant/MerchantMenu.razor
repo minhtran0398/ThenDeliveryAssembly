@@ -1,0 +1,47 @@
+﻿@inherits MerchantMenuBase
+
+<h3>Menu giao hàng - Tạo nhóm món</h3>
+<p>vd: Khai vị, Món chính, Tráng miệng,...</p>
+
+<div class="register-shop__form-body menu-create-group">
+	<div class="menu-create-group__container">
+		<p class="menu-create-group__title">Tên nhóm món</p>
+		<ul class="menu-create-group__list">
+			@foreach (var menuItem in MenuList)
+			{
+				<li>
+					<span>@menuItem.Name</span>
+					<DxButton CssClass="menu-create-group__item-button"
+								 RenderStyle="@ButtonRenderStyle.Secondary"
+								 Text="Sửa tên" />
+					<DxButton CssClass="menu-create-group__item-button"
+								 RenderStyle="@ButtonRenderStyle.Secondary"
+								 Text="Xóa nhóm món" />
+				</li>
+			}
+		</ul>
+		<div class="menu-create-group__input">
+			<div class="menu-create-group__input--form">
+				<div class="input input--full-width">
+					<DxTextBox NullText="vd: Khai vị, Món chính, Tráng miệng,..."
+								  @bind-Text="@NewMenuItemName"
+								  @onkeypress="HandleOnPressMenuItem" />
+				</div>
+				<DxButton RenderStyle="@ButtonRenderStyle.Secondary"
+							 Enabled="@IsEnableAddButton"
+							 Click="HandleAddMenuItem"
+							 Text="Thêm" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="register-shop__form-footer">
+	<DxButton CssClass="register-shop__form-footer-button"
+				 RenderStyle="@ButtonRenderStyle.Primary"
+				 Text="Quay lại" />
+	<DxButton CssClass="register-shop__form-footer-button"
+				 Enabled="@IsEnableSaveButton"
+				 RenderStyle="@ButtonRenderStyle.Success"
+				 Text="Lưu và tiếp tục" />
+</div>
