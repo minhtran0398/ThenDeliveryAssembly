@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -17,7 +16,9 @@ namespace ThenDelivery.Client.ExtensionMethods
 			HttpResponseMessage response = await httpClient.GetAsync(baseUrl);
 			if (response.IsSuccessStatusCode)
 			{
-				return await response.Content.ReadFromJsonAsync<List<T>>();
+				//Todo
+				//Need try catch here
+				return await response.Content.ReadFromJsonAsync<IEnumerable<T>>();
 			}
 			return null;
 		}

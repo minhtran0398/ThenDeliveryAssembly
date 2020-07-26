@@ -32,18 +32,25 @@
 		<div class="col-md-6 row-item">
 			<label>Open time: </label>
 			<CustomTimeEdit InputTime="@MerchantModel.OpenTime"
-								 TimeChanged="HandleOpenTimeChanged"/>
+								 TimeChanged="HandleOpenTimeChanged" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Close time: </label>
 			<CustomTimeEdit InputTime="@MerchantModel.CloseTime"
-								 TimeChanged="HandleCloseTimeChanged"/>
+								 TimeChanged="HandleCloseTimeChanged" />
 		</div>
 		<div class="col-md-6 row-item">
 			<label>Description: </label>
 			<DxTextBox Text="@MerchantModel.Description"
 						  TextChanged="HandleDescriptionChanged"
 						  TextExpression="() => MerchantModel.Description" />
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Store number: </label>
+			<DxTextBox Text="@MerchantModel.HouseNumber"
+						  NullText="Enter merchant name"
+						  TextChanged="HandleHouseNumberChanged"
+						  TextExpression="() => MerchantModel.HouseNumber" />
 		</div>
 		<div class="col-md-4 row-item">
 			<label>City: </label>
@@ -72,12 +79,29 @@
 							SelectedItemChanged="HandleSelectedWardChanged"
 							SelectedItemExpression="() => MerchantModel.Ward" />
 		</div>
-		<div class="col-md-6 row-item">
-			<label>Store number: </label>
-			<DxTextBox Text="@MerchantModel.HouseNumber"
-						  NullText="Enter merchant name"
-						  TextChanged="HandleHouseNumberChanged"
-						  TextExpression="() => MerchantModel.HouseNumber" />
+		<div class="col-md-4 row-item">
+			<label>Merchant type (max 2): </label>
+			<DxListBox Data="MerchantTypeList"
+						  TextFieldName="DisplayText"
+						  SelectionMode="ListBoxSelectionMode.Multiple"
+						  ShowCheckboxes="true"
+						  SelectedItems="@MerchantModel.MerchantTypeList"
+						  SelectedItemsChanged="HandleSelectedMerchantTypeChanged"
+						  SelectedItemsExpression="() => MerchantModel.MerchantTypeList"
+						  style="height: 232px;">
+			</DxListBox>
+		</div>
+		<div class="col-md-4 row-item">
+			<label>Featured Dish Category (max 3): </label>
+			<DxListBox Data="FeaturedDishCategoryList"
+						  TextFieldName="DisplayText"
+						  SelectionMode="ListBoxSelectionMode.Multiple"
+						  ShowCheckboxes="true"
+						  SelectedItems="@MerchantModel.FeaturedDishCategoryList"
+						  SelectedItemsChanged="HandleSelectedFeaturedDishCategoryChanged"
+						  SelectedItemsExpression="() => MerchantModel.FeaturedDishCategoryList"
+						  style="height: 232px;">
+			</DxListBox>
 		</div>
 
 		<div class="col-md-12">

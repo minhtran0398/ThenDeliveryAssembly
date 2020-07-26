@@ -25,12 +25,18 @@ namespace ThenDelivery.Client.Components.Merchant
 		public List<CityDto> CityList { get; set; }
 		public List<DistrictDto> DistrictList { get; set; }
 		public List<WardDto> WardList { get; set; }
+		public List<MerchantTypeDto> MerchantTypeList { get; set; }
+		public List<FeaturedDishCategoryDto> FeaturedDishCategoryList { get; set; }
 		#endregion
 
 		#region Life Cycle
 		protected override async Task OnInitializedAsync()
 		{
 			Logger.LogInformation("OnInitializedAsync");
+
+			// need new for DxListBox
+			MerchantTypeList = new List<MerchantTypeDto>();
+			FeaturedDishCategoryList = new List<FeaturedDishCategoryDto>();
 
 			EditContext = new EditContext(MerchantModel);
 			await LoadDataCombobox();
@@ -105,6 +111,16 @@ namespace ThenDelivery.Client.Components.Merchant
 			MerchantModel.Ward = newValue;
 		}
 
+		protected void HandleSelectedMerchantTypeChanged(IEnumerable<MerchantTypeDto> newValue)
+		{
+			MerchantModel.MerchantTypeList = newValue.ToList();
+		}
+
+		protected void HandleSelectedFeaturedDishCategoryChanged(IEnumerable<FeaturedDishCategoryDto> newValue)
+		{
+			MerchantModel.FeaturedDishCategoryList = newValue.ToList();
+		}
+
 		protected void HandleHouseNumberChanged(string newValue)
 		{
 			MerchantModel.HouseNumber = newValue;
@@ -114,6 +130,10 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Methods
 		private async Task LoadDataCombobox()
 		{
+			MerchantTypeList = 
+				(await HttpClient.CustomGetAsync<MerchantTypeDto>($"{BaseUrl}api/merchanttype")).ToList();
+			FeaturedDishCategoryList = 
+				(await HttpClient.CustomGetAsync<FeaturedDishCategoryDto>($"{BaseUrl}api/featureddishcategory")).ToList();
 			CityList = (await HttpClient.CustomGetAsync<CityDto>($"{BaseUrl}api/city")).ToList();
 			DistrictList = (await HttpClient.CustomGetAsync<DistrictDto>($"{BaseUrl}api/district")).ToList();
 			WardList = (await HttpClient.CustomGetAsync<WardDto>($"{BaseUrl}api/ward")).ToList();

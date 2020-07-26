@@ -1,4 +1,5 @@
-﻿using ThenDelivery.Shared.Helper;
+﻿using System.Collections.Generic;
+using ThenDelivery.Shared.Helper;
 
 namespace ThenDelivery.Shared.Dtos
 {
@@ -11,6 +12,8 @@ namespace ThenDelivery.Shared.Dtos
 			City = new CityDto();
 			District = new DistrictDto();
 			Ward = new WardDto();
+			MerchantTypeList = new List<MerchantTypeDto>();
+			FeaturedDishCategoryList = new List<FeaturedDishCategoryDto>();
 		}
 
 		public int MerchantId { get; set; }
@@ -27,6 +30,8 @@ namespace ThenDelivery.Shared.Dtos
 		public CityDto City { get; set; }
 		public DistrictDto District { get; set; }
 		public WardDto Ward { get; set; }
+		public List<FeaturedDishCategoryDto> FeaturedDishCategoryList { get; set; }
+		public List<MerchantTypeDto> MerchantTypeList { get; set; }
 		public string HouseNumber { get; set; }
 	}
 }

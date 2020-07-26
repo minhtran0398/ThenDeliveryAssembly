@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,14 @@ namespace ThenDelivery.Server.Controllers
 		public async Task<IActionResult> GetAllCity()
 		{
 			IEnumerable<CityDto> cities = await Mediator.Send(new GetAllCityQuery());
+
+			// valid if data returned null
+			if (cities == null)
+			{
+				Logger.LogError("City returned null");
+				return BadRequest();
+			}
+
 			return Ok(cities.ToList());
 		}
 	}
