@@ -4,10 +4,10 @@
 	{
 		public class Role
 		{
-			public const string UserRole = "Users";
-			public const string ShipperRole = "Shippers";
-			public const string MerchantRole = "Merchants";
-			public const string AdministrationRole = "Administrators";
+			public const string UserRole = "User";
+			public const string ShipperRole = "Shipper";
+			public const string MerchantRole = "Merchant";
+			public const string AdministrationRole = "Administrator";
 		}
 	}
 }

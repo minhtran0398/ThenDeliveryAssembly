@@ -1,0 +1,5 @@
+﻿@inherits CustomTimeEditBase
+
+<DxTextBox Text="@InputTime.TimeString"
+			  TextExpression="() => InputTime.TimeString"
+			  TextChanged="async (newValue) => await HandleTimeChanged(newValue)"/>

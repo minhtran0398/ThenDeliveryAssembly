@@ -12,9 +12,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
@@ -30,9 +30,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     CityLevelId = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
@@ -64,9 +64,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     DistrictLevelId = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
@@ -81,11 +81,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
+                    CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     DistrictLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
@@ -113,9 +114,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     MerchantId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     UserId = table.Column<string>(maxLength: 128, nullable: false),
@@ -157,9 +158,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     OrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     UnitPrice = table.Column<decimal>(type: "smallmoney", nullable: false),
@@ -176,9 +177,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 {
                     OrderId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     UserId = table.Column<string>(maxLength: 128, nullable: false),
@@ -327,9 +328,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     WardLevelId = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
@@ -344,11 +345,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     WardCode = table.Column<string>(fixedLength: true, maxLength: 5, nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
+                    DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     WardLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
@@ -461,6 +463,17 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "0f1fbf4e-1b0c-42cb-ada4-b2b845d8b8da", "ac4de763-aada-4d2d-a5fa-9218e648aa35", "User", null },
+                    { "87900f5c-4055-49ca-b966-874f8ea827be", "a8a3b910-4df0-48dd-9689-5a60e97f77d1", "Shipper", null },
+                    { "f1e72b88-0ec1-4405-89c2-702f06916f49", "c624c6d0-c0dd-4ad4-87a5-6858a020b594", "Merchant", null },
+                    { "2d567007-aa95-43a0-83de-f6d7002ab189", "3873ff06-a85d-4d4d-9b20-5318f5b5b391", "Administrator", null }
                 });
 
             migrationBuilder.CreateIndex(

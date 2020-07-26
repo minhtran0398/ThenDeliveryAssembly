@@ -14,10 +14,19 @@
 				<span class="oi oi-home" aria-hidden="true"></span> Home
 			</NavLink>
 		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="users">
-				<span class="oi oi-plus" aria-hidden="true"></span> Users
-			</NavLink>
-		</li>
+		<AuthorizeView Roles="@Const.Role.AdministrationRole">
+			<li class="nav-item px-3">
+				<NavLink class="nav-link" href="users">
+					<span class="oi oi-plus" aria-hidden="true"></span> Users
+				</NavLink>
+			</li>
+		</AuthorizeView>
+		<AuthorizeView Roles=@($"{Const.Role.MerchantRole}, {Const.Role.UserRole}")>
+			<li class="nav-item px-3">
+				<NavLink class="nav-link" href="merchant-register">
+					<span class="oi oi-plus" aria-hidden="true"></span> Merchant register
+				</NavLink>
+			</li>
+		</AuthorizeView>
 	</ul>
 </div>

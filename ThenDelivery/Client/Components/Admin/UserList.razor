@@ -1,3 +1,28 @@
 ﻿@inherits UserListBase
 
-User list
+@if (UserList != null)
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>UserName</th>
+				<th>Email</th>
+				<th>IsEmailConfirmed</th>
+				<th>BirthDate</th>
+				<th>PhoneNumber</th>
+				<th>IsPhoneNumberConfirmed</th>
+				<th>Roles</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var userItem in UserList)
+			{
+				<UserLine UserItem="userItem"
+							 OnEdit="HandleOnEditUser"
+							 OnDelete="HandleOnDeleteUser" />
+			}
+		</tbody>
+	</table>
+}

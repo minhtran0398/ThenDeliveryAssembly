@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ThenDelivery.Server.Data;
+using ThenDelivery.Server.Persistence;
 
 namespace ThenDelivery.Server.Persistence.Migrations
 {
@@ -126,6 +126,32 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6b3263af-e195-4878-aa9d-e8a274266a32",
+                            ConcurrencyStamp = "a3474038-544c-4cd9-8fcb-2010d24f0271",
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = "5ae59482-8505-4929-9241-7bc067862334",
+                            ConcurrencyStamp = "60efc2be-050a-4033-82fd-a88503901152",
+                            Name = "Shipper"
+                        },
+                        new
+                        {
+                            Id = "20a92679-ab49-4aa2-aef5-49acb9e67898",
+                            ConcurrencyStamp = "f875ff8f-8fc8-4794-a2c9-801d0d10a1d0",
+                            Name = "Merchant"
+                        },
+                        new
+                        {
+                            Id = "752f25ec-a3e1-4ec3-b9e6-bd4b5be642dd",
+                            ConcurrencyStamp = "87a56b1e-6a6e-4ae2-93a7-90e0334ca768",
+                            Name = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -324,6 +350,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .IsFixedLength(true)
                         .HasMaxLength(3);
 
+                    b.Property<string>("CityCode")
+                        .HasColumnName("CityCode")
+                        .HasColumnType("nchar(2)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(2);
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -394,6 +426,19 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("DistrictLevels");
+                });
+
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.FeaturedDishCategoryMerchant", b =>
+                {
+                    b.Property<int>("MerchantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FeaturedDishCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MerchantId", "FeaturedDishCategoryId");
+
+                    b.ToTable("FeaturedDishCategoryMerchants");
                 });
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.FeaturedDishCategoy", b =>
@@ -554,6 +599,19 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("MerchantTypes");
+                });
+
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.MerchantTypeMerchant", b =>
+                {
+                    b.Property<int>("MerchantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MerchantTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MerchantId", "MerchantTypeId");
+
+                    b.ToTable("MerchantTypeMerchants");
                 });
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Order", b =>
@@ -897,6 +955,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<string>("DistrictCode")
+                        .HasColumnName("DistrictCode")
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(3);
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

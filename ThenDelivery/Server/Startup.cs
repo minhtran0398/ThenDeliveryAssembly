@@ -1,17 +1,13 @@
-using Microsoft.AspNetCore.Authentication;
+using IdentityServer4.Services;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
 using ThenDelivery.Server.Application.Common.Interfaces;
-using ThenDelivery.Server.Data;
+using ThenDelivery.Server.Infrastructure;
 using ThenDelivery.Server.Services;
-using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server
 {
@@ -28,43 +24,15 @@ namespace ThenDelivery.Server
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<ThenDeliveryDbContext>(options =>
-				 options.UseSqlServer(
-					  Configuration.GetConnectionString("DefaultConnection")));
-			services.AddDefaultIdentity<User>(options =>
-			{
-				options.SignIn.RequireConfirmedAccount = true;
-				options.Password.RequireDigit = false;
-				options.Password.RequireUppercase = false;
-				options.Password.RequireLowercase = false;
-				options.Password.RequireNonAlphanumeric = false;
-			}).AddRoles<IdentityRole>().AddEntityFrameworkStores<ThenDeliveryDbContext>();
-
-			// Configure identity server to put the role claim into the id token 
-			// and the access token and prevent the default mapping for roles 
-			// in the JwtSecurityTokenHandler.
-			services
-				.AddIdentityServer()
-				.AddApiAuthorization<User, ThenDeliveryDbContext>(options => {
-					options.IdentityResources["openid"].UserClaims.Add("role");
-					options.ApiResources.Single().UserClaims.Add("role");
-				});
-			services.AddAuthentication().AddIdentityServerJwt();
-			// Need to do this as it maps "role" to ClaimTypes.Role and causes issues
-			System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler
-				 .DefaultInboundClaimTypeMap.Remove("role");
+			services.ConfigureDatabase(Configuration);
+			services.ConfigureIdentity();
 
 			#region additional services
 			services.AddTransient<ICurrentUserService, CurrentUserService>();
-			services.AddTransient<IEmailSender, EmailSender>(i =>
-				new EmailSender(
-					Configuration["EmailSender:Host"],
-					Configuration.GetValue<int>("EmailSender:Port"),
-					Configuration.GetValue<bool>("EmailSender:EnableSSL"),
-					Configuration["EmailSender:UserName"],
-					Configuration["EmailSender:Password"]
-				)
-			);
+			services.ConfigureEmail(Configuration);
+			services.ConfigureCors();
+			services.AddMediatR(typeof(Startup));
+			services.AddTransient<IProfileService, ProfileService>();
 			#endregion
 
 			#region default

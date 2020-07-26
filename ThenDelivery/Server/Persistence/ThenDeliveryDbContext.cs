@@ -1,26 +1,27 @@
-﻿using System;
+﻿using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ThenDelivery.Server.Application.Common.Interfaces;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Entities;
-using Microsoft.EntityFrameworkCore;
-using ThenDelivery.Server.Application.Common.Interfaces;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using IdentityServer4.EntityFramework.Options;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Identity;
 
-namespace ThenDelivery.Server.Data
+namespace ThenDelivery.Server.Persistence
 {
 	public class ThenDeliveryDbContext : ApiAuthorizationDbContext<User>
 	{
 		private readonly ICurrentUserService _currentUserService;
 
 		public ThenDeliveryDbContext(
-			DbContextOptions<ThenDeliveryDbContext> options,
-			IOptions<OperationalStoreOptions> operationalStoreOptions,
-			ICurrentUserService currentUserService)
-			: base(options, operationalStoreOptions)
+			 DbContextOptions<ThenDeliveryDbContext> options,
+			 IOptions<OperationalStoreOptions> operationalStoreOptions,
+			 ICurrentUserService currentUserService)
+			 : base(options, operationalStoreOptions)
 		{
 			_currentUserService = currentUserService;
 		}
@@ -59,6 +60,14 @@ namespace ThenDelivery.Server.Data
 			modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
 			modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 			modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
+
+			modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole>
+				{
+					 new IdentityRole(Const.Role.UserRole),
+					 new IdentityRole(Const.Role.ShipperRole),
+					 new IdentityRole(Const.Role.MerchantRole),
+					 new IdentityRole(Const.Role.AdministrationRole),
+				});
 		}
 
 		public DbSet<City> Cities { get; set; }
@@ -74,7 +83,9 @@ namespace ThenDelivery.Server.Data
 		public DbSet<ShippingAddress> ShippingAddresses { get; set; }
 		public DbSet<StoreMenu> StoreMenues { get; set; }
 		public DbSet<Topping> Toppings { get; set; }
-		public DbSet<WardLevel> Wards { get; set; }
+		public DbSet<Ward> Wards { get; set; }
 		public DbSet<WardLevel> WardLevels { get; set; }
+		public DbSet<MerchantTypeMerchant> MerchantTypeMerchants { get; set; }
+		public DbSet<FeaturedDishCategoryMerchant> FeaturedDishCategoryMerchants { get; set; }
 	}
 }
