@@ -14,13 +14,11 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.UserId)
 					.HasColumnName("UserId")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(128)
 					.IsRequired(true);
 
 			builder.Property(e => e.Name)
 					.HasColumnName("Name")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(128)
 					.IsRequired(true);
 
@@ -36,61 +34,58 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.TaxCode)
 					.HasColumnName("TaxCode")
-					.HasColumnType("char")
 					.HasMaxLength(10)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.PhoneNumber)
 					.HasColumnName("PhoneNumber")
-					.HasColumnType("char")
 					.HasMaxLength(16)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.OpenTime)
 					.HasColumnName("OpenTime")
-					.HasColumnType("char")
 					.HasMaxLength(4)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.CloseTime)
 					.HasColumnName("CloseTime")
-					.HasColumnType("char")
 					.HasMaxLength(4)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.Description)
 					.HasColumnName("Description")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(256)
 					.IsRequired(true);
 
 			builder.Property(e => e.SearchKey)
 					.HasColumnName("SearchKey")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(20)
 					.IsRequired(true);
 
 			builder.Property(e => e.CityCode)
 					.HasColumnName("CityCode")
-					.HasColumnType("char")
 					.HasMaxLength(2)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.DistrictCode)
 					.HasColumnName("DistrictCode")
-					.HasColumnType("char")
 					.HasMaxLength(3)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.WardCode)
 					.HasColumnName("WardCode")
-					.HasColumnType("char")
 					.HasMaxLength(5)
+					.IsFixedLength()
 					.IsRequired(true);
 
 			builder.Property(e => e.HouseNumber)
 					.HasColumnName("HouseNumber")
-					.HasColumnType("nvarchar")
 					.HasMaxLength(256)
 					.IsRequired(true);
 		}
