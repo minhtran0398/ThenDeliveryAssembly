@@ -74,7 +74,7 @@ namespace ThenDelivery.Server.Persistence
 		public DbSet<CityLevel> CityLevels { get; set; }
 		public DbSet<District> Districts { get; set; }
 		public DbSet<DistrictLevel> DistrictLevels { get; set; }
-		public DbSet<FeaturedDishCategoy> FeaturedDishCategoies { get; set; }
+		public DbSet<FeaturedDishCategory> FeaturedDishCategoies { get; set; }
 		public DbSet<Merchant> Merchants { get; set; }
 		public DbSet<MerchantType> MerchantTypes { get; set; }
 		public DbSet<Order> Orders { get; set; }

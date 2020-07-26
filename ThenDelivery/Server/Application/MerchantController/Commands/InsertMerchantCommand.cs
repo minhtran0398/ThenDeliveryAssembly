@@ -1,6 +1,10 @@
-﻿using MediatR;
+﻿using DevExpress.Blazor.Internal;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
@@ -31,16 +35,26 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 
 			public async Task<int> Handle(InsertMerchantCommand request, CancellationToken cancellationToken)
 			{
-				int createdId = -1;
 				using (var trans = _dbContext.Database.BeginTransaction())
 				{
 					try
 					{
-						var merchantToAdd = GetMerchant(request._merchantDto);
+						Merchant merchantToAdd = GetMerchant(request._merchantDto);
 
 						await _dbContext.Merchants.AddAsync(merchantToAdd);
 						await _dbContext.SaveChangesAsync();
-						createdId = merchantToAdd.MerchantId;
+						request._merchantDto.MerchantId = merchantToAdd.MerchantId;
+
+						// Insert to many to many table with merchant type
+						List<MerchantTypeMerchant> merchantTypeMerchantToAdd = 
+							GetMerchantTypes(request._merchantDto);
+						await _dbContext.MerchantTypeMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
+
+						// Insert to many to many table with featured dish category
+						List<FeaturedDishCategoryMerchant> featuredDishCategoryMerchantToAdd =
+							GetFeaturedDishCategoies(request._merchantDto);
+						await _dbContext.FeaturedDishCategoryMerchants.AddRangeAsync(featuredDishCategoryMerchantToAdd);
+						await _dbContext.SaveChangesAsync();
 
 						await trans.CommitAsync();
 					}
@@ -51,7 +65,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 						return -1;
 					}
 				}
-				return createdId;
+				return request._merchantDto.MerchantId; ;
 			}
 
 			private Merchant GetMerchant(MerchantDto merchantDto)
@@ -72,6 +86,46 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 				merchantResult.DistrictCode = merchantDto.District.DistrictCode;
 				merchantResult.WardCode = merchantDto.Ward.WardCode;
 				return merchantResult;
+			}
+
+			/// <summary>
+			/// Only call this method when DbContext.SaveChange() was call
+			/// because use merchant id
+			/// </summary>
+			/// <param name="MerchantDto"></param>
+			/// <returns>List of MerchantTypeMerchant</returns>
+			private List<MerchantTypeMerchant> GetMerchantTypes(MerchantDto merchantDto)
+			{
+				var result = new List<MerchantTypeMerchant>();
+				foreach (var typeItem in merchantDto.MerchantTypeList)
+				{
+					result.Add(new MerchantTypeMerchant()
+					{
+						MerchantTypeId = typeItem.MerchantTypeId,
+						MerchantId = merchantDto.MerchantId
+					});
+				}
+				return result;
+			}
+
+			/// <summary>
+			/// Only call this method when DbContext.SaveChange() was call
+			/// because use merchant id
+			/// </summary>
+			/// <param name="MerchantDto"></param>
+			/// <returns>List of FeaturedDishCategoryMerchant</returns>
+			private List<FeaturedDishCategoryMerchant> GetFeaturedDishCategoies(MerchantDto merchantDto)
+			{
+				var result = new List<FeaturedDishCategoryMerchant>();
+				foreach (var typeItem in merchantDto.FeaturedDishCategoryList)
+				{
+					result.Add(new FeaturedDishCategoryMerchant()
+					{
+						FeaturedDishCategoryId = typeItem.FeaturedDishCategoryId,
+						MerchantId = merchantDto.MerchantId
+					});
+				}
+				return result;
 			}
 		}
 	}

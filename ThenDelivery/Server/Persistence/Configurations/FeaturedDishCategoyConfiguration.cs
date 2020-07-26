@@ -4,9 +4,9 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Persistence.Configurations
 {
-	public class FeaturedDishCategoyConfiguration : IEntityTypeConfiguration<FeaturedDishCategoy>
+	public class FeaturedDishCategoyConfiguration : IEntityTypeConfiguration<FeaturedDishCategory>
 	{
-		public void Configure(EntityTypeBuilder<FeaturedDishCategoy> builder)
+		public void Configure(EntityTypeBuilder<FeaturedDishCategory> builder)
 		{
 			builder.ToTable("FeaturedDishCategoies");
 
