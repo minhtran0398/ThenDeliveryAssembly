@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ThenDelivery.Client
 {
@@ -13,7 +16,6 @@ namespace ThenDelivery.Client
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("app");
-
 			builder.Services.AddHttpClient("ThenDelivery.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
 				 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 

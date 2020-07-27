@@ -13,23 +13,26 @@
 					<span>@menuItem.Name</span>
 					<DxButton CssClass="menu-create-group__item-button"
 								 RenderStyle="@ButtonRenderStyle.Secondary"
-								 Text="Sửa tên" />
+								 Text="Sửa tên"
+								 @onclick="() => HandleEditMenuItem(menuItem.MerchantId)"/>
 					<DxButton CssClass="menu-create-group__item-button"
 								 RenderStyle="@ButtonRenderStyle.Secondary"
-								 Text="Xóa nhóm món" />
+								 Text="Xóa nhóm món"
+								 @onclick="() => HandleRemoveMenuItem(menuItem.MerchantId)"/>
 				</li>
 			}
 		</ul>
 		<div class="menu-create-group__input">
 			<div class="menu-create-group__input--form">
 				<div class="input input--full-width">
-					<DxTextBox NullText="vd: Khai vị, Món chính, Tráng miệng,..."
+					<DxTextBox BindValueMode="BindValueMode.OnInput" 
+								  NullText="vd: Khai vị, Món chính, Tráng miệng,..."
 								  @bind-Text="@NewMenuItemName"
-								  @onkeypress="HandleOnPressMenuItem" />
+								  @onkeyup="HandleOnKeyupMenuItem"/>
 				</div>
 				<DxButton RenderStyle="@ButtonRenderStyle.Secondary"
 							 Enabled="@IsEnableAddButton"
-							 Click="HandleAddMenuItem"
+							 @onclick="HandleBtnAddMenuItem"
 							 Text="Thêm" />
 			</div>
 		</div>

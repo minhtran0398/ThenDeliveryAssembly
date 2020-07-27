@@ -33,6 +33,7 @@
 .menu-create-group__list li {
 	display: flex;
 	align-items: center;
+	margin: 5px;
 }
 
 .menu-create-group__list li span {

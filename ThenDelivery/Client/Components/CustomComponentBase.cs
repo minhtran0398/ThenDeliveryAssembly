@@ -16,6 +16,7 @@ namespace ThenDelivery.Client.Components
 
 		protected override void OnInitialized()
 		{
+			Logger.LogInformation("OnInitialized");
 			BaseUrl = NavigationManager.BaseUri;
 			base.OnInitialized();
 		}

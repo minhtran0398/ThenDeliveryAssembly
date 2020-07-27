@@ -32,6 +32,10 @@ namespace ThenDelivery.Client.Components.Merchant
 		protected string NewMenuItemName { get; set; }
 		#endregion
 
+		#region Variables
+		private int _merchantIdToEdit = -1;
+		#endregion
+
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
@@ -52,29 +56,55 @@ namespace ThenDelivery.Client.Components.Merchant
 			}
 			else if(e.Action == NotifyCollectionChangedAction.Remove)
 			{
-				IsEnableSaveButton = false;
+				if(MenuList.Count == 0)
+					IsEnableSaveButton = false;
 			}
 		}
 
-		protected void HandleAddMenuItem(MouseEventArgs mouseArgs)
+		protected void HandleBtnAddMenuItem()
 		{
 			AddMenuItem();
 		}
 
 		/// <summary>
-		/// Todo: Current doesn't work
+		/// Use DxTextBox mode OnInput to bind-value every time you press a char
 		/// </summary>
 		/// <param name="keyboardArgs"></param>
-		protected void HandleOnPressMenuItem(KeyboardEventArgs keyboardArgs)
+		protected void HandleOnKeyupMenuItem(KeyboardEventArgs keyboardArgs)
 		{
-			if(keyboardArgs.Key == "Enter")
+			Logger.LogInformation("HandleOnPressMenuItem");
+			if (keyboardArgs.Key == "Enter")
 			{
 				AddMenuItem();
 			}
 			else
 			{
-				IsEnableAddButton = true;
+				if (String.IsNullOrWhiteSpace(NewMenuItemName))
+					IsEnableAddButton = false;
+				else
+					IsEnableAddButton = true;
 			}
+		}
+
+		/// <summary>
+		/// <para>Use merchantId to save id of the row, this merchantId is not for save</para>
+		/// <para>it will be updated in CQRS command</para>
+		/// </summary>
+		/// <param name="merchantId"></param>
+		protected void HandleRemoveMenuItem(int merchantId)
+		{
+			MenuList.RemoveFirst(s => s.MerchantId == merchantId);
+		}
+
+		/// <summary>
+		/// <para>Use merchantId to save id of the row, this merchantId is not for save</para>
+		/// <para>it will be updated in CQRS command</para>
+		/// </summary>
+		/// <param name="merchantId"></param>
+		protected void HandleEditMenuItem(int merchantId)
+		{
+			NewMenuItemName = MenuList.Single(s => s.MerchantId == merchantId).Name;
+			_merchantIdToEdit = merchantId;
 		}
 		#endregion
 
@@ -83,11 +113,28 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			if (String.IsNullOrWhiteSpace(NewMenuItemName) == false)
 			{
-				MenuList.Add(new StoreMenuDto()
+				// mode add
+				if(_merchantIdToEdit == -1)
 				{
-					Name = NewMenuItemName
-				});
+					int merchantIdToAdd = 1;
+					if (MenuList.Count > 0)
+					{
+						merchantIdToAdd = MenuList.Max(e => e.MerchantId) + 1;
+					}
+					MenuList.Add(new StoreMenuDto()
+					{
+						MerchantId = merchantIdToAdd,
+						Name = NewMenuItemName
+					});
+				}
+				// mode edit
+				else
+				{
+					MenuList.Single(e => e.MerchantId == _merchantIdToEdit).Name = NewMenuItemName;
+					_merchantIdToEdit = -1;
+				}
 				NewMenuItemName = String.Empty;
+				IsEnableAddButton = false;
 				StateHasChanged();
 			}
 		}
