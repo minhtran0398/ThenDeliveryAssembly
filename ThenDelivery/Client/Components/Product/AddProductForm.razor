@@ -1,0 +1,45 @@
+﻿@inherits AddProductFormBase
+
+<EditForm Model="ProductModel"
+			 OnValidSubmit="async () => await HandleOnSubmit()">
+	<div class="row">
+		<div class="col-md-12 row-item">
+			<label>Name: </label>
+			<DxTextBox Text="@ProductModel.Name"
+						  TextChanged="HandleProductNameChanged"
+						  TextExpression="() => ProductModel.Name" />
+		</div>
+		<div class="col-md-12 row-item">
+			<label>Price: </label>
+			<CustomCurrencyEdit InputCurrency="@ProductModel.UnitPrice"
+									  CurrencyChanged="HandleUnitPriceChanged" />
+		</div>
+		<div class="col-md-12 row-item">
+			<label>Menu: </label>
+			<DxComboBox NullText="Select menu ..."
+							TextFieldName="DisplayText"
+							Data="MenuList"
+							SelectedItem="@ProductModel.MerchantMenu"
+							SelectedItemChanged="HandleSelectedMenuChanged"
+							SelectedItemExpression="() => ProductModel.MerchantMenu" />
+		</div>
+		<div class="col-md-12 row-item">
+			<label>Description: </label>
+			<DxTextBox Text="@ProductModel.Description"
+						  TextChanged="HandleDescriptionChanged"
+						  TextExpression="() => ProductModel.Description" />
+		</div>
+		<div class="col-md-12 add-product__form-footer">
+				<DxButton SubmitFormOnClick="false" 
+							 Text="Hủy"
+							 @onclick="HandleOnCancel"
+							 RenderStyle="@ButtonRenderStyle.Secondary"
+							 CssClass="add-product__form-footer-button"/>
+				<DxButton SubmitFormOnClick="false"
+							 @onclick="HandleOnSubmit"
+							 Text="Lưu"
+							 RenderStyle="@ButtonRenderStyle.Secondary"
+							 CssClass="add-product__form-footer-button"/>
+		</div>
+	</div>
+</EditForm>

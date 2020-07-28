@@ -5,7 +5,7 @@
 .main-content{
 	padding-bottom: 32px;
 }
-
+/*================================================================*/
 /* Create menu */
 .menu-create-group {
 	padding: 20px;
@@ -65,3 +65,39 @@
 	margin-left: 5px;
 }
 /* End create menu */
+/*=======================================================*/
+/* Add product */
+
+.register-shop__no-result {
+	margin: 100px 100px;
+	text-align: center;
+}
+
+img {
+	border-style: none;
+}
+
+.add-product__form-title{
+	position: relative;
+}
+
+.add-product__form-title-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.add-product__form-footer {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.add-product__form-footer-button {
+	margin-left: 5px;
+}
+
+.menu-add-item__body {
+	padding: 20px 0;
+}
+
+/* End add product */

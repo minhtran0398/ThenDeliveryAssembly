@@ -14,7 +14,7 @@ namespace ThenDelivery.Shared.Dtos
 			Ward = new WardDto();
 			MerchantTypeList = new List<MerchantTypeDto>();
 			FeaturedDishCategoryList = new List<FeaturedDishCategoryDto>();
-			MenuList = new List<StoreMenuDto>();
+			MenuList = new List<MerchantMenuDto>();
 		}
 
 		public int MerchantId { get; set; }
@@ -33,7 +33,7 @@ namespace ThenDelivery.Shared.Dtos
 		public WardDto Ward { get; set; }
 		public List<FeaturedDishCategoryDto> FeaturedDishCategoryList { get; set; }
 		public List<MerchantTypeDto> MerchantTypeList { get; set; }
-		public List<StoreMenuDto> MenuList { get; set; }
+		public List<MerchantMenuDto> MenuList { get; set; }
 		public string HouseNumber { get; set; }
 	}
 }

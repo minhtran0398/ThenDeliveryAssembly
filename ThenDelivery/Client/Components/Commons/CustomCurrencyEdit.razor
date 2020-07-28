@@ -1,0 +1,5 @@
+﻿@inherits CustomCurrencyEditBase
+
+<DxTextBox Text="@StringValue"
+			  TextChanged="async (newValue) => await HandleCurrencyChanged(newValue)"
+			  TextExpression="() => StringValue"/>

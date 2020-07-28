@@ -4,13 +4,13 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Persistence.Configurations
 {
-	public class StoreMenuConfiguration : IEntityTypeConfiguration<StoreMenu>
+	public class MerchantMenuConfiguration : IEntityTypeConfiguration<MerchantMenu>
 	{
-		public void Configure(EntityTypeBuilder<StoreMenu> builder)
+		public void Configure(EntityTypeBuilder<MerchantMenu> builder)
 		{
-			builder.ToTable("StoreMenues");
+			builder.ToTable("MerchantMenues");
 
-			builder.HasKey(e => e.StoreMenuId);
+			builder.HasKey(e => e.MerchantMenuId);
 
 			builder.Property(e => e.MerchantId)
 					.HasColumnName("MerchantId")
