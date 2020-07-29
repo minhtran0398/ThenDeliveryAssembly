@@ -56,7 +56,7 @@
 			<label>City: </label>
 			<DxComboBox NullText="Select city ..."
 							TextFieldName="DisplayText"
-							Data="CityList"
+							DataAsync="HandleLoadCitiesAsync"
 							SelectedItem="@MerchantModel.City"
 							SelectedItemChanged="HandleSelectedCityChanged"
 							SelectedItemExpression="() => MerchantModel.City" />
@@ -65,7 +65,7 @@
 			<label>District: </label>
 			<DxComboBox NullText="Select district ..."
 							TextFieldName="DisplayText"
-							Data="DistrictList"
+							DataAsync="HandleLoadDistrictsAsync"
 							SelectedItem="@MerchantModel.District"
 							SelectedItemChanged="HandleSelectedDistrictChanged"
 							SelectedItemExpression="() => MerchantModel.District" />
@@ -74,14 +74,14 @@
 			<label>Ward: </label>
 			<DxComboBox NullText="Select ward ..."
 							TextFieldName="DisplayText"
-							Data="WardList"
+							DataAsync="HandleLoadWardsAsync"
 							SelectedItem="@MerchantModel.Ward"
 							SelectedItemChanged="HandleSelectedWardChanged"
 							SelectedItemExpression="() => MerchantModel.Ward" />
 		</div>
 		<div class="col-md-4 row-item">
 			<label>Merchant type (max 2): </label>
-			<DxListBox Data="MerchantTypeList"
+			<DxListBox DataAsync="HandleLoadMerchantTypeAsync"
 						  TextFieldName="DisplayText"
 						  SelectionMode="ListBoxSelectionMode.Multiple"
 						  ShowCheckboxes="true"
@@ -93,7 +93,7 @@
 		</div>
 		<div class="col-md-4 row-item">
 			<label>Featured Dish Category (max 3): </label>
-			<DxListBox Data="FeaturedDishCategoryList"
+			<DxListBox DataAsync="HandleLoadFeaturedDishCategoryAsync"
 						  TextFieldName="DisplayText"
 						  SelectionMode="ListBoxSelectionMode.Multiple"
 						  ShowCheckboxes="true"

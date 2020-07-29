@@ -2,8 +2,11 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Components.Product
@@ -15,12 +18,14 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Parameters
+		[Parameter] public EventCallback<bool> OnChangeTab { get; set; }
 		#endregion
 
 		#region Properties
-		public List<ProductDto> ProductList { get; set; }
+		public List<MerchantMenuDto> MenuList { get; set; }
+		public ObservableCollection<ProductDto> ProductList { get; set; }
 		public bool IsShowPopupAddProduct { get; set; }
-		public bool IsSave { get; set; }
+		public bool IsEnableSaveButton { get; set; }
 		#endregion
 
 		#region Variables
@@ -33,11 +38,31 @@ namespace ThenDelivery.Client.Components.Product
 			// do not remove this line
 			base.OnInitialized();
 
-			ProductList = new List<ProductDto>();
+			ProductList = new ObservableCollection<ProductDto>();
+			ProductList.CollectionChanged += HandleProductListChanged;
+		}
+
+		protected override async Task OnInitializedAsync()
+		{
+			MenuList = (await HttpClient
+				.CustomGetAsync<MerchantMenuDto>($"{BaseUrl}api/merchantmenu?merchantId={3}")).ToList();
 		}
 		#endregion
 
 		#region Events
+		private void HandleProductListChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.Action == NotifyCollectionChangedAction.Add)
+			{
+				IsEnableSaveButton = true;
+			}
+			else if (e.Action == NotifyCollectionChangedAction.Remove)
+			{
+				if (MenuList.Count == 0)
+					IsEnableSaveButton = false;
+			}
+		}
+
 		protected void HandleShowProductForm()
 		{
 			IsShowPopupAddProduct = true;
@@ -52,6 +77,19 @@ namespace ThenDelivery.Client.Components.Product
 		protected void HandleCancelAddProduct(bool isShowForm)
 		{
 			IsShowPopupAddProduct = isShowForm;
+		}
+
+		protected async Task HandleTurnBack()
+		{
+			await OnChangeTab.InvokeAsync(false);
+		}
+
+		/// <summary>
+		/// Call api save data here
+		/// </summary>
+		protected async Task HandleSaveAndContinue()
+		{
+			await OnChangeTab.InvokeAsync(true);
 		}
 		#endregion
 

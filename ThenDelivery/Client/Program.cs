@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Hosting;
+using BlazorFluentUI;
 
 namespace ThenDelivery.Client
 {
@@ -29,6 +30,9 @@ namespace ThenDelivery.Client
 			builder.Services
 				.AddApiAuthorization()
 				.AddAccountClaimsPrincipalFactory<CustomUserFactory>();
+
+			builder.Services.AddBlazorFluentUI();
+			builder.RootComponents.Add<BFUGlobalRules>("#staticcs");
 
 			await builder.Build().RunAsync();
 		}

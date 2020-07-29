@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 
@@ -16,6 +18,8 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Parameters
+		[Parameter] public int TargetMerchantId { get; set; }
+		[Parameter] public EventCallback<bool> OnChangeTab { get; set; }
 		#endregion
 
 		#region Properties
@@ -35,13 +39,12 @@ namespace ThenDelivery.Client.Components.Merchant
 			// do not remove this line
 			base.OnInitialized();
 			MenuList = new ObservableCollection<MerchantMenuDto>();
-
-			MenuList.CollectionChanged += HandleMenuListCollectionChanged;
+			MenuList.CollectionChanged += HandleMenuListChanged;
 		}
 		#endregion
 
 		#region Events
-		private void HandleMenuListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void HandleMenuListChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
@@ -98,6 +101,19 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			NewMenuItemName = MenuList.Single(s => s.MerchantId == merchantId).Name;
 			_merchantIdToEdit = merchantId;
+		}
+
+		protected async Task HandleTurnBack()
+		{
+			await OnChangeTab.InvokeAsync(false);
+		}
+
+		/// <summary>
+		/// Call api save data here
+		/// </summary>
+		protected async Task HandleSaveAndContinue()
+		{
+			await OnChangeTab.InvokeAsync(true);
 		}
 		#endregion
 

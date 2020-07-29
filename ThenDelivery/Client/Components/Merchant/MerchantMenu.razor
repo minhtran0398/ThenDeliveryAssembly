@@ -42,9 +42,11 @@
 <div class="register-shop__form-footer">
 	<DxButton CssClass="register-shop__form-footer-button"
 				 RenderStyle="@ButtonRenderStyle.Primary"
+				 @onclick="async () => await HandleTurnBack()"
 				 Text="Quay lại" />
 	<DxButton CssClass="register-shop__form-footer-button"
 				 Enabled="@IsEnableSaveButton"
+				 @onclick="async () => await HandleSaveAndContinue()"
 				 RenderStyle="@ButtonRenderStyle.Success"
 				 Text="Lưu và tiếp tục" />
 </div>

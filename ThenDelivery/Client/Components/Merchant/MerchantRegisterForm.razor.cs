@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
@@ -17,29 +20,19 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Parameters
-		public MerchantDto MerchantModel { get; set; } = new MerchantDto();
+		[Parameter] public MerchantDto MerchantModel { get; set; }
+		[Parameter] public EventCallback<int> OnSubmitMerchant { get; set; }
 		#endregion
 
 		#region Properties
 		public EditContext EditContext { get; set; }
-		public List<CityDto> CityList { get; set; }
-		public List<DistrictDto> DistrictList { get; set; }
-		public List<WardDto> WardList { get; set; }
-		public List<MerchantTypeDto> MerchantTypeList { get; set; }
-		public List<FeaturedDishCategoryDto> FeaturedDishCategoryList { get; set; }
 		#endregion
 
 		#region Life Cycle
-		protected override async Task OnInitializedAsync()
+		protected override void OnInitialized()
 		{
-			Logger.LogInformation("OnInitializedAsync");
-
-			// need new for DxListBox
-			MerchantTypeList = new List<MerchantTypeDto>();
-			FeaturedDishCategoryList = new List<FeaturedDishCategoryDto>();
-
+			Logger.LogInformation("OnInitialized");
 			EditContext = new EditContext(MerchantModel);
-			await LoadDataCombobox();
 		}
 		#endregion
 
@@ -53,11 +46,11 @@ namespace ThenDelivery.Client.Components.Merchant
 			var returnedId = await HttpClient.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
 			if (returnedId == null)
 			{
-
+				await OnSubmitMerchant.InvokeAsync(-1);
 			}
 			else
 			{
-
+				await OnSubmitMerchant.InvokeAsync(int.Parse(returnedId.ToString()));
 			}
 		}
 
@@ -128,15 +121,29 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Methods
-		private async Task LoadDataCombobox()
+		protected async Task<IEnumerable<MerchantTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken token = default)
 		{
-			MerchantTypeList = 
-				(await HttpClient.CustomGetAsync<MerchantTypeDto>($"{BaseUrl}api/merchanttype")).ToList();
-			FeaturedDishCategoryList = 
-				(await HttpClient.CustomGetAsync<FeaturedDishCategoryDto>($"{BaseUrl}api/featureddishcategory")).ToList();
-			CityList = (await HttpClient.CustomGetAsync<CityDto>($"{BaseUrl}api/city")).ToList();
-			DistrictList = (await HttpClient.CustomGetAsync<DistrictDto>($"{BaseUrl}api/district")).ToList();
-			WardList = (await HttpClient.CustomGetAsync<WardDto>($"{BaseUrl}api/ward")).ToList();
+			return await HttpClient.CustomGetAsync<MerchantTypeDto>($"{BaseUrl}api/merchanttype");
+		}
+
+		protected async Task<IEnumerable<FeaturedDishCategoryDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken token = default)
+		{
+			return await HttpClient.CustomGetAsync<FeaturedDishCategoryDto>($"{BaseUrl}api/featureddishcategory");
+		}
+
+		protected async Task<IEnumerable<CityDto>> HandleLoadCitiesAsync(CancellationToken token = default)
+		{
+			return await HttpClient.CustomGetAsync<CityDto>($"{BaseUrl}api/city");
+		}
+
+		protected async Task<IEnumerable<DistrictDto>> HandleLoadDistrictsAsync(CancellationToken token = default)
+		{
+			return await HttpClient.CustomGetAsync<DistrictDto>($"{BaseUrl}api/district");
+		}
+
+		protected async Task<IEnumerable<WardDto>> HandleLoadWardsAsync(CancellationToken token = default)
+		{
+			return await HttpClient.CustomGetAsync<WardDto>($"{BaseUrl}api/ward");
 		}
 		#endregion
 	}

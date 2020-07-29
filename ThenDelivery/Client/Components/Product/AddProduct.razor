@@ -2,7 +2,8 @@
 
 <DxPopup HeaderText="Tạo món" Visible="@IsShowPopupAddProduct">
 	<AddProductForm OnSaveProduct="HandleAddProduct"
-						 OnCancel="HandleCancelAddProduct"/>
+						 OnCancel="HandleCancelAddProduct"
+						 MenuList="MenuList"/>
 </DxPopup>
 
 <div class="add-product__form-title">
@@ -30,21 +31,41 @@
 else
 {
 	<div class="menu-add-item__body">
-		<DxDataGrid Data="@ProductList">
-			<DxDataGridColumn Field=@nameof(ProductDto.Name) Caption="Tên món"/>
-			<DxDataGridColumn Field=@nameof(ProductDto.UnitPrice) Caption="Unit Price" />
-			<DxDataGridColumn Field=@nameof(ProductDto.MerchantMenu) Caption="Nhóm món" />
-			<DxDataGridColumn Field=@nameof(ProductDto.ToppingListString) Caption="Set topping" />
-			<DxDataGridCommandColumn></DxDataGridCommandColumn>
-		</DxDataGrid>
+		<table class="table-container">
+			<thead class="table-container__head">
+				<tr>
+					<th class="" style="width: 100px;">Tên món</th>
+					<th class="" style="width: 100px;">Giá</th>
+					<th class="table-container__action-td" style="width: 200px;">Nhóm món</th>
+					<th class="table-container__action-td" style="width: 200px;">Set topping</th>
+					<th class="table-container__action-td" style="width: 30px;"></th>
+					<th class="table-container__action-td" style="width: 30px;"></th>
+				</tr>
+			</thead>
+			<tbody class="table-container__body">
+				@foreach (var product in ProductList)
+				{
+					<tr class="table-container__row">
+						<td class="" style="width: 100px;">@product.Name</td>
+						<td class="" style="width: 100px;">@product.UnitPrice</td>
+						<td class="table-container__action-td" style="width: 200px;">@product.MerchantMenu.Name</td>
+						<td class="table-container__action-td" style="width: 200px;"><span>@product.ToppingListString</span></td>
+						<td class="table-container__action-td" style="width: 30px;">Sửa</td>
+						<td class="table-container__action-td" style="width: 30px; color: red">Xoá</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 	</div>
 	<div class="register-shop__form-footer">
 		<DxButton CssClass="register-shop__form-footer-button"
 					 RenderStyle="@ButtonRenderStyle.Primary"
+					 @onclick="async () => await HandleTurnBack()"
 					 Text="Quay lại" />
 		<DxButton CssClass="register-shop__form-footer-button"
-					 Enabled="@IsSave"
+					 Enabled="@IsEnableSaveButton"
 					 RenderStyle="@ButtonRenderStyle.Success"
+					 @onclick="async () => await HandleSaveAndContinue()"
 					 Text="Lưu và tiếp tục" />
 	</div>
 }

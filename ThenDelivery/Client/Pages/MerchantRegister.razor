@@ -1,7 +1,18 @@
-﻿@page "/merchant-register"
+﻿@inherits MerchantRegisterBase
+@page "/merchant-register"
 
-@*<MerchantRegisterForm></MerchantRegisterForm>*@
-
-@*<MerchantMenu></MerchantMenu>*@
-
-<AddProduct></AddProduct>
+<DxTabs ActiveTabIndex="@ActiveTabIndex">
+	<DxTabPage Text="Thông tin quán">
+		<MerchantRegisterForm MerchantModel="MerchantModel"
+									 OnSubmitMerchant="HandleAfterSubmitMerchant"/>
+	</DxTabPage>
+	<DxTabPage Text="Tạo nhóm món"
+				  Visible="@(MerchantModelId > 0)">
+		<MerchantMenu TargetMerchantId="MerchantModelId"
+						  OnChangeTab="HandleOnMenuChangeTab"/>
+	</DxTabPage>
+	<DxTabPage Text="Thêm món"
+				  Visible="@(MerchantModelId > 0)">
+		<AddProduct OnChangeTab="HandleOnProductChangeTab"/>
+	</DxTabPage>
+</DxTabs>

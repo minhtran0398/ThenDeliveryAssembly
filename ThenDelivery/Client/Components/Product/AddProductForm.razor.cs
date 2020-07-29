@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using ThenDelivery.Client.Components.Merchant;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Components.Product
@@ -16,13 +12,13 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Parameters
+		[Parameter] public List<MerchantMenuDto> MenuList { get; set; }
 		[Parameter] public EventCallback<ProductDto> OnSaveProduct { get; set; }
 		[Parameter] public EventCallback<bool> OnCancel { get; set; }
 		#endregion
 
 		#region Properties
 		public ProductDto ProductModel { get; set; }
-		public List<MerchantMenuDto> MenuList { get; set; }
 		#endregion
 
 		#region Life Cycle
@@ -47,22 +43,22 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected void HandleProductNameChanged(string newValue)
 		{
-
+			ProductModel.Name = newValue;
 		}
 
 		protected void HandleSelectedMenuChanged(MerchantMenuDto newValue)
 		{
-
+			ProductModel.MerchantMenu = newValue;
 		}
 
 		protected void HandleUnitPriceChanged(decimal newValue)
 		{
-
+			ProductModel.UnitPrice = newValue;
 		}
 
 		protected void HandleDescriptionChanged(string newValue)
 		{
-			
+			ProductModel.Description = newValue;
 		}
 		#endregion
 
