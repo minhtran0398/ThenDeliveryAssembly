@@ -1,4 +1,4 @@
-﻿@inherits MerchantMenuBase
+﻿@inherits MerchantMenuFormBase
 
 <h3>Menu giao hàng - Tạo nhóm món</h3>
 <p>vd: Khai vị, Món chính, Tráng miệng,...</p>
@@ -14,21 +14,21 @@
 					<DxButton CssClass="menu-create-group__item-button"
 								 RenderStyle="@ButtonRenderStyle.Secondary"
 								 Text="Sửa tên"
-								 @onclick="() => HandleEditMenuItem(menuItem.MerchantId)"/>
+								 @onclick="() => HandleEditMenuItem(menuItem.MerchantMenuId)" />
 					<DxButton CssClass="menu-create-group__item-button"
 								 RenderStyle="@ButtonRenderStyle.Secondary"
 								 Text="Xóa nhóm món"
-								 @onclick="() => HandleRemoveMenuItem(menuItem.MerchantId)"/>
+								 @onclick="() => HandleRemoveMenuItem(menuItem.MerchantMenuId)" />
 				</li>
 			}
 		</ul>
 		<div class="menu-create-group__input">
 			<div class="menu-create-group__input--form">
 				<div class="input input--full-width">
-					<DxTextBox BindValueMode="BindValueMode.OnInput" 
+					<DxTextBox BindValueMode="BindValueMode.OnInput"
 								  NullText="vd: Khai vị, Món chính, Tráng miệng,..."
 								  @bind-Text="@NewMenuItemName"
-								  @onkeyup="HandleOnKeyupMenuItem"/>
+								  @onkeyup="HandleOnKeyupMenuItem" />
 				</div>
 				<DxButton RenderStyle="@ButtonRenderStyle.Secondary"
 							 Enabled="@IsEnableAddButton"

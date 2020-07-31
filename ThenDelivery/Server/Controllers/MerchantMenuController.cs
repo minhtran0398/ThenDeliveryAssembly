@@ -1,15 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ThenDelivery.Server.Application.MerchantMenu.Queries;
+using ThenDelivery.Server.Application.MerchantMenuController.Commands;
+using ThenDelivery.Server.Application.MerchantMenuController.Queries;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Controllers
 {
 	public class MerchantMenuController : CustomControllerBase<MerchantMenuController>
 	{
+		[HttpPost]
+		public async Task<IActionResult> AddMerchantMenuList(IEnumerable<MerchantMenuDto> menuList)
+		{
+			try
+			{
+				await Mediator.Send(new InsertRangeMerchantMenuCommand(menuList));
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> GetMerchantMenuByMerchantId(int merchantId)
 		{

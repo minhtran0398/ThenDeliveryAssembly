@@ -6,12 +6,13 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using ThenDelivery.Client.Components.Enums;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Components.Merchant
 {
-	public class MerchantMenuBase : CustomComponentBase<MerchantMenuBase>
+	public class MerchantMenuFormBase : CustomComponentBase<MerchantMenuFormBase>
 	{
 		#region Inject
 
@@ -19,7 +20,7 @@ namespace ThenDelivery.Client.Components.Merchant
 
 		#region Parameters
 		[Parameter] public int TargetMerchantId { get; set; }
-		[Parameter] public EventCallback<bool> OnChangeTab { get; set; }
+		[Parameter] public EventCallback<PageAction> OnChangeTab { get; set; }
 		#endregion
 
 		#region Properties
@@ -30,7 +31,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Variables
-		private int _merchantIdToEdit = -1;
+		private int _merchantMenuIdToEdit = -1;
 		#endregion
 
 		#region Life Cycle
@@ -86,26 +87,26 @@ namespace ThenDelivery.Client.Components.Merchant
 		/// <para>Use merchantId to save id of the row, this merchantId is not for save</para>
 		/// <para>it will be updated in CQRS command</para>
 		/// </summary>
-		/// <param name="merchantId"></param>
-		protected void HandleRemoveMenuItem(int merchantId)
+		/// <param name="merchantMenuId"></param>
+		protected void HandleRemoveMenuItem(int merchantMenuId)
 		{
-			MenuList.RemoveFirst(s => s.MerchantId == merchantId);
+			MenuList.RemoveFirst(s => s.MerchantMenuId == merchantMenuId);
 		}
 
 		/// <summary>
 		/// <para>Use merchantId to save id of the row, this merchantId is not for save</para>
 		/// <para>it will be updated in CQRS command</para>
 		/// </summary>
-		/// <param name="merchantId"></param>
-		protected void HandleEditMenuItem(int merchantId)
+		/// <param name="merchantMenuId"></param>
+		protected void HandleEditMenuItem(int merchantMenuId)
 		{
-			NewMenuItemName = MenuList.Single(s => s.MerchantId == merchantId).Name;
-			_merchantIdToEdit = merchantId;
+			NewMenuItemName = MenuList.Single(s => s.MerchantMenuId == merchantMenuId).Name;
+			_merchantMenuIdToEdit = merchantMenuId;
 		}
 
 		protected async Task HandleTurnBack()
 		{
-			await OnChangeTab.InvokeAsync(false);
+			await OnChangeTab.InvokeAsync(PageAction.Previous);
 		}
 
 		/// <summary>
@@ -113,7 +114,8 @@ namespace ThenDelivery.Client.Components.Merchant
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
-			await OnChangeTab.InvokeAsync(true);
+			await HttpClient.CustomPostAsync($"{BaseUrl}api/merchantmenu", MenuList.AsEnumerable());
+			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion
 
@@ -123,24 +125,25 @@ namespace ThenDelivery.Client.Components.Merchant
 			if (String.IsNullOrWhiteSpace(NewMenuItemName) == false)
 			{
 				// mode add
-				if (_merchantIdToEdit == -1)
+				if (_merchantMenuIdToEdit == -1)
 				{
 					int merchantIdToAdd = 1;
 					if (MenuList.Count > 0)
 					{
-						merchantIdToAdd = MenuList.Max(e => e.MerchantId) + 1;
+						merchantIdToAdd = MenuList.Max(e => e.MerchantMenuId) + 1;
 					}
 					MenuList.Add(new MerchantMenuDto()
 					{
-						MerchantId = merchantIdToAdd,
-						Name = NewMenuItemName
+						MerchantMenuId = merchantIdToAdd,
+						Name = NewMenuItemName,
+						MerchantId = TargetMerchantId
 					});
 				}
 				// mode edit
 				else
 				{
-					MenuList.Single(e => e.MerchantId == _merchantIdToEdit).Name = NewMenuItemName;
-					_merchantIdToEdit = -1;
+					MenuList.Single(e => e.MerchantMenuId == _merchantMenuIdToEdit).Name = NewMenuItemName;
+					_merchantMenuIdToEdit = -1;
 				}
 				NewMenuItemName = String.Empty;
 				IsEnableAddButton = false;

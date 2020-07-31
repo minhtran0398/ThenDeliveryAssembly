@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using ThenDelivery.Client.Components.Enums;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 
@@ -18,7 +19,7 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Parameters
-		[Parameter] public EventCallback<bool> OnChangeTab { get; set; }
+		[Parameter] public EventCallback<PageAction> OnChangeTab { get; set; }
 		#endregion
 
 		#region Properties
@@ -81,7 +82,7 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected async Task HandleTurnBack()
 		{
-			await OnChangeTab.InvokeAsync(false);
+			await OnChangeTab.InvokeAsync(PageAction.Previous);
 		}
 
 		/// <summary>
@@ -89,7 +90,7 @@ namespace ThenDelivery.Client.Components.Product
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
-			await OnChangeTab.InvokeAsync(true);
+			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion
 

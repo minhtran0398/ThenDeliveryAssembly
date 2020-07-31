@@ -8,6 +8,7 @@ namespace ThenDelivery.Shared.Dtos
 		{
 			Description = String.Empty;
 		}
+		public int MerchantMenuId { get; set; }
 		public int MerchantId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }

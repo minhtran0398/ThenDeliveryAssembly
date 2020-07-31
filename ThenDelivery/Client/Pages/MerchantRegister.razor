@@ -7,12 +7,12 @@
 									 OnSubmitMerchant="HandleAfterSubmitMerchant"/>
 	</DxTabPage>
 	<DxTabPage Text="Tạo nhóm món"
-				  Visible="@(MerchantModelId > 0)">
-		<MerchantMenu TargetMerchantId="MerchantModelId"
+				  Visible="@(ActiveTabIndex >= 1)">
+		<MerchantMenuForm TargetMerchantId="MerchantModelId"
 						  OnChangeTab="HandleOnMenuChangeTab"/>
 	</DxTabPage>
 	<DxTabPage Text="Thêm món"
-				  Visible="@(MerchantModelId > 0)">
+				  Visible="@(ActiveTabIndex >= 2)">
 		<AddProduct OnChangeTab="HandleOnProductChangeTab"/>
 	</DxTabPage>
 </DxTabs>

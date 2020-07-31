@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using ThenDelivery.Client.Components;
-using ThenDelivery.Client.ExtensionMethods;
+﻿using ThenDelivery.Client.Components;
+using ThenDelivery.Client.Components.Enums;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Pages
@@ -21,7 +18,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected void HandleAfterSubmitMerchant(int merchantId)
 		{
-			if(merchantId > 0)
+			if (merchantId > 0)
 			{
 				ActiveTabIndex += 1;
 				MerchantModelId = merchantId;
@@ -37,9 +34,9 @@ namespace ThenDelivery.Client.Pages
 		/// <para> state == false => previous tab </para>
 		/// </summary>
 		/// <param name="moveState"></param>
-		protected void HandleOnMenuChangeTab(bool moveState)
+		protected void HandleOnMenuChangeTab(PageAction moveState)
 		{
-			if(moveState)
+			if (moveState == PageAction.Next)
 			{
 				ActiveTabIndex += 1;
 			}
@@ -54,11 +51,12 @@ namespace ThenDelivery.Client.Pages
 		/// <para> state == false => previous tab </para>
 		/// </summary>
 		/// <param name="moveState"></param>
-		protected void HandleOnProductChangeTab(bool moveState)
+		protected void HandleOnProductChangeTab(PageAction moveState)
 		{
-			if (moveState)
+			// done
+			if (moveState == PageAction.Next)
 			{
-				ActiveTabIndex += 1;
+				
 			}
 			else
 			{

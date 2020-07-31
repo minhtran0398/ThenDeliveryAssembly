@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
 
-namespace ThenDelivery.Server.Application.MerchantMenu.Queries
+namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 {
 	public class GetMerchantMenuByMerchantIdQuery
 		: IRequest<IEnumerable<MerchantMenuDto>>
@@ -42,7 +42,7 @@ namespace ThenDelivery.Server.Application.MerchantMenu.Queries
 				{
 					result = await (from menu in _dbContext.MerchantMenues
 										 where menu.MerchantId == request._merchantId
-										 select new MerchantMenuDto
+										 select new MerchantMenuDto()
 										 {
 											 Name = menu.Name,
 											 Description = menu.Description,

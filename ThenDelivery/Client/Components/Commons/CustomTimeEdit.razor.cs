@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 using ThenDelivery.Shared.Helper;
 
@@ -11,8 +12,12 @@ namespace ThenDelivery.Client.Components.Commons
 
 		protected async Task HandleTimeChanged(string newTimeString)
 		{
-			var newTime = CustomTime.Parse(newTimeString);
-			await TimeChanged.InvokeAsync(newTime);
+			if(newTimeString.Length <= 5 && Int32.TryParse(newTimeString, out _))
+			{
+				InputTime = CustomTime.Parse(newTimeString);
+			}
+			await TimeChanged.InvokeAsync(InputTime);
+			await InvokeAsync(StateHasChanged);
 		}
 	}
 }

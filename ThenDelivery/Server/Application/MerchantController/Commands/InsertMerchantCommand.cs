@@ -65,7 +65,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 						return -1;
 					}
 				}
-				return request._merchantDto.MerchantId; ;
+				return request._merchantDto.MerchantId;
 			}
 
 			private Merchant GetMerchant(MerchantDto merchantDto)
