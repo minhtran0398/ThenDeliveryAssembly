@@ -12,9 +12,14 @@ namespace ThenDelivery.Client.Components.Commons
 
 		protected async Task HandleTimeChanged(string newTimeString)
 		{
-			if(newTimeString.Length <= 5 && Int32.TryParse(newTimeString, out _))
+			//string newTimeString = args.Value.ToString();
+			try
 			{
-				InputTime = CustomTime.Parse(newTimeString);
+				InputTime.TimeString = newTimeString;
+			}
+			catch (InvalidCastException)
+			{
+
 			}
 			await TimeChanged.InvokeAsync(InputTime);
 			await InvokeAsync(StateHasChanged);

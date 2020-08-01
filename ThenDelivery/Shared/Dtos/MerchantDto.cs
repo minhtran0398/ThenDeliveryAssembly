@@ -9,9 +9,6 @@ namespace ThenDelivery.Shared.Dtos
 		{
 			OpenTime = new CustomTime();
 			CloseTime = new CustomTime();
-			City = new CityDto();
-			District = new DistrictDto();
-			Ward = new WardDto();
 			MerchantTypeList = new List<MerchantTypeDto>();
 			FeaturedDishCategoryList = new List<FeaturedDishCategoryDto>();
 		}

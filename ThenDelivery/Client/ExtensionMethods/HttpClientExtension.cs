@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -23,7 +24,7 @@ namespace ThenDelivery.Client.ExtensionMethods
 			return null;
 		}
 
-		public static async Task<object> CustomPostAsync<TValue>(
+		public static async Task<string> CustomPostAsync<TValue>(
 			this HttpClient httpClient, string baseUrl, TValue objectToPost)
 			where TValue : class
 		{
@@ -33,7 +34,24 @@ namespace ThenDelivery.Client.ExtensionMethods
 			HttpResponseMessage response = await httpClient.PostAsync(baseUrl, stringContent);
 			if (response.IsSuccessStatusCode)
 			{
-				return await response.Content.ReadFromJsonAsync<object>();
+				return await response.Content.ReadAsStringAsync();
+			}
+			return null;
+		}
+
+		public static async Task<TResult> CustomPostAsync<TValue, TResult>(
+			this HttpClient httpClient, string baseUrl, TValue objectToPost)
+			where TValue : class
+			where TResult : class
+		{
+			string jsonInString = JsonConvert.SerializeObject(objectToPost);
+			var stringContent = new StringContent(jsonInString, Encoding.UTF8, "application/json");
+
+			HttpResponseMessage response = await httpClient.PostAsync(baseUrl, stringContent);
+			if (response.IsSuccessStatusCode)
+			{
+				string content = await response.Content.ReadAsStringAsync();
+				return JsonConvert.DeserializeObject<TResult>(content);
 			}
 			return null;
 		}

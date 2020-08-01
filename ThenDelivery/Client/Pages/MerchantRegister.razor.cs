@@ -56,7 +56,7 @@ namespace ThenDelivery.Client.Pages
 			// done
 			if (moveState == PageAction.Next)
 			{
-				
+				NavigationManager.NavigateTo("/");
 			}
 			else
 			{

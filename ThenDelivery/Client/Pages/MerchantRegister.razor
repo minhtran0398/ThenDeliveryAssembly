@@ -9,10 +9,11 @@
 	<DxTabPage Text="Tạo nhóm món"
 				  Visible="@(ActiveTabIndex >= 1)">
 		<MerchantMenuForm TargetMerchantId="MerchantModelId"
-						  OnChangeTab="HandleOnMenuChangeTab"/>
+								OnChangeTab="HandleOnMenuChangeTab"/>
 	</DxTabPage>
 	<DxTabPage Text="Thêm món"
 				  Visible="@(ActiveTabIndex >= 2)">
-		<AddProduct OnChangeTab="HandleOnProductChangeTab"/>
+		<AddProduct TargetMerchantId="MerchantModelId"
+						OnChangeTab="HandleOnProductChangeTab"/>
 	</DxTabPage>
 </DxTabs>

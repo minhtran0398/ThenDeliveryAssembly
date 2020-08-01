@@ -19,6 +19,7 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Parameters
+		[Parameter] public int TargetMerchantId { get; set; }
 		[Parameter] public EventCallback<PageAction> OnChangeTab { get; set; }
 		#endregion
 
@@ -46,7 +47,7 @@ namespace ThenDelivery.Client.Components.Product
 		protected override async Task OnInitializedAsync()
 		{
 			MenuList = (await HttpClient
-				.CustomGetAsync<MerchantMenuDto>($"{BaseUrl}api/merchantmenu?merchantId={3}")).ToList();
+				.CustomGetAsync<MerchantMenuDto>($"{BaseUrl}api/merchantmenu?merchantId={TargetMerchantId}")).ToList();
 		}
 		#endregion
 
@@ -90,6 +91,7 @@ namespace ThenDelivery.Client.Components.Product
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
+			await HttpClient.CustomPostAsync($"{BaseUrl}api/product", ProductList.AsEnumerable());
 			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion

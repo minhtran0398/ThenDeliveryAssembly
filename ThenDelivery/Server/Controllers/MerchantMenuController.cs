@@ -18,7 +18,7 @@ namespace ThenDelivery.Server.Controllers
 			try
 			{
 				await Mediator.Send(new InsertRangeMerchantMenuCommand(menuList));
-				return Ok();
+				return Ok("Insert merchant menu success");
 			}
 			catch (Exception ex)
 			{

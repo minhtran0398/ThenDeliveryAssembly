@@ -3,3 +3,13 @@
 <DxTextBox Text="@InputTime.TimeString"
 			  TextExpression="() => InputTime.TimeString"
 			  TextChanged="async (newValue) => await HandleTimeChanged(newValue)"/>
+
+@*<input class="form-control"
+		 type="text"
+		 value="@InputTime.TimeString"
+		 @onchange="async (newValue) => await HandleTimeChanged(newValue)"/>*@
+
+@*<InputText class="form-control"
+			  Value="@InputTime.TimeString"
+			  ValueExpression="() => InputTime.TimeString"
+			  ValueChanged="async (newValue) => await HandleTimeChanged(newValue)"/>*@

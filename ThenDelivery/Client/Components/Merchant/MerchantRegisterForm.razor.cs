@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -25,13 +23,12 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Properties
-		public EditContext EditContext { get; set; }
+		protected EditContext EditContext { get; set; }
 		#endregion
 
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
-			Logger.LogInformation("OnInitialized");
 			EditContext = new EditContext(MerchantModel);
 		}
 		#endregion
@@ -39,10 +36,6 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Events
 		protected async Task HandleOnSubmit()
 		{
-			Logger.LogInformation("HandleOnSubmit");
-			MerchantModel.Avatar = "";
-			MerchantModel.CoverPicture = "";
-
 			var returnedId = await HttpClient.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
 			if (returnedId == null)
 			{
@@ -81,12 +74,14 @@ namespace ThenDelivery.Client.Components.Merchant
 
 		protected void HandleOpenTimeChanged(CustomTime newTime)
 		{
-			MerchantModel.OpenTime = newTime;
+			MerchantModel.OpenTime.Hour = newTime.Hour;
+			MerchantModel.OpenTime.Minute = newTime.Minute;
 		}
 
 		protected void HandleCloseTimeChanged(CustomTime newTime)
 		{
-			MerchantModel.CloseTime = newTime;
+			MerchantModel.CloseTime.Hour = newTime.Hour;
+			MerchantModel.CloseTime.Minute = newTime.Minute;
 		}
 
 		protected void HandleSelectedCityChanged(CityDto newValue)
@@ -118,6 +113,17 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			MerchantModel.HouseNumber = newValue;
 		}
+
+		protected void HandleAvatarChanged(string newValue)
+		{
+			MerchantModel.Avatar = newValue;
+		}
+
+		protected void HandleCoverPictureChanged(string newValue)
+		{
+			MerchantModel.CoverPicture = newValue;
+		}
+
 		#endregion
 
 		#region Methods

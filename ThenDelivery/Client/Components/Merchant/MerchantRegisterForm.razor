@@ -6,6 +6,18 @@
 
 	<div class="row">
 		<div class="col-md-6 row-item">
+			<label>Avatar: </label>
+			<CustomImageEdit Base64String="@MerchantModel.Avatar"
+								  Width="200"
+								  OnChangeImage="HandleAvatarChanged"/>
+		</div>
+		<div class="col-md-6 row-item">
+			<label>Cover picture: </label>
+			<CustomImageEdit Base64String="@MerchantModel.CoverPicture"
+								  Width="200"
+								  OnChangeImage="HandleCoverPictureChanged" />
+		</div>
+		<div class="col-md-6 row-item">
 			<label>Name: </label>
 			<DxTextBox Text="@MerchantModel.Name"
 						  TextChanged="HandleMerchantNameChanged"
@@ -55,6 +67,7 @@
 			<label>City: </label>
 			<DxComboBox NullText="Select city ..."
 							AllowUserInput="true"
+							FilteringMode="DataGridFilteringMode.Contains"
 							TextFieldName="DisplayText"
 							DataAsync="HandleLoadCitiesAsync"
 							SelectedItem="@MerchantModel.City"
@@ -65,6 +78,7 @@
 			<label>District: </label>
 			<DxComboBox NullText="Select district ..."
 							AllowUserInput="true"
+							FilteringMode="DataGridFilteringMode.Contains"
 							TextFieldName="DisplayText"
 							DataAsync="HandleLoadDistrictsAsync"
 							SelectedItem="@MerchantModel.District"
@@ -75,6 +89,7 @@
 			<label>Ward: </label>
 			<DxComboBox NullText="Select ward ..."
 							AllowUserInput="true"
+							FilteringMode="DataGridFilteringMode.Contains"
 							TextFieldName="DisplayText"
 							DataAsync="HandleLoadWardsAsync"
 							SelectedItem="@MerchantModel.Ward"

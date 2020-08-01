@@ -24,7 +24,10 @@ namespace ThenDelivery.Client.Components.Product
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
-			ProductModel = new ProductDto();
+			ProductModel = new ProductDto()
+			{
+				Image = string.Empty,
+			};
 		}
 		#endregion
 
