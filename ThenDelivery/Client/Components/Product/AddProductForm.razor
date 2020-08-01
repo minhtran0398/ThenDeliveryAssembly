@@ -4,6 +4,12 @@
 			 OnValidSubmit="async () => await HandleOnSubmit()">
 	<div class="row">
 		<div class="col-md-12 row-item">
+			<label>Image: </label>
+			<CustomImageEdit Base64String="@ProductModel.Image"
+								  Width="200"
+								  OnChangeImage="HandleImageChanged"/>
+		</div>
+		<div class="col-md-12 row-item">
 			<label>Name: </label>
 			<DxTextBox Text="@ProductModel.Name"
 						  TextChanged="HandleProductNameChanged"
@@ -30,16 +36,16 @@
 						  TextExpression="() => ProductModel.Description" />
 		</div>
 		<div class="col-md-12 add-product__form-footer">
-				<DxButton SubmitFormOnClick="false" 
-							 Text="Hủy"
-							 @onclick="HandleOnCancel"
-							 RenderStyle="@ButtonRenderStyle.Secondary"
-							 CssClass="add-product__form-footer-button"/>
-				<DxButton SubmitFormOnClick="false"
-							 @onclick="HandleOnSubmit"
-							 Text="Lưu"
-							 RenderStyle="@ButtonRenderStyle.Secondary"
-							 CssClass="add-product__form-footer-button"/>
+			<DxButton SubmitFormOnClick="false"
+						 Text="Hủy"
+						 @onclick="HandleOnCancel"
+						 RenderStyle="@ButtonRenderStyle.Secondary"
+						 CssClass="add-product__form-footer-button" />
+			<DxButton SubmitFormOnClick="false"
+						 @onclick="HandleOnSubmit"
+						 Text="Lưu"
+						 RenderStyle="@ButtonRenderStyle.Secondary"
+						 CssClass="add-product__form-footer-button" />
 		</div>
 	</div>
 </EditForm>

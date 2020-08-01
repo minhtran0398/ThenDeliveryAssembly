@@ -1,10 +1,7 @@
-﻿using DevExpress.Blazor.Internal;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.Xml;
 using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
@@ -46,7 +43,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 						request._merchantDto.MerchantId = merchantToAdd.MerchantId;
 
 						// Insert to many to many table with merchant type
-						List<MerchantTypeMerchant> merchantTypeMerchantToAdd = 
+						List<MerchantTypeMerchant> merchantTypeMerchantToAdd =
 							GetMerchantTypes(request._merchantDto);
 						await _dbContext.MerchantTypeMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
 

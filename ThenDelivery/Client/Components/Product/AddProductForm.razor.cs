@@ -18,16 +18,13 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Properties
-		public ProductDto ProductModel { get; set; }
+		protected ProductDto ProductModel { get; set; }
 		#endregion
 
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
-			ProductModel = new ProductDto()
-			{
-				Image = string.Empty,
-			};
+			ProductModel = new ProductDto();
 		}
 		#endregion
 
@@ -62,6 +59,11 @@ namespace ThenDelivery.Client.Components.Product
 		protected void HandleDescriptionChanged(string newValue)
 		{
 			ProductModel.Description = newValue;
+		}
+
+		protected void HandleImageChanged(string newValue)
+		{
+			ProductModel.Image = newValue;
 		}
 		#endregion
 

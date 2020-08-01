@@ -20,7 +20,7 @@ namespace ThenDelivery.Client.Components.Commons
 			using MemoryStream ms = await file.ReadAllAsync();
 			Base64String = Convert.ToBase64String(ms.ToArray());
 			imageData = String.Format("data:image/jpg;base64,{0}", Base64String);
-			await OnChangeImage.InvokeAsync(imageData);
+			await OnChangeImage.InvokeAsync(Base64String);
 			await InvokeAsync(StateHasChanged);
 		}
 	}
