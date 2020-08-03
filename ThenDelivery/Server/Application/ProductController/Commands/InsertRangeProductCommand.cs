@@ -68,12 +68,12 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 				{
 					yield return new Product()
 					{
-						ProductId = 0,
+						Id = 0,
 						Description = productDto.Description,
 						FavoriteCount = productDto.FavoriteCount,
 						Image = productDto.Image,
 						IsAvailable = productDto.IsAvailable,
-						MerchantMenuId = productDto.MerchantMenu.MerchantMenuId,
+						MenuItemId = productDto.MenuItem.Id,
 						Name = productDto.Name,
 						OrderCount = productDto.OrderCount,
 						UnitPrice = productDto.UnitPrice

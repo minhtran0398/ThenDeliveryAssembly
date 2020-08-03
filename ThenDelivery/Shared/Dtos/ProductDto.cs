@@ -10,11 +10,11 @@ namespace ThenDelivery.Shared.Dtos
 		{
 			IsAvailable = true;
 			ToppingList = new List<ToppingDto>();
-			MerchantMenu = new MerchantMenuDto();
+			MenuItem = new MenuItemDto();
 		}
 
-		public int ProductId { get; set; }
-		public MerchantMenuDto MerchantMenu { get; set; }
+		public int Id { get; set; }
+		public MenuItemDto MenuItem { get; set; }
 		public string Name { get; set; }
 		public bool IsAvailable { get; set; }
 		public string Description { get; set; }

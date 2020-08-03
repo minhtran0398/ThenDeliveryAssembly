@@ -31,8 +31,8 @@ namespace ThenDelivery.Server.Application.RoleController.Queries
                 {
                     result = await _dbContext.Roles.Select(r => new RoleDto()
                     {
-                        RoleId = r.Id,
-                        RoleName = r.Name
+                        Id = r.Id,
+                        Name = r.Name
                     }).ToListAsync();
                 }
                 catch (Exception ex)

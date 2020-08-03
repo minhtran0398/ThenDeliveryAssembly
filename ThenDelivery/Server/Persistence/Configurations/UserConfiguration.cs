@@ -14,6 +14,8 @@ namespace ThenDelivery.Server.Persistence.Configurations
 					.HasColumnName("BirthDate")
 					.HasColumnType("datetime2")
 					.IsRequired(true);
+
+			builder.Property(e => )
 		}
 	}
 }

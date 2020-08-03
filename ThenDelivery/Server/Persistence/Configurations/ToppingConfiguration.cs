@@ -10,7 +10,7 @@ namespace ThenDelivery.Server.Persistence.Configurations
 		{
 			builder.ToTable("Topping");
 
-			builder.HasKey(e => e.ToppingId);
+			builder.HasKey(e => e.Id);
 
 			builder.Property(e => e.Name)
 					.HasColumnName("Name")

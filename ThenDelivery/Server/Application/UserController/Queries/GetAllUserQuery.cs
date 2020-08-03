@@ -35,12 +35,12 @@ namespace ThenDelivery.Server.Application.UserController.Queries
                                                  join r in _dbContext.Roles on ur.RoleId equals r.Id
                                                  select new RoleDto()
                                                  {
-                                                     RoleId = r.Id,
-                                                     RoleName = r.Name
+                                                     Id = r.Id,
+                                                     Name = r.Name
                                                  })
                                     select new UserDto
                                     {
-                                        UserId = u.Id,
+                                        Id = u.Id,
                                         UserName = u.UserName,
                                         Email = u.Email,
                                         BirthDate = u.BirthDate,

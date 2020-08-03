@@ -2,8 +2,8 @@
 {
 	public class Product
 	{
-		public int ProductId { get; set; }
-		public int MerchantMenuId { get; set; }
+		public int Id { get; set; }
+		public int MenuItemId { get; set; }
 		public string Name { get; set; }
 		public bool IsAvailable { get; set; }
 		public string Description { get; set; }

@@ -99,12 +99,12 @@ namespace ThenDelivery.Client.Components.Merchant
 			MerchantModel.Ward = newValue;
 		}
 
-		protected void HandleSelectedMerchantTypeChanged(IEnumerable<MerchantTypeDto> newValue)
+		protected void HandleSelectedMerchantTypeChanged(IEnumerable<MerTypeDto> newValue)
 		{
 			MerchantModel.MerchantTypeList = newValue.ToList();
 		}
 
-		protected void HandleSelectedFeaturedDishCategoryChanged(IEnumerable<FeaturedDishCategoryDto> newValue)
+		protected void HandleSelectedFeaturedDishCategoryChanged(IEnumerable<FeaturedDishDto> newValue)
 		{
 			MerchantModel.FeaturedDishCategoryList = newValue.ToList();
 		}
@@ -127,14 +127,14 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Methods
-		protected async Task<IEnumerable<MerchantTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<MerTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<MerchantTypeDto>($"{BaseUrl}api/merchanttype");
+			return await HttpClient.CustomGetAsync<MerTypeDto>($"{BaseUrl}api/merchanttype");
 		}
 
-		protected async Task<IEnumerable<FeaturedDishCategoryDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<FeaturedDishDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<FeaturedDishCategoryDto>($"{BaseUrl}api/featureddishcategory");
+			return await HttpClient.CustomGetAsync<FeaturedDishDto>($"{BaseUrl}api/featureddishcategory");
 		}
 
 		protected async Task<IEnumerable<CityDto>> HandleLoadCitiesAsync(CancellationToken token = default)

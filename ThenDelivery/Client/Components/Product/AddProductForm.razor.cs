@@ -12,7 +12,7 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Parameters
-		[Parameter] public List<MerchantMenuDto> MenuList { get; set; }
+		[Parameter] public List<MenuItemDto> MenuList { get; set; }
 		[Parameter] public EventCallback<ProductDto> OnSaveProduct { get; set; }
 		[Parameter] public EventCallback<bool> OnCancel { get; set; }
 		#endregion
@@ -46,9 +46,9 @@ namespace ThenDelivery.Client.Components.Product
 			ProductModel.Name = newValue;
 		}
 
-		protected void HandleSelectedMenuChanged(MerchantMenuDto newValue)
+		protected void HandleSelectedMenuChanged(MenuItemDto newValue)
 		{
-			ProductModel.MerchantMenu = newValue;
+			ProductModel.MenuItem = newValue;
 		}
 
 		protected void HandleUnitPriceChanged(decimal newValue)

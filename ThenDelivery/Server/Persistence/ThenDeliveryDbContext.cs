@@ -56,9 +56,6 @@ namespace ThenDelivery.Server.Persistence
 			modelBuilder.Entity<User>().ToTable("Users");
 			modelBuilder.Entity<IdentityRole>().ToTable("Roles");
 			modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
-			modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
-			modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
-			modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 			modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
 
 			modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole>
@@ -74,18 +71,18 @@ namespace ThenDelivery.Server.Persistence
 		public DbSet<CityLevel> CityLevels { get; set; }
 		public DbSet<District> Districts { get; set; }
 		public DbSet<DistrictLevel> DistrictLevels { get; set; }
-		public DbSet<FeaturedDishCategory> FeaturedDishCategoies { get; set; }
+		public DbSet<FeaturedDish> FeaturedDishCategoies { get; set; }
 		public DbSet<Merchant> Merchants { get; set; }
-		public DbSet<MerchantType> MerchantTypes { get; set; }
+		public DbSet<MerType> MerchantTypes { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<OrderDetail> OrderDetails { get; set; }
 		public DbSet<Product> Products { get; set; }
 		public DbSet<ShippingAddress> ShippingAddresses { get; set; }
-		public DbSet<MerchantMenu> MerchantMenues { get; set; }
+		public DbSet<MenuItem> MerchantMenues { get; set; }
 		public DbSet<Topping> Toppings { get; set; }
 		public DbSet<Ward> Wards { get; set; }
 		public DbSet<WardLevel> WardLevels { get; set; }
-		public DbSet<MerchantTypeMerchant> MerchantTypeMerchants { get; set; }
-		public DbSet<FeaturedDishCategoryMerchant> FeaturedDishCategoryMerchants { get; set; }
+		public DbSet<MTMerchant> MerchantTypeMerchants { get; set; }
+		public DbSet<FDMerchant> FeaturedDishCategoryMerchants { get; set; }
 	}
 }

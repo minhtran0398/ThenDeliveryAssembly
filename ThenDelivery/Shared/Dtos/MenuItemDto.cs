@@ -2,13 +2,13 @@
 
 namespace ThenDelivery.Shared.Dtos
 {
-	public class MerchantMenuDto
+	public class MenuItemDto
 	{
-		public MerchantMenuDto()
+		public MenuItemDto()
 		{
 			Description = String.Empty;
 		}
-		public int MerchantMenuId { get; set; }
+		public int Id { get; set; }
 		public int MerchantId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }

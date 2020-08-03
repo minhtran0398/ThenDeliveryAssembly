@@ -24,7 +24,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Properties
-		public ObservableCollection<MerchantMenuDto> MenuList { get; set; }
+		public ObservableCollection<MenuItemDto> MenuList { get; set; }
 		protected bool IsEnableAddButton { get; set; }
 		protected bool IsEnableSaveButton { get; set; }
 		protected string NewMenuItemName { get; set; }
@@ -39,7 +39,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			// do not remove this line
 			base.OnInitialized();
-			MenuList = new ObservableCollection<MerchantMenuDto>();
+			MenuList = new ObservableCollection<MenuItemDto>();
 			MenuList.CollectionChanged += HandleMenuListChanged;
 		}
 		#endregion
@@ -90,7 +90,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		/// <param name="merchantMenuId"></param>
 		protected void HandleRemoveMenuItem(int merchantMenuId)
 		{
-			MenuList.RemoveFirst(s => s.MerchantMenuId == merchantMenuId);
+			MenuList.RemoveFirst(s => s.Id == merchantMenuId);
 		}
 
 		/// <summary>
@@ -100,7 +100,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		/// <param name="merchantMenuId"></param>
 		protected void HandleEditMenuItem(int merchantMenuId)
 		{
-			NewMenuItemName = MenuList.Single(s => s.MerchantMenuId == merchantMenuId).Name;
+			NewMenuItemName = MenuList.Single(s => s.Id == merchantMenuId).Name;
 			_merchantMenuIdToEdit = merchantMenuId;
 		}
 
@@ -130,11 +130,11 @@ namespace ThenDelivery.Client.Components.Merchant
 					int merchantIdToAdd = 1;
 					if (MenuList.Count > 0)
 					{
-						merchantIdToAdd = MenuList.Max(e => e.MerchantMenuId) + 1;
+						merchantIdToAdd = MenuList.Max(e => e.Id) + 1;
 					}
-					MenuList.Add(new MerchantMenuDto()
+					MenuList.Add(new MenuItemDto()
 					{
-						MerchantMenuId = merchantIdToAdd,
+						Id = merchantIdToAdd,
 						Name = NewMenuItemName,
 						MerchantId = TargetMerchantId
 					});
@@ -142,7 +142,7 @@ namespace ThenDelivery.Client.Components.Merchant
 				// mode edit
 				else
 				{
-					MenuList.Single(e => e.MerchantMenuId == _merchantMenuIdToEdit).Name = NewMenuItemName;
+					MenuList.Single(e => e.Id == _merchantMenuIdToEdit).Name = NewMenuItemName;
 					_merchantMenuIdToEdit = -1;
 				}
 				NewMenuItemName = String.Empty;

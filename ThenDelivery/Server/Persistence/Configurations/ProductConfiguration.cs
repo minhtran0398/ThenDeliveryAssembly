@@ -10,9 +10,9 @@ namespace ThenDelivery.Server.Persistence.Configurations
 		{
 			builder.ToTable("Products");
 
-			builder.HasKey(e => e.ProductId);
+			builder.HasKey(e => e.Id);
 
-			builder.Property(e => e.MerchantMenuId)
+			builder.Property(e => e.MenuItemId)
 					.HasColumnName("MerchantMenuId")
 					.HasColumnType("int")
 					.IsRequired(true);

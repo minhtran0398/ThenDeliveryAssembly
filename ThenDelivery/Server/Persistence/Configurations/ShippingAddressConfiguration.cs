@@ -10,7 +10,7 @@ namespace ThenDelivery.Server.Persistence.Configurations
 		{
 			builder.ToTable("ShippingAddresses");
 
-			builder.HasKey(e => e.ShippingAddressId);
+			builder.HasKey(e => e.Id);
 
 			builder.Property(e => e.UserId)
 					.HasColumnName("UserId")

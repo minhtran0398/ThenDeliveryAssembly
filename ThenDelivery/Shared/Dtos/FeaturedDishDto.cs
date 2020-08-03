@@ -1,8 +1,8 @@
 ﻿namespace ThenDelivery.Shared.Dtos
 {
-	public class MerchantTypeDto
+	public class FeaturedDishDto
 	{
-		public int MerchantTypeId { get; set; }
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string DisplayText
 		{

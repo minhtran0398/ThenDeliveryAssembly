@@ -13,7 +13,7 @@ namespace ThenDelivery.Server.Controllers
 	public class MerchantMenuController : CustomControllerBase<MerchantMenuController>
 	{
 		[HttpPost]
-		public async Task<IActionResult> AddMerchantMenuList(IEnumerable<MerchantMenuDto> menuList)
+		public async Task<IActionResult> AddMerchantMenuList(IEnumerable<MenuItemDto> menuList)
 		{
 			try
 			{
@@ -29,7 +29,7 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetMerchantMenuByMerchantId(int merchantId)
 		{
-			IEnumerable<MerchantMenuDto> merchantMenues = 
+			IEnumerable<MenuItemDto> merchantMenues = 
 				await Mediator.Send(new GetMerchantMenuByMerchantIdQuery(merchantId));
 
 			// valid if data returned null

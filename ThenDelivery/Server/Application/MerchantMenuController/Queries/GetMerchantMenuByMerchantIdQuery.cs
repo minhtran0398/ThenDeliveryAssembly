@@ -12,7 +12,7 @@ using ThenDelivery.Shared.Dtos;
 namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 {
 	public class GetMerchantMenuByMerchantIdQuery
-		: IRequest<IEnumerable<MerchantMenuDto>>
+		: IRequest<IEnumerable<MenuItemDto>>
 	{
 		private readonly int _merchantId;
 
@@ -22,7 +22,7 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 		}
 
 		public class Handler
-			: IRequestHandler<GetMerchantMenuByMerchantIdQuery, IEnumerable<MerchantMenuDto>>
+			: IRequestHandler<GetMerchantMenuByMerchantIdQuery, IEnumerable<MenuItemDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
 			private readonly ILogger<GetMerchantMenuByMerchantIdQuery> _logger;
@@ -34,15 +34,15 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 				_logger = logger;
 			}
 
-			public async Task<IEnumerable<MerchantMenuDto>> Handle(
+			public async Task<IEnumerable<MenuItemDto>> Handle(
 				GetMerchantMenuByMerchantIdQuery request, CancellationToken cancellationToken)
 			{
-				var result = new List<MerchantMenuDto>();
+				var result = new List<MenuItemDto>();
 				try
 				{
 					result = await (from menu in _dbContext.MerchantMenues
 										 where menu.MerchantId == request._merchantId
-										 select new MerchantMenuDto()
+										 select new MenuItemDto()
 										 {
 											 Name = menu.Name,
 											 Description = menu.Description,

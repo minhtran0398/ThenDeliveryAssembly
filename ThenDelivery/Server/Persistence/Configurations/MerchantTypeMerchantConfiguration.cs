@@ -4,9 +4,9 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Persistence.Configurations
 {
-	public class MerchantTypeMerchantConfiguration : IEntityTypeConfiguration<MerchantTypeMerchant>
+	public class MerchantTypeMerchantConfiguration : IEntityTypeConfiguration<MTMerchant>
 	{
-		public void Configure(EntityTypeBuilder<MerchantTypeMerchant> builder)
+		public void Configure(EntityTypeBuilder<MTMerchant> builder)
 		{
 			builder.ToTable("MerchantTypeMerchants");
 

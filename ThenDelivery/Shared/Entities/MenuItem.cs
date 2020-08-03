@@ -1,8 +1,8 @@
 ﻿namespace ThenDelivery.Shared.Entities
 {
-	public class MerchantMenu
+	public class MenuItem
 	{
-		public int MerchantMenuId { get; set; }
+		public int Id { get; set; }
 		public int MerchantId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }

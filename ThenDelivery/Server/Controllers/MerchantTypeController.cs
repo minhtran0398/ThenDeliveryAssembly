@@ -13,7 +13,7 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllMerchantType()
 		{
-			IEnumerable<MerchantTypeDto> merchantTypes = await Mediator.Send(new GetAllMerchantTypeQuery());
+			IEnumerable<MerTypeDto> merchantTypes = await Mediator.Send(new GetAllMerchantTypeQuery());
 
 			// valid if data returned null
 			if (merchantTypes == null)

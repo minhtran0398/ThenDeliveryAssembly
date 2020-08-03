@@ -1,8 +1,8 @@
 ﻿namespace ThenDelivery.Shared.Entities
 {
-	public class FeaturedDishCategory
+	public class MerType
 	{
-		public int FeaturedDishCategoryId { get; set; }
+		public int Id { get; set; }
 		public string Name { get; set; }
 	}
 }

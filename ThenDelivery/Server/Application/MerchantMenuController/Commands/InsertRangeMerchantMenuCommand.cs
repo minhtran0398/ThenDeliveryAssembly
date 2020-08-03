@@ -14,9 +14,9 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Commands
 {
 	public class InsertRangeMerchantMenuCommand : IRequest<Unit>
 	{
-		private readonly IEnumerable<MerchantMenuDto> _menuList;
+		private readonly IEnumerable<MenuItemDto> _menuList;
 
-		public InsertRangeMerchantMenuCommand(IEnumerable<MerchantMenuDto> menuList)
+		public InsertRangeMerchantMenuCommand(IEnumerable<MenuItemDto> menuList)
 		{
 			_menuList = menuList;
 		}
@@ -62,13 +62,13 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Commands
 				return Unit.Value;
 			}
 
-			private IEnumerable<MerchantMenu> GetData(IEnumerable<MerchantMenuDto> menuDtoList)
+			private IEnumerable<MenuItem> GetData(IEnumerable<MenuItemDto> menuDtoList)
 			{
 				foreach (var menuDto in menuDtoList)
 				{
-					yield return new MerchantMenu()
+					yield return new MenuItem()
 					{
-						MerchantMenuId = 0,
+						Id = 0,
 						MerchantId = menuDto.MerchantId,
 						Name = menuDto.Name,
 						Description = menuDto.Description

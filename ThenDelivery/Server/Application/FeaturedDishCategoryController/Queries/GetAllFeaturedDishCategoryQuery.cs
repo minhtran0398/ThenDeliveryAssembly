@@ -11,9 +11,9 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries
 {
-	public class GetAllFeaturedDishCategoryQuery : IRequest<IEnumerable<FeaturedDishCategoryDto>>
+	public class GetAllFeaturedDishCategoryQuery : IRequest<IEnumerable<FeaturedDishDto>>
 	{
-		public class Handler : IRequestHandler<GetAllFeaturedDishCategoryQuery, IEnumerable<FeaturedDishCategoryDto>>
+		public class Handler : IRequestHandler<GetAllFeaturedDishCategoryQuery, IEnumerable<FeaturedDishDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
 			private readonly ILogger<GetAllFeaturedDishCategoryQuery> _logger;
@@ -24,16 +24,16 @@ namespace ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries
 				_logger = logger;
 			}
 
-			public async Task<IEnumerable<FeaturedDishCategoryDto>> Handle(
+			public async Task<IEnumerable<FeaturedDishDto>> Handle(
 				GetAllFeaturedDishCategoryQuery request, CancellationToken cancellationToken)
 			{
-				var result = new List<FeaturedDishCategoryDto>();
+				var result = new List<FeaturedDishDto>();
 				try
 				{
 					result = await (from fe in _dbContext.FeaturedDishCategoies
-										 select new FeaturedDishCategoryDto
+										 select new FeaturedDishDto
 										 {
-											 FeaturedDishCategoryId = fe.FeaturedDishCategoryId,
+											 Id = fe.Id,
 											 Name = fe.Name,
 										 }).ToListAsync();
 				}

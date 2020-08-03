@@ -10,10 +10,10 @@ namespace ThenDelivery.Server.Persistence.Configurations
       {
          builder.ToTable("CityLevels");
 
-         builder.HasKey(e => e.CityLevelId);
+         builder.HasKey(e => e.Id);
          builder.HasIndex(e => e.Name).IsUnique(true);
 
-         builder.Property(e => e.CityLevelId)
+         builder.Property(e => e.Id)
                 .HasColumnName("CityLevelId")
                 .HasColumnType("tinyint");
 

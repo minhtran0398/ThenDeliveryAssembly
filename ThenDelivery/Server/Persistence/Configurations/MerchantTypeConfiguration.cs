@@ -5,13 +5,13 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Persistence.Configurations
 {
-	public class MerchantTypeConfiguration : IEntityTypeConfiguration<MerchantType>
+	public class MerchantTypeConfiguration : IEntityTypeConfiguration<MerType>
 	{
-		public void Configure(EntityTypeBuilder<MerchantType> builder)
+		public void Configure(EntityTypeBuilder<MerType> builder)
 		{
 			builder.ToTable("MerchantTypes");
 
-			builder.HasKey(e => e.MerchantTypeId);
+			builder.HasKey(e => e.Id);
 			builder.HasIndex(e => e.Name).IsUnique(true);
 
 			builder.Property(e => e.Name)

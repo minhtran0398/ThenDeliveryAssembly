@@ -11,9 +11,9 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Application.MerchantTypeController.Queries
 {
-	public class GetAllMerchantTypeQuery : IRequest<IEnumerable<MerchantTypeDto>>
+	public class GetAllMerchantTypeQuery : IRequest<IEnumerable<MerTypeDto>>
 	{
-		public class Handler : IRequestHandler<GetAllMerchantTypeQuery, IEnumerable<MerchantTypeDto>>
+		public class Handler : IRequestHandler<GetAllMerchantTypeQuery, IEnumerable<MerTypeDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
 			private readonly ILogger<GetAllMerchantTypeQuery> _logger;
@@ -24,16 +24,16 @@ namespace ThenDelivery.Server.Application.MerchantTypeController.Queries
 				_logger = logger;
 			}
 
-			public async Task<IEnumerable<MerchantTypeDto>> Handle(GetAllMerchantTypeQuery request,
+			public async Task<IEnumerable<MerTypeDto>> Handle(GetAllMerchantTypeQuery request,
 				CancellationToken cancellationToken)
 			{
-				var result = new List<MerchantTypeDto>();
+				var result = new List<MerTypeDto>();
 				try
 				{
 					result = await (from mt in _dbContext.MerchantTypes
-										 select new MerchantTypeDto
+										 select new MerTypeDto
 										 {
-											 MerchantTypeId = mt.MerchantTypeId,
+											 Id = mt.Id,
 											 Name = mt.Name,
 										 }).ToListAsync();
 				}

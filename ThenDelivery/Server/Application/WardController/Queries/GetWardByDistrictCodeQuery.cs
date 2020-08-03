@@ -39,13 +39,13 @@ namespace ThenDelivery.Server.Application.WardController.Queries
 					result = await (from ward in _dbContext.Wards
 										 where ward.DistrictCode == request._districtCode
 										 join level in _dbContext.WardLevels
-											 on ward.WardLevelId equals level.WardLevelId
+											 on ward.WardLevelId equals level.Id
 										 select new WardDto
 										 {
 											 WardCode = ward.WardCode,
 											 Name = ward.Name,
 											 DistrictCode = ward.DistrictCode,
-											 WardLevelId = level.WardLevelId,
+											 WardLevelId = level.Id,
 											 WardLevelName = level.Name
 										 }).ToListAsync();
 				}

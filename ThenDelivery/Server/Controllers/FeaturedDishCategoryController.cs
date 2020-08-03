@@ -14,7 +14,7 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllFeaturedDishCategory()
 		{
-			IEnumerable<FeaturedDishCategoryDto> featuredDuishCategories = 
+			IEnumerable<FeaturedDishDto> featuredDuishCategories = 
 				await Mediator.Send(new GetAllFeaturedDishCategoryQuery());
 
 			// valid if data returned null

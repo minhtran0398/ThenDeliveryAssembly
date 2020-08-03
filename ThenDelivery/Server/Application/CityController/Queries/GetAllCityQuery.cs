@@ -31,12 +31,12 @@ namespace ThenDelivery.Server.Application.CityController.Queries
 				{
 					result = await (from city in _dbContext.Cities
 										 join level in _dbContext.CityLevels
-											 on city.CityLevelId equals level.CityLevelId
+											 on city.CityLevelId equals level.Id
 										 select new CityDto
 										 {
 											 CityCode = city.CityCode,
 											 Name = city.Name,
-											 CityLevelId = level.CityLevelId,
+											 CityLevelId = level.Id,
 											 CityLevelName = level.Name
 										 }).ToListAsync();
 				}

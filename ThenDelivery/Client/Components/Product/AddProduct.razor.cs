@@ -24,7 +24,7 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Properties
-		public List<MerchantMenuDto> MenuList { get; set; }
+		public List<MenuItemDto> MenuList { get; set; }
 		public ObservableCollection<ProductDto> ProductList { get; set; }
 		public bool IsShowPopupAddProduct { get; set; }
 		public bool IsEnableSaveButton { get; set; }
@@ -47,7 +47,7 @@ namespace ThenDelivery.Client.Components.Product
 		protected override async Task OnInitializedAsync()
 		{
 			MenuList = (await HttpClient
-				.CustomGetAsync<MerchantMenuDto>($"{BaseUrl}api/merchantmenu?merchantId={TargetMerchantId}")).ToList();
+				.CustomGetAsync<MenuItemDto>($"{BaseUrl}api/merchantmenu?merchantId={TargetMerchantId}")).ToList();
 		}
 		#endregion
 

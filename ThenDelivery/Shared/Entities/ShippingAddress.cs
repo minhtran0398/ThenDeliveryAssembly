@@ -2,7 +2,7 @@
 {
 	public class ShippingAddress
 	{
-		public int ShippingAddressId { get; set; }
+		public int Id { get; set; }
 		public string UserId { get; set; }
 		public string CityCode { get; set; }
 		public string DistrictCode { get; set; }

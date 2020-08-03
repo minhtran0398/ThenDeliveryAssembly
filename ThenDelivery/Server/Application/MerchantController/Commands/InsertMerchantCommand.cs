@@ -40,15 +40,15 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 
 						await _dbContext.Merchants.AddAsync(merchantToAdd);
 						await _dbContext.SaveChangesAsync();
-						request._merchantDto.MerchantId = merchantToAdd.MerchantId;
+						request._merchantDto.Id = merchantToAdd.Id;
 
 						// Insert to many to many table with merchant type
-						List<MerchantTypeMerchant> merchantTypeMerchantToAdd =
+						List<MTMerchant> merchantTypeMerchantToAdd =
 							GetMerchantTypes(request._merchantDto);
 						await _dbContext.MerchantTypeMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
 
 						// Insert to many to many table with featured dish category
-						List<FeaturedDishCategoryMerchant> featuredDishCategoryMerchantToAdd =
+						List<FDMerchant> featuredDishCategoryMerchantToAdd =
 							GetFeaturedDishCategoies(request._merchantDto);
 						await _dbContext.FeaturedDishCategoryMerchants.AddRangeAsync(featuredDishCategoryMerchantToAdd);
 						await _dbContext.SaveChangesAsync();
@@ -62,7 +62,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 						return -1;
 					}
 				}
-				return request._merchantDto.MerchantId;
+				return request._merchantDto.Id;
 			}
 
 			private Merchant GetMerchant(MerchantDto merchantDto)
@@ -91,15 +91,15 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 			/// </summary>
 			/// <param name="MerchantDto"></param>
 			/// <returns>List of MerchantTypeMerchant</returns>
-			private List<MerchantTypeMerchant> GetMerchantTypes(MerchantDto merchantDto)
+			private List<MTMerchant> GetMerchantTypes(MerchantDto merchantDto)
 			{
-				var result = new List<MerchantTypeMerchant>();
+				var result = new List<MTMerchant>();
 				foreach (var typeItem in merchantDto.MerchantTypeList)
 				{
-					result.Add(new MerchantTypeMerchant()
+					result.Add(new MTMerchant()
 					{
-						MerchantTypeId = typeItem.MerchantTypeId,
-						MerchantId = merchantDto.MerchantId
+						MerchantTypeId = typeItem.Id,
+						MerchantId = merchantDto.Id
 					});
 				}
 				return result;
@@ -111,15 +111,15 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 			/// </summary>
 			/// <param name="MerchantDto"></param>
 			/// <returns>List of FeaturedDishCategoryMerchant</returns>
-			private List<FeaturedDishCategoryMerchant> GetFeaturedDishCategoies(MerchantDto merchantDto)
+			private List<FDMerchant> GetFeaturedDishCategoies(MerchantDto merchantDto)
 			{
-				var result = new List<FeaturedDishCategoryMerchant>();
+				var result = new List<FDMerchant>();
 				foreach (var typeItem in merchantDto.FeaturedDishCategoryList)
 				{
-					result.Add(new FeaturedDishCategoryMerchant()
+					result.Add(new FDMerchant()
 					{
-						FeaturedDishCategoryId = typeItem.FeaturedDishCategoryId,
-						MerchantId = merchantDto.MerchantId
+						FeaturedDishId = typeItem.Id,
+						MerchantId = merchantDto.Id
 					});
 				}
 				return result;

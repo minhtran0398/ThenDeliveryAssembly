@@ -1,10 +1,8 @@
-﻿using ThenDelivery.Shared.Common;
-
-namespace ThenDelivery.Shared.Entities
+﻿namespace ThenDelivery.Shared.Entities
 {
-	public class WardLevel : AuditableEntity
-	{
-		public byte WardLevelId { get; set; }
-		public string Name { get; set; }
-	}
+    public class WardLevel
+    {
+        public byte Id { get; set; }
+        public string Name { get; set; }
+    }
 }
