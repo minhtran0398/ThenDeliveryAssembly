@@ -8,12 +8,12 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Controllers
 {
-	public class MerchantTypeController : CustomControllerBase<MerchantTypeController>
+	public class MerTypeController : CustomControllerBase<MerTypeController>
 	{
 		[HttpGet]
 		public async Task<IActionResult> GetAllMerchantType()
 		{
-			IEnumerable<MerTypeDto> merchantTypes = await Mediator.Send(new GetAllMerchantTypeQuery());
+			IEnumerable<MerTypeDto> merchantTypes = await Mediator.Send(new GetAllMerTypeQuery());
 
 			// valid if data returned null
 			if (merchantTypes == null)

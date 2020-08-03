@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Application.Common.Interfaces;
 using ThenDelivery.Server.Application.MerchantController.Commands;
+using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
 
@@ -30,6 +34,23 @@ namespace ThenDelivery.Server.Controllers
 				return BadRequest();
 			}
 			return Ok(createdMerchantId);
+		}
+
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> GetAllMerchant()
+		{
+			IEnumerable<MerchantDto> merchantList =
+				await Mediator.Send(new GetAllMerchantQuery());
+
+			// valid if data returned null
+			if (merchantList == null)
+			{
+				Logger.LogError("Merchant returned null");
+				return BadRequest();
+			}
+
+			return Ok(merchantList.ToList());
 		}
 	}
 }

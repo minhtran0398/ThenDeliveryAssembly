@@ -36,7 +36,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Events
 		protected async Task HandleOnSubmit()
 		{
-			var returnedId = await HttpClient.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
+			var returnedId = await HttpClientServer.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
 			if (returnedId == null)
 			{
 				await OnSubmitMerchant.InvokeAsync(-1);
@@ -129,27 +129,27 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Methods
 		protected async Task<IEnumerable<MerTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<MerTypeDto>($"{BaseUrl}api/merchanttype");
+			return await HttpClientServer.CustomGetAsync<MerTypeDto>($"{BaseUrl}api/mertype");
 		}
 
 		protected async Task<IEnumerable<FeaturedDishDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<FeaturedDishDto>($"{BaseUrl}api/featureddishcategory");
+			return await HttpClientServer.CustomGetAsync<FeaturedDishDto>($"{BaseUrl}api/featureddish");
 		}
 
 		protected async Task<IEnumerable<CityDto>> HandleLoadCitiesAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<CityDto>($"{BaseUrl}api/city");
+			return await HttpClientServer.CustomGetAsync<CityDto>($"{BaseUrl}api/city");
 		}
 
 		protected async Task<IEnumerable<DistrictDto>> HandleLoadDistrictsAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<DistrictDto>($"{BaseUrl}api/district");
+			return await HttpClientServer.CustomGetAsync<DistrictDto>($"{BaseUrl}api/district");
 		}
 
 		protected async Task<IEnumerable<WardDto>> HandleLoadWardsAsync(CancellationToken token = default)
 		{
-			return await HttpClient.CustomGetAsync<WardDto>($"{BaseUrl}api/ward");
+			return await HttpClientServer.CustomGetAsync<WardDto>($"{BaseUrl}api/ward");
 		}
 		#endregion
 	}

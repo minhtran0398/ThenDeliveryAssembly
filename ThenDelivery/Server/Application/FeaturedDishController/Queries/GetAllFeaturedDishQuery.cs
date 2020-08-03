@@ -11,21 +11,21 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries
 {
-	public class GetAllFeaturedDishCategoryQuery : IRequest<IEnumerable<FeaturedDishDto>>
+	public class GetAllFeaturedDishQuery : IRequest<IEnumerable<FeaturedDishDto>>
 	{
-		public class Handler : IRequestHandler<GetAllFeaturedDishCategoryQuery, IEnumerable<FeaturedDishDto>>
+		public class Handler : IRequestHandler<GetAllFeaturedDishQuery, IEnumerable<FeaturedDishDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
-			private readonly ILogger<GetAllFeaturedDishCategoryQuery> _logger;
+			private readonly ILogger<GetAllFeaturedDishQuery> _logger;
 
-			public Handler(ThenDeliveryDbContext dbContext, ILogger<GetAllFeaturedDishCategoryQuery> logger)
+			public Handler(ThenDeliveryDbContext dbContext, ILogger<GetAllFeaturedDishQuery> logger)
 			{
 				_dbContext = dbContext;
 				_logger = logger;
 			}
 
 			public async Task<IEnumerable<FeaturedDishDto>> Handle(
-				GetAllFeaturedDishCategoryQuery request, CancellationToken cancellationToken)
+				GetAllFeaturedDishQuery request, CancellationToken cancellationToken)
 			{
 				var result = new List<FeaturedDishDto>();
 				try

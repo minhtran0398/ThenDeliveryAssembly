@@ -114,7 +114,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
-			await HttpClient.CustomPostAsync($"{BaseUrl}api/merchantmenu", MenuList.AsEnumerable());
+			await HttpClientServer.CustomPostAsync($"{BaseUrl}api/menuitem", MenuList.AsEnumerable());
 			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion

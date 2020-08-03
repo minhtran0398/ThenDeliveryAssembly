@@ -1,0 +1,30 @@
+﻿@page "/"
+@inherits HomeBase
+
+@if (MerchantList == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<div class="now-list-restaurant">
+		<div class="title-wrapper">
+			<h2 class="title">Ưu đãi</h2>
+			<a class="view-all-deal" href="/ho-chi-minh/food/deals">
+				<span class="icon-list-deal">
+					<span class="square"></span>
+					<span class="square"></span>
+					<span class="square"></span>
+					<span class="square"></span>
+				</span>
+				Xem tất cả
+			</a>
+		</div>
+		<div class="list-restaurant">
+			@foreach (var merchant in MerchantList)
+			{
+				<MerchantCard MerchantModel="merchant" />
+			}
+		</div>
+	</div>
+}

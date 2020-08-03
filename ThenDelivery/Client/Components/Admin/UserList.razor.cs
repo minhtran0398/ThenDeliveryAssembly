@@ -28,7 +28,7 @@ namespace ThenDelivery.Client.Components.Admin
 		{
 			Logger.LogDebug("Life Cycle - OnInitializedAsync");
 
-			UserList = (await HttpClient.CustomGetAsync<UserDto>($"{BaseUrl}api/user")).ToList();
+			UserList = (await HttpClientServer.CustomGetAsync<UserDto>($"{BaseUrl}api/user")).ToList();
 		}
 		#endregion
 

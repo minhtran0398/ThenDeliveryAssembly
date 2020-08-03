@@ -1,9 +1,11 @@
-﻿using ThenDelivery.Client.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using ThenDelivery.Client.Components;
 using ThenDelivery.Client.Components.Enums;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Pages
 {
+	[Authorize]
 	public class MerchantRegisterBase : CustomComponentBase<MerchantRegisterBase>
 	{
 		public MerchantDto MerchantModel { get; set; }

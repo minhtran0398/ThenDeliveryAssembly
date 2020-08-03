@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ThenDelivery.Shared.Helper;
+using ThenDelivery.Shared.Helper.ExtensionMethods;
 
 namespace ThenDelivery.Shared.Dtos
 {
@@ -30,5 +32,19 @@ namespace ThenDelivery.Shared.Dtos
 		public List<FeaturedDishDto> FeaturedDishCategoryList { get; set; }
 		public List<MerTypeDto> MerchantTypeList { get; set; }
 		public string HouseNumber { get; set; }
+		public string AddressString
+		{
+			get
+			{
+				if (City != null && District != null && Ward != null)
+				{
+					return String.Format("{0}, {1}, {2}, {3}", HouseNumber, Ward.DisplayText, District.DisplayText, City.DisplayText);
+				}
+				else
+				{
+					return String.Empty;
+				}
+			}
+		}
 	}
 }

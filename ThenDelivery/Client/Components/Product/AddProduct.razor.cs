@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -46,8 +44,8 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected override async Task OnInitializedAsync()
 		{
-			MenuList = (await HttpClient
-				.CustomGetAsync<MenuItemDto>($"{BaseUrl}api/merchantmenu?merchantId={TargetMerchantId}")).ToList();
+			MenuList = (await HttpClientServer
+				.CustomGetAsync<MenuItemDto>($"{BaseUrl}api/menuitem?merchantId={TargetMerchantId}")).ToList();
 		}
 		#endregion
 
@@ -91,7 +89,7 @@ namespace ThenDelivery.Client.Components.Product
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
-			await HttpClient.CustomPostAsync($"{BaseUrl}api/product", ProductList.AsEnumerable());
+			await HttpClientServer.CustomPostAsync($"{BaseUrl}api/product", ProductList.AsEnumerable());
 			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion
@@ -99,7 +97,7 @@ namespace ThenDelivery.Client.Components.Product
 		#region Methods
 		private void AddProduct(ProductDto product)
 		{
-			if(product != null)
+			if (product != null)
 			{
 				ProductList.Add(product);
 				StateHasChanged();

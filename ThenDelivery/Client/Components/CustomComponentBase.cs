@@ -8,7 +8,9 @@ namespace ThenDelivery.Client.Components
 	public class CustomComponentBase<T> : ComponentBase
 	{
 		[Inject] public ILogger<T> Logger { get; set; }
-		[Inject] public HttpClient HttpClient { get; set; }
+		[Inject] IHttpClientFactory HttpClientFactory { get; set; }
+		[Inject] public HttpClient HttpClientServer { get; set; }
+		[Inject] public HttpClient HttpClientAnonymous { get; set; }
 		[Inject] public NavigationManager NavigationManager { get; set; }
 
 		public string BaseUrl { get; set; }
@@ -16,8 +18,9 @@ namespace ThenDelivery.Client.Components
 
 		protected override void OnInitialized()
 		{
-			Logger.LogInformation("OnInitialized");
 			BaseUrl = NavigationManager.BaseUri;
+			HttpClientServer = HttpClientFactory.CreateClient("ThenDelivery.ServerAPI");
+			HttpClientAnonymous = HttpClientFactory.CreateClient("ThenDelivery.AnonymousAPI");
 			base.OnInitialized();
 		}
 	}

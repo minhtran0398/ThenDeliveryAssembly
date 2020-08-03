@@ -11,20 +11,20 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Application.MerchantTypeController.Queries
 {
-	public class GetAllMerchantTypeQuery : IRequest<IEnumerable<MerTypeDto>>
+	public class GetAllMerTypeQuery : IRequest<IEnumerable<MerTypeDto>>
 	{
-		public class Handler : IRequestHandler<GetAllMerchantTypeQuery, IEnumerable<MerTypeDto>>
+		public class Handler : IRequestHandler<GetAllMerTypeQuery, IEnumerable<MerTypeDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
-			private readonly ILogger<GetAllMerchantTypeQuery> _logger;
+			private readonly ILogger<GetAllMerTypeQuery> _logger;
 
-			public Handler(ThenDeliveryDbContext dbContext, ILogger<GetAllMerchantTypeQuery> logger)
+			public Handler(ThenDeliveryDbContext dbContext, ILogger<GetAllMerTypeQuery> logger)
 			{
 				_dbContext = dbContext;
 				_logger = logger;
 			}
 
-			public async Task<IEnumerable<MerTypeDto>> Handle(GetAllMerchantTypeQuery request,
+			public async Task<IEnumerable<MerTypeDto>> Handle(GetAllMerTypeQuery request,
 				CancellationToken cancellationToken)
 			{
 				var result = new List<MerTypeDto>();

@@ -10,14 +10,14 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Controllers
 {
-	public class MerchantMenuController : CustomControllerBase<MerchantMenuController>
+	public class MenuItemController : CustomControllerBase<MenuItemController>
 	{
 		[HttpPost]
 		public async Task<IActionResult> AddMerchantMenuList(IEnumerable<MenuItemDto> menuList)
 		{
 			try
 			{
-				await Mediator.Send(new InsertRangeMerchantMenuCommand(menuList));
+				await Mediator.Send(new InsertRangeMenuItemCommand(menuList));
 				return Ok("Insert merchant menu success");
 			}
 			catch (Exception ex)
@@ -30,7 +30,7 @@ namespace ThenDelivery.Server.Controllers
 		public async Task<IActionResult> GetMerchantMenuByMerchantId(int merchantId)
 		{
 			IEnumerable<MenuItemDto> merchantMenues = 
-				await Mediator.Send(new GetMerchantMenuByMerchantIdQuery(merchantId));
+				await Mediator.Send(new GetMenuItemsByMerchantIdQuery(merchantId));
 
 			// valid if data returned null
 			if (merchantMenues == null)

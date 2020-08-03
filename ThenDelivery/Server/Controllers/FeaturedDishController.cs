@@ -9,13 +9,13 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Controllers
 {
-	public class FeaturedDishCategoryController : CustomControllerBase<FeaturedDishCategoryController>
+	public class FeaturedDishController : CustomControllerBase<FeaturedDishController>
 	{
 		[HttpGet]
 		public async Task<IActionResult> GetAllFeaturedDishCategory()
 		{
 			IEnumerable<FeaturedDishDto> featuredDuishCategories = 
-				await Mediator.Send(new GetAllFeaturedDishCategoryQuery());
+				await Mediator.Send(new GetAllFeaturedDishQuery());
 
 			// valid if data returned null
 			if (featuredDuishCategories == null)

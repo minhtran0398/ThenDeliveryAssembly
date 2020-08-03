@@ -12,27 +12,27 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Application.MerchantMenuController.Commands
 {
-	public class InsertRangeMerchantMenuCommand : IRequest<Unit>
+	public class InsertRangeMenuItemCommand : IRequest<Unit>
 	{
 		private readonly IEnumerable<MenuItemDto> _menuList;
 
-		public InsertRangeMerchantMenuCommand(IEnumerable<MenuItemDto> menuList)
+		public InsertRangeMenuItemCommand(IEnumerable<MenuItemDto> menuList)
 		{
 			_menuList = menuList;
 		}
 
-		public class Handler : IRequestHandler<InsertRangeMerchantMenuCommand, Unit>
+		public class Handler : IRequestHandler<InsertRangeMenuItemCommand, Unit>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
-			private readonly ILogger<InsertRangeMerchantMenuCommand> _logger;
+			private readonly ILogger<InsertRangeMenuItemCommand> _logger;
 
-			public Handler(ThenDeliveryDbContext dbContext, ILogger<InsertRangeMerchantMenuCommand> logger)
+			public Handler(ThenDeliveryDbContext dbContext, ILogger<InsertRangeMenuItemCommand> logger)
 			{
 				_dbContext = dbContext;
 				_logger = logger;
 			}
 
-			public async Task<Unit> Handle(InsertRangeMerchantMenuCommand request, CancellationToken cancellationToken)
+			public async Task<Unit> Handle(InsertRangeMenuItemCommand request, CancellationToken cancellationToken)
 			{
 				using (var trans = _dbContext.Database.BeginTransaction())
 				{

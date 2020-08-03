@@ -13,7 +13,14 @@ namespace ThenDelivery.Client
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("app");
-			builder.Services.AddHttpClient("ThenDelivery.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+
+			builder.Services.AddHttpClient("ThenDelivery.AnonymousAPI", client => {
+				client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+			});
+
+			// auto inject this HttpClient
+			builder.Services.AddHttpClient("ThenDelivery.ServerAPI",
+				client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
 				 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 			// Supply HttpClient instances that include access tokens when making requests to the server project

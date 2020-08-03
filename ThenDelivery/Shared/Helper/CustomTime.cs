@@ -12,8 +12,7 @@ namespace ThenDelivery.Shared.Helper
 			get { return _minute; }
 			set
 			{
-				if (value > 59) _minute = 59;
-				else _minute = value;
+				_minute = value;
 			}
 		}
 		public short Hour
@@ -21,12 +20,7 @@ namespace ThenDelivery.Shared.Helper
 			get { return _hour; }
 			set
 			{
-				if (value > 23)
-				{
-					_hour = 23;
-					_minute = 59;
-				}
-				else _hour = value;
+				_hour = value;
 			}
 		}
 
@@ -54,42 +48,6 @@ namespace ThenDelivery.Shared.Helper
 			}
 			_hour = hour;
 			_minute = minute;
-		}
-
-		/// <summary>
-		/// Parse a string to a time
-		/// </summary>
-		/// <example>"0600" => 06:00</example>
-		/// <param name="timeString">time as a string format</param>
-		/// <returns>CustomTime object</returns>
-		public static CustomTime Parse(string timeString, char separator = ':')
-		{
-			try
-			{
-				if (timeString.Contains(separator))
-				{
-					return ParseWithSeparator(timeString, separator);
-				}
-				else
-				{
-					switch (timeString.Length)
-					{
-						case 1:
-							return ParseWithOneNumber(timeString);
-						case 2:
-							return ParseWithTwoNumber(timeString);
-						case 3:
-							return ParseWithThreeNumber(timeString);
-						case 4:
-						default:
-							return ParseWithFourNumber(timeString);
-					}
-				}
-			}
-			catch (InvalidCastException)
-			{
-				throw new InvalidCastException("Cannot convert string to custom time");
-			}
 		}
 
 		public string TimeString
@@ -131,6 +89,89 @@ namespace ThenDelivery.Shared.Helper
 		public string ToStringWithoutDelimiter()
 		{
 			return String.Format("{0:D2}{1:D2}", _minute, _hour);
+		}
+
+		public int TotalMinutes()
+		{
+			return _hour * 60 + _minute;
+		}
+
+		#region operator
+		public static bool operator >(CustomTime time1, CustomTime time2)
+		{
+			if (time1.TotalMinutes() > time2.TotalMinutes())
+				return true;
+			return false;
+		}
+		public static bool operator <(CustomTime time1, CustomTime time2)
+		{
+			if (time1.TotalMinutes() < time2.TotalMinutes())
+				return true;
+			return false;
+		}
+		public static bool operator >=(CustomTime time1, CustomTime time2)
+		{
+			if (time1.TotalMinutes() >= time2.TotalMinutes())
+				return true;
+			return false;
+		}
+		public static bool operator <=(CustomTime time1, CustomTime time2)
+		{
+			if (time1.TotalMinutes() <= time2.TotalMinutes())
+				return true;
+			return false;
+		}
+		#endregion
+
+		#region static
+		public static CustomTime operator -(CustomTime time1, CustomTime time2)
+		{
+			return new CustomTime((short)(time1.Hour - time2.Hour), (short)(time1.Minute - time2.Minute), false);
+		}
+
+		/// <summary>
+		/// Parse a string to a time
+		/// </summary>
+		/// <example>"0600" => 06:00</example>
+		/// <param name="timeString">time as a string format</param>
+		/// <returns>CustomTime object</returns>
+		public static CustomTime Parse(string timeString, char separator = ':')
+		{
+			try
+			{
+				if (timeString.Contains(separator))
+				{
+					return ParseWithSeparator(timeString, separator);
+				}
+				else
+				{
+					switch (timeString.Length)
+					{
+						case 1:
+							return ParseWithOneNumber(timeString);
+						case 2:
+							return ParseWithTwoNumber(timeString);
+						case 3:
+							return ParseWithThreeNumber(timeString);
+						case 4:
+						default:
+							return ParseWithFourNumber(timeString);
+					}
+				}
+			}
+			catch (InvalidCastException)
+			{
+				throw new InvalidCastException("Cannot convert string to custom time");
+			}
+		}
+
+		public static CustomTime Now
+		{
+			get
+			{
+				string stringNow = DateTime.Now.ToString("HH:mm");
+				return ParseWithSeparator(stringNow, ':');
+			}
 		}
 
 		private static CustomTime ParseWithOneNumber(string timeString)
@@ -178,5 +219,6 @@ namespace ThenDelivery.Shared.Helper
 			short minute = Int16.Parse(timeStringSplited[1]);
 			return new CustomTime(hour, minute);
 		}
+		#endregion
 	}
 }
