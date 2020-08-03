@@ -10,12 +10,23 @@ namespace ThenDelivery.Server.Persistence.Configurations
 		{
 			builder.ToTable("Users");
 
-			builder.Property(e => e.BirthDate)
-					.HasColumnName("BirthDate")
-					.HasColumnType("datetime2")
-					.IsRequired(true);
+			builder.HasKey(e => e.Id);
 
-			builder.Property(e => )
+			builder.Property(e => e.UserName)
+				.IsRequired(true);
+
+			builder.Property(e => e.Email)
+				.IsRequired(true);
+
+			builder.Property(e => e.BirthDate)
+					.HasColumnType("datetime2");
+
+			builder.Property(e => e.PhoneNumber)
+				.HasMaxLength(10)
+				.IsFixedLength();
+
+			builder.Property(e => e.Id)
+				.HasMaxLength(36);
 		}
 	}
 }

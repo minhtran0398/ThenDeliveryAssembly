@@ -38,7 +38,7 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Commands
 				{
 					try
 					{
-						await _dbContext.MerchantMenues.AddRangeAsync(GetData(request._menuList));
+						await _dbContext.MenuItems.AddRangeAsync(GetData(request._menuList));
 						await _dbContext.SaveChangesAsync();
 						await trans.CommitAsync();
 					}

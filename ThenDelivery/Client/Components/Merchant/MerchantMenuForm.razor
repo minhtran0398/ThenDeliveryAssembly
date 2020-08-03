@@ -14,11 +14,11 @@
 					<DxButton CssClass="menu-create-group__item-button"
 								 RenderStyle="@ButtonRenderStyle.Secondary"
 								 Text="Sửa tên"
-								 @onclick="() => HandleEditMenuItem(menuItem.MerchantMenuId)" />
+								 @onclick="() => HandleEditMenuItem(menuItem.Id)" />
 					<DxButton CssClass="menu-create-group__item-button"
 								 RenderStyle="@ButtonRenderStyle.Secondary"
 								 Text="Xóa nhóm món"
-								 @onclick="() => HandleRemoveMenuItem(menuItem.MerchantMenuId)" />
+								 @onclick="() => HandleRemoveMenuItem(menuItem.Id)" />
 				</li>
 			}
 		</ul>

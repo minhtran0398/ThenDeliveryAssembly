@@ -14,7 +14,7 @@
 			{
 				@foreach (var role in UserItem.RoleList)
 				{
-					switch (role.RoleName)
+					switch (role.Name)
 					{
 						case Const.Role.AdministrationRole:
 							<span class="badge badge-pill badge-primary">@Const.Role.AdministrationRole</span>

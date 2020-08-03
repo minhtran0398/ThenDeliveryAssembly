@@ -53,36 +53,24 @@ namespace ThenDelivery.Server.Persistence
 		{
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.ApplyConfigurationsFromAssembly(typeof(ThenDeliveryDbContext).Assembly);
-			modelBuilder.Entity<User>().ToTable("Users");
-			modelBuilder.Entity<IdentityRole>().ToTable("Roles");
-			modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
-			modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
-
-			modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole>
-				{
-					 new IdentityRole(Const.Role.UserRole),
-					 new IdentityRole(Const.Role.ShipperRole),
-					 new IdentityRole(Const.Role.MerchantRole),
-					 new IdentityRole(Const.Role.AdministrationRole),
-				});
 		}
 
 		public DbSet<City> Cities { get; set; }
 		public DbSet<CityLevel> CityLevels { get; set; }
 		public DbSet<District> Districts { get; set; }
 		public DbSet<DistrictLevel> DistrictLevels { get; set; }
-		public DbSet<FeaturedDish> FeaturedDishCategoies { get; set; }
+		public DbSet<FeaturedDish> FeaturedDishes { get; set; }
 		public DbSet<Merchant> Merchants { get; set; }
-		public DbSet<MerType> MerchantTypes { get; set; }
+		public DbSet<MerType> MerTypes { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<OrderDetail> OrderDetails { get; set; }
 		public DbSet<Product> Products { get; set; }
 		public DbSet<ShippingAddress> ShippingAddresses { get; set; }
-		public DbSet<MenuItem> MerchantMenues { get; set; }
+		public DbSet<MenuItem> MenuItems { get; set; }
 		public DbSet<Topping> Toppings { get; set; }
 		public DbSet<Ward> Wards { get; set; }
 		public DbSet<WardLevel> WardLevels { get; set; }
-		public DbSet<MTMerchant> MerchantTypeMerchants { get; set; }
-		public DbSet<FDMerchant> FeaturedDishCategoryMerchants { get; set; }
+		public DbSet<MTMerchant> MTMerchants { get; set; }
+		public DbSet<FDMerchant> FDMerchants { get; set; }
 	}
 }

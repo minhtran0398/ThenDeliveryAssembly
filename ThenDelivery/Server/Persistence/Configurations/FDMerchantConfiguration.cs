@@ -4,11 +4,11 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Persistence.Configurations
 {
-	public class FeaturedDishCategoryMerchantConfiguration : IEntityTypeConfiguration<FDMerchant>
+	public class FDMerchantConfiguration : IEntityTypeConfiguration<FDMerchant>
 	{
 		public void Configure(EntityTypeBuilder<FDMerchant> builder)
 		{
-			builder.ToTable("FeaturedDishCategoryMerchants");
+			builder.ToTable("FDMerchants");
 
 			builder.HasKey(e => new { e.MerchantId, e.FeaturedDishId });
 		}

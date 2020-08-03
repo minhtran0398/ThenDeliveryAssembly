@@ -13,42 +13,34 @@ namespace ThenDelivery.Server.Persistence.Configurations
 			builder.HasKey(e => e.Id);
 
 			builder.Property(e => e.MenuItemId)
-					.HasColumnName("MerchantMenuId")
 					.HasColumnType("int")
 					.IsRequired(true);
 
 			builder.Property(e => e.Name)
-					.HasColumnName("Name")
 					.HasMaxLength(128)
 					.IsRequired(true);
 
 			builder.Property(e => e.IsAvailable)
-					.HasColumnName("IsAvailable")
 					.HasColumnType("bit")
 					.IsRequired(true);
 
 			builder.Property(e => e.Description)
-					.HasColumnName("Description")
 					.HasMaxLength(128)
-					.IsRequired(true);
+					.IsRequired(false);
 
 			builder.Property(e => e.OrderCount)
-					.HasColumnName("OrderCount")
 					.HasColumnType("int")
 					.IsRequired(true);
 
 			builder.Property(e => e.FavoriteCount)
-					.HasColumnName("FavoriteCount")
 					.HasColumnType("int")
 					.IsRequired(true);
 
 			builder.Property(e => e.UnitPrice)
-					.HasColumnName("UnitPrice")
 					.HasColumnType("smallmoney")
 					.IsRequired(true);
 
 			builder.Property(e => e.Image)
-					.HasColumnName("Image")
 					.HasColumnType("nvarchar(MAX)")
 					.IsRequired(true);
 		}

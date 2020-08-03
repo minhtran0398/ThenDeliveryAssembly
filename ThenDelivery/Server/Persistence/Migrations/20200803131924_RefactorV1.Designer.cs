@@ -10,8 +10,8 @@ using ThenDelivery.Server.Persistence;
 namespace ThenDelivery.Server.Persistence.Migrations
 {
     [DbContext(typeof(ThenDeliveryDbContext))]
-    [Migration("20200728234639_CHangeShopMenuToMerchantMenu")]
-    partial class CHangeShopMenuToMerchantMenu
+    [Migration("20200803131924_RefactorV1")]
+    partial class RefactorV1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -106,13 +106,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -132,27 +134,31 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b3358416-4cd6-4805-9c68-1827fb06ef30",
-                            ConcurrencyStamp = "7395253e-4e87-423c-962b-17ec4d0c8c78",
-                            Name = "User"
+                            Id = "d7ac99ac-e4b5-4997-973e-6e3b835865dd",
+                            ConcurrencyStamp = "22e9c7e3-2bfa-4cd8-bdd7-b8b7ed9e1e27",
+                            Name = "User",
+                            NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "3deb04bc-c409-445e-a560-c3efce9a92eb",
-                            ConcurrencyStamp = "11a59a09-c116-4de8-8c29-b703027dbdb1",
-                            Name = "Shipper"
+                            Id = "25b887be-a7dd-4022-85e1-ae2345aa45e9",
+                            ConcurrencyStamp = "933a8d5d-f3fd-4cc0-beba-1420804cd40c",
+                            Name = "Shipper",
+                            NormalizedName = "SHIPPER"
                         },
                         new
                         {
-                            Id = "725f3944-c953-4832-b3be-a64558975c50",
-                            ConcurrencyStamp = "f5ff7f03-882f-4a0a-908d-6ab6ff80a0d7",
-                            Name = "Merchant"
+                            Id = "7914b87e-43ef-401f-8793-42b754ca4bbf",
+                            ConcurrencyStamp = "8ce43217-e2c1-4e87-90b2-a2e90c52d764",
+                            Name = "Merchant",
+                            NormalizedName = "MERCHANT"
                         },
                         new
                         {
-                            Id = "f7525705-6c7d-431b-835e-11a87571f1e9",
-                            ConcurrencyStamp = "fbbb8b3b-803f-478b-9b4d-7c9384a93852",
-                            Name = "Administrator"
+                            Id = "c89d04b7-f633-4c07-87d4-43ebdb312bc2",
+                            ConcurrencyStamp = "27bd26eb-23e7-46db-b58d-77b77b628da9",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         });
                 });
 
@@ -161,6 +167,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasMaxLength(36)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
@@ -171,7 +178,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.HasKey("Id");
 
@@ -185,6 +192,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasMaxLength(36)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
@@ -195,7 +203,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.HasKey("Id");
 
@@ -219,7 +228,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -231,10 +241,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.HasKey("UserId", "RoleId");
 
@@ -246,7 +258,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(128)")
@@ -267,35 +280,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.City", b =>
                 {
                     b.Property<string>("CityCode")
-                        .HasColumnName("CityCode")
                         .HasColumnType("nchar(2)")
                         .IsFixedLength(true)
                         .HasMaxLength(2);
 
                     b.Property<byte>("CityLevelId")
-                        .HasColumnName("CityLevelId")
                         .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
@@ -309,34 +302,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.CityLevel", b =>
                 {
-                    b.Property<byte>("CityLevelId")
-                        .HasColumnName("CityLevelId")
+                    b.Property<byte>("Id")
                         .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.HasKey("CityLevelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -347,41 +321,21 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.District", b =>
                 {
                     b.Property<string>("DistrictCode")
-                        .HasColumnName("DistrictCode")
                         .HasColumnType("nchar(3)")
                         .IsFixedLength(true)
                         .HasMaxLength(3);
 
                     b.Property<string>("CityCode")
-                        .HasColumnName("CityCode")
+                        .IsRequired()
                         .HasColumnType("nchar(2)")
                         .IsFixedLength(true)
                         .HasMaxLength(2);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
                     b.Property<byte>("DistrictLevelId")
-                        .HasColumnName("DistrictLevelId")
                         .HasColumnType("tinyint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
@@ -395,34 +349,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.DistrictLevel", b =>
                 {
-                    b.Property<byte>("DistrictLevelId")
-                        .HasColumnName("DistrictLevelId")
+                    b.Property<byte>("Id")
                         .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.HasKey("DistrictLevelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -430,208 +365,40 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.ToTable("DistrictLevels");
                 });
 
-            modelBuilder.Entity("ThenDelivery.Shared.Entities.FeaturedDishCategory", b =>
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.FDMerchant", b =>
                 {
-                    b.Property<int>("FeaturedDishCategoryId")
+                    b.Property<int>("MerchantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FeaturedDishId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MerchantId", "FeaturedDishId");
+
+                    b.ToTable("FDMerchants");
+                });
+
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.FeaturedDish", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.HasKey("FeaturedDishCategoryId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("FeaturedDishCategoies");
+                    b.ToTable("FeaturedDishes");
                 });
 
-            modelBuilder.Entity("ThenDelivery.Shared.Entities.FeaturedDishCategoryMerchant", b =>
-                {
-                    b.Property<int>("MerchantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FeaturedDishCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MerchantId", "FeaturedDishCategoryId");
-
-                    b.ToTable("FeaturedDishCategoryMerchants");
-                });
-
-            modelBuilder.Entity("ThenDelivery.Shared.Entities.Merchant", b =>
-                {
-                    b.Property<int>("MerchantId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasColumnName("Avatar")
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.Property<string>("CityCode")
-                        .IsRequired()
-                        .HasColumnName("CityCode")
-                        .HasColumnType("nchar(2)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(2);
-
-                    b.Property<string>("CloseTime")
-                        .IsRequired()
-                        .HasColumnName("CloseTime")
-                        .HasColumnType("nchar(4)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(4);
-
-                    b.Property<string>("CoverPicture")
-                        .IsRequired()
-                        .HasColumnName("CoverPicture")
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnName("Description")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("DistrictCode")
-                        .IsRequired()
-                        .HasColumnName("DistrictCode")
-                        .HasColumnType("nchar(3)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(3);
-
-                    b.Property<string>("HouseNumber")
-                        .IsRequired()
-                        .HasColumnName("HouseNumber")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("OpenTime")
-                        .IsRequired()
-                        .HasColumnName("OpenTime")
-                        .HasColumnType("nchar(4)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(4);
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnName("PhoneNumber")
-                        .HasColumnType("nchar(16)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(16);
-
-                    b.Property<string>("SearchKey")
-                        .IsRequired()
-                        .HasColumnName("SearchKey")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("TaxCode")
-                        .IsRequired()
-                        .HasColumnName("TaxCode")
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(10);
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnName("UserId")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("WardCode")
-                        .IsRequired()
-                        .HasColumnName("WardCode")
-                        .HasColumnType("nchar(5)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(5);
-
-                    b.HasKey("MerchantId");
-
-                    b.ToTable("Merchants");
-                });
-
-            modelBuilder.Entity("ThenDelivery.Shared.Entities.MerchantMenu", b =>
-                {
-                    b.Property<int>("MerchantMenuId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnName("Description")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<int>("MerchantId")
-                        .HasColumnName("MerchantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.HasKey("MerchantMenuId");
-
-                    b.ToTable("MerchantMenues");
-                });
-
-            modelBuilder.Entity("ThenDelivery.Shared.Entities.MerchantType", b =>
-                {
-                    b.Property<int>("MerchantTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
-
-                    b.HasKey("MerchantTypeId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("MerchantTypes");
-                });
-
-            modelBuilder.Entity("ThenDelivery.Shared.Entities.MerchantTypeMerchant", b =>
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.MTMerchant", b =>
                 {
                     b.Property<int>("MerchantId")
                         .HasColumnType("int");
@@ -641,12 +408,159 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
                     b.HasKey("MerchantId", "MerchantTypeId");
 
-                    b.ToTable("MerchantTypeMerchants");
+                    b.ToTable("MTMerchants");
+                });
+
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.MenuItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("MerchantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MenuItems");
+                });
+
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.MerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("MerTypes");
+                });
+
+            modelBuilder.Entity("ThenDelivery.Shared.Entities.Merchant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("CityCode")
+                        .IsRequired()
+                        .HasColumnType("nchar(2)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(2);
+
+                    b.Property<string>("CloseTime")
+                        .IsRequired()
+                        .HasColumnType("nchar(4)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(4);
+
+                    b.Property<string>("CoverPicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("DistrictCode")
+                        .IsRequired()
+                        .HasColumnType("nchar(3)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(3);
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("OpenTime")
+                        .IsRequired()
+                        .HasColumnType("nchar(4)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(4);
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nchar(16)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(16);
+
+                    b.Property<string>("SearchKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("TaxCode")
+                        .IsRequired()
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(10);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
+
+                    b.Property<string>("WardCode")
+                        .IsRequired()
+                        .HasColumnType("nchar(5)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(5);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Merchants");
                 });
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -669,34 +583,28 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("Note")
-                        .HasColumnName("Note")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<DateTime>("OrderDateTime")
-                        .HasColumnName("OrderDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<byte>("ReceiveVia")
-                        .HasColumnName("ReceiveVia")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("ShipperId")
-                        .HasColumnName("ShipperId")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<int?>("ShippingAddressId")
-                        .HasColumnName("ShippingAddressId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("UserId")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.ToTable("Orders");
                 });
@@ -727,11 +635,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasMaxLength(256);
 
                     b.Property<short>("Quantity")
-                        .HasColumnName("Quantity")
                         .HasColumnType("smallint");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnName("UnitPrice")
                         .HasColumnType("smallmoney");
 
                     b.HasKey("OrderId", "ProductId");
@@ -741,120 +647,103 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnName("Description")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<int>("FavoriteCount")
-                        .HasColumnName("FavoriteCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnName("Image")
                         .HasColumnType("nvarchar(MAX)");
 
                     b.Property<bool>("IsAvailable")
-                        .HasColumnName("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MerchantMenuId")
-                        .HasColumnName("MerchantMenuId")
+                    b.Property<int>("MenuItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<int>("OrderCount")
-                        .HasColumnName("OrderCount")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnName("UnitPrice")
                         .HasColumnType("smallmoney");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.ShippingAddress", b =>
                 {
-                    b.Property<int>("ShippingAddressId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CityCode")
                         .IsRequired()
-                        .HasColumnName("CityCode")
                         .HasColumnType("nchar(2)")
                         .IsFixedLength(true)
                         .HasMaxLength(2);
 
                     b.Property<string>("DistrictCode")
                         .IsRequired()
-                        .HasColumnName("DistrictCode")
                         .HasColumnType("nchar(3)")
                         .IsFixedLength(true)
                         .HasMaxLength(3);
 
                     b.Property<string>("HouseNumber")
                         .IsRequired()
-                        .HasColumnName("HouseNumber")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("UserId")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<string>("WardCode")
                         .IsRequired()
-                        .HasColumnName("WardCode")
                         .HasColumnType("nchar(5)")
                         .IsFixedLength(true)
                         .HasMaxLength(5);
 
-                    b.HasKey("ShippingAddressId");
+                    b.HasKey("Id");
 
                     b.ToTable("ShippingAddresses");
                 });
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Topping", b =>
                 {
-                    b.Property<int>("ToppingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.Property<int>("ProductId")
-                        .HasColumnName("ProductId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnName("UnitPrice")
                         .HasColumnType("smallmoney");
 
-                    b.HasKey("ToppingId");
+                    b.HasKey("Id");
 
                     b.ToTable("Topping");
                 });
@@ -862,13 +751,13 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnName("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -882,6 +771,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -915,7 +805,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(10);
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -927,6 +819,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -946,42 +839,21 @@ namespace ThenDelivery.Server.Persistence.Migrations
             modelBuilder.Entity("ThenDelivery.Shared.Entities.Ward", b =>
                 {
                     b.Property<string>("WardCode")
-                        .HasColumnName("WardCode")
                         .HasColumnType("nchar(5)")
                         .IsFixedLength(true)
                         .HasMaxLength(5);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
                     b.Property<string>("DistrictCode")
-                        .HasColumnName("DistrictCode")
                         .HasColumnType("nchar(3)")
                         .IsFixedLength(true)
                         .HasMaxLength(3);
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.Property<byte>("WardLevelId")
-                        .HasColumnName("WardLevelId")
                         .HasColumnType("tinyint");
 
                     b.HasKey("WardCode");
@@ -994,34 +866,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
             modelBuilder.Entity("ThenDelivery.Shared.Entities.WardLevel", b =>
                 {
-                    b.Property<byte>("WardLevelId")
-                        .HasColumnName("WardLevelId")
+                    b.Property<byte>("Id")
                         .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.HasKey("WardLevelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();

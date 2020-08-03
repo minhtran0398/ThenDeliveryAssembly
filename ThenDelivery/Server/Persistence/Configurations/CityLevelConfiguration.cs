@@ -14,11 +14,9 @@ namespace ThenDelivery.Server.Persistence.Configurations
          builder.HasIndex(e => e.Name).IsUnique(true);
 
          builder.Property(e => e.Id)
-                .HasColumnName("CityLevelId")
                 .HasColumnType("tinyint");
 
          builder.Property(e => e.Name)
-               .HasColumnName("Name")
                .HasMaxLength(64)
                .IsRequired(true);
       }

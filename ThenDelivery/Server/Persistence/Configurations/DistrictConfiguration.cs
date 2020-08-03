@@ -14,22 +14,19 @@ namespace ThenDelivery.Server.Persistence.Configurations
          builder.HasIndex(e => e.Name).IsUnique(true);
 
          builder.Property(e => e.DistrictCode)
-                .HasColumnName("DistrictCode")
                 .HasMaxLength(3)
                 .IsFixedLength();
 
          builder.Property(e => e.CityCode)
-                .HasColumnName("CityCode")
                 .HasMaxLength(2)
-                .IsFixedLength();
+                .IsFixedLength()
+                .IsRequired(true);
 
          builder.Property(e => e.Name)
-               .HasColumnName("Name")
                .HasMaxLength(64)
                .IsRequired(true);
 
          builder.Property(e => e.DistrictLevelId)
-               .HasColumnName("DistrictLevelId")
                .HasColumnType("tinyint")
                .IsRequired(true);
       }

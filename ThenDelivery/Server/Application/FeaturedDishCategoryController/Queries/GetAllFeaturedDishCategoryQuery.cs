@@ -30,7 +30,7 @@ namespace ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries
 				var result = new List<FeaturedDishDto>();
 				try
 				{
-					result = await (from fe in _dbContext.FeaturedDishCategoies
+					result = await (from fe in _dbContext.FeaturedDishes
 										 select new FeaturedDishDto
 										 {
 											 Id = fe.Id,

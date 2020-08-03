@@ -45,12 +45,12 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 						// Insert to many to many table with merchant type
 						List<MTMerchant> merchantTypeMerchantToAdd =
 							GetMerchantTypes(request._merchantDto);
-						await _dbContext.MerchantTypeMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
+						await _dbContext.MTMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
 
 						// Insert to many to many table with featured dish category
 						List<FDMerchant> featuredDishCategoryMerchantToAdd =
 							GetFeaturedDishCategoies(request._merchantDto);
-						await _dbContext.FeaturedDishCategoryMerchants.AddRangeAsync(featuredDishCategoryMerchantToAdd);
+						await _dbContext.FDMerchants.AddRangeAsync(featuredDishCategoryMerchantToAdd);
 						await _dbContext.SaveChangesAsync();
 
 						await trans.CommitAsync();

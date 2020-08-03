@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ThenDelivery.Server.Persistence.Migrations
 {
-    public partial class InitDbV1 : Migration
+    public partial class RefactorV1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,11 +12,6 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    LastModified = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     CityLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
@@ -29,17 +24,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "CityLevels",
                 columns: table => new
                 {
-                    CityLevelId = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    LastModified = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    Id = table.Column<byte>(type: "tinyint", nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CityLevels", x => x.CityLevelId);
+                    table.PrimaryKey("PK_CityLevels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,17 +53,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "DistrictLevels",
                 columns: table => new
                 {
-                    DistrictLevelId = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    LastModified = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    Id = table.Column<byte>(type: "tinyint", nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DistrictLevels", x => x.DistrictLevelId);
+                    table.PrimaryKey("PK_DistrictLevels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,12 +66,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    LastModified = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: true),
+                    CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     DistrictLevelId = table.Column<byte>(type: "tinyint", nullable: false)
                 },
@@ -96,30 +76,57 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeaturedDishCategoies",
+                name: "FDMerchants",
                 columns: table => new
                 {
-                    FeaturedDishCategoryId = table.Column<int>(nullable: false)
+                    MerchantId = table.Column<int>(nullable: false),
+                    FeaturedDishId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FDMerchants", x => new { x.MerchantId, x.FeaturedDishId });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeaturedDishes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeaturedDishCategoies", x => x.FeaturedDishCategoryId);
+                    table.PrimaryKey("PK_FeaturedDishes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MerchantId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Merchants",
                 columns: table => new
                 {
-                    MerchantId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(maxLength: 128, nullable: false),
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Avatar = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
                     CoverPicture = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
@@ -127,7 +134,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     PhoneNumber = table.Column<string>(fixedLength: true, maxLength: 16, nullable: false),
                     OpenTime = table.Column<string>(fixedLength: true, maxLength: 4, nullable: false),
                     CloseTime = table.Column<string>(fixedLength: true, maxLength: 4, nullable: false),
-                    Description = table.Column<string>(maxLength: 256, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: true),
                     SearchKey = table.Column<string>(maxLength: 20, nullable: false),
                     CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
                     DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
@@ -136,20 +143,32 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Merchants", x => x.MerchantId);
+                    table.PrimaryKey("PK_Merchants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MerchantTypes",
+                name: "MerTypes",
                 columns: table => new
                 {
-                    MerchantTypeId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MerchantTypes", x => x.MerchantTypeId);
+                    table.PrimaryKey("PK_MerTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MTMerchants",
+                columns: table => new
+                {
+                    MerchantId = table.Column<int>(nullable: false),
+                    MerchantTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MTMerchants", x => new { x.MerchantId, x.MerchantTypeId });
                 });
 
             migrationBuilder.CreateTable(
@@ -175,15 +194,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(maxLength: 128, nullable: false),
-                    ShipperId = table.Column<string>(maxLength: 128, nullable: true),
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
+                    ShipperId = table.Column<string>(maxLength: 36, nullable: true),
                     ShippingAddressId = table.Column<int>(type: "int", nullable: true),
                     OrderDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Note = table.Column<string>(maxLength: 256, nullable: true),
@@ -191,7 +210,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,12 +234,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MerchantMenuId = table.Column<int>(type: "int", nullable: false),
+                    MenuItemId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(maxLength: 128, nullable: false),
+                    Description = table.Column<string>(maxLength: 128, nullable: true),
                     OrderCount = table.Column<int>(type: "int", nullable: false),
                     FavoriteCount = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "smallmoney", nullable: false),
@@ -228,15 +247,15 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
@@ -249,9 +268,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "ShippingAddresses",
                 columns: table => new
                 {
-                    ShippingAddressId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(maxLength: 128, nullable: false),
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
                     CityCode = table.Column<string>(fixedLength: true, maxLength: 2, nullable: false),
                     DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: false),
                     WardCode = table.Column<string>(fixedLength: true, maxLength: 5, nullable: false),
@@ -259,29 +278,14 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShippingAddresses", x => x.ShippingAddressId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StoreMenues",
-                columns: table => new
-                {
-                    StoreMenuId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MerchantId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
-                    Description = table.Column<string>(maxLength: 256, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StoreMenues", x => x.StoreMenuId);
+                    table.PrimaryKey("PK_ShippingAddresses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Topping",
                 columns: table => new
                 {
-                    ToppingId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
@@ -289,23 +293,23 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Topping", x => x.ToppingId);
+                    table.PrimaryKey("PK_Topping", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(fixedLength: true, maxLength: 10, nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
@@ -327,17 +331,12 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "WardLevels",
                 columns: table => new
                 {
-                    WardLevelId = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    LastModified = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    Id = table.Column<byte>(type: "tinyint", nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WardLevels", x => x.WardLevelId);
+                    table.PrimaryKey("PK_WardLevels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -345,11 +344,6 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: table => new
                 {
                     WardCode = table.Column<string>(fixedLength: true, maxLength: 5, nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(maxLength: 256, nullable: true),
-                    LastModified = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     DistrictCode = table.Column<string>(fixedLength: true, maxLength: 3, nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     WardLevelId = table.Column<byte>(type: "tinyint", nullable: false)
@@ -363,7 +357,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "RoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(maxLength: 36, nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
@@ -384,9 +378,9 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "UserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(maxLength: 36, nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -408,7 +402,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -425,8 +419,8 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
+                    RoleId = table.Column<string>(maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -449,7 +443,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "UserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -470,10 +464,10 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0f1fbf4e-1b0c-42cb-ada4-b2b845d8b8da", "ac4de763-aada-4d2d-a5fa-9218e648aa35", "User", null },
-                    { "87900f5c-4055-49ca-b966-874f8ea827be", "a8a3b910-4df0-48dd-9689-5a60e97f77d1", "Shipper", null },
-                    { "f1e72b88-0ec1-4405-89c2-702f06916f49", "c624c6d0-c0dd-4ad4-87a5-6858a020b594", "Merchant", null },
-                    { "2d567007-aa95-43a0-83de-f6d7002ab189", "3873ff06-a85d-4d4d-9b20-5318f5b5b391", "Administrator", null }
+                    { "d7ac99ac-e4b5-4997-973e-6e3b835865dd", "22e9c7e3-2bfa-4cd8-bdd7-b8b7ed9e1e27", "User", "USER" },
+                    { "25b887be-a7dd-4022-85e1-ae2345aa45e9", "933a8d5d-f3fd-4cc0-beba-1420804cd40c", "Shipper", "SHIPPER" },
+                    { "7914b87e-43ef-401f-8793-42b754ca4bbf", "8ce43217-e2c1-4e87-90b2-a2e90c52d764", "Merchant", "MERCHANT" },
+                    { "c89d04b7-f633-4c07-87d4-43ebdb312bc2", "27bd26eb-23e7-46db-b58d-77b77b628da9", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -512,14 +506,14 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeaturedDishCategoies_Name",
-                table: "FeaturedDishCategoies",
+                name: "IX_FeaturedDishes_Name",
+                table: "FeaturedDishes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MerchantTypes_Name",
-                table: "MerchantTypes",
+                name: "IX_MerTypes_Name",
+                table: "MerTypes",
                 column: "Name",
                 unique: true);
 
@@ -603,13 +597,22 @@ namespace ThenDelivery.Server.Persistence.Migrations
                 name: "Districts");
 
             migrationBuilder.DropTable(
-                name: "FeaturedDishCategoies");
+                name: "FDMerchants");
+
+            migrationBuilder.DropTable(
+                name: "FeaturedDishes");
+
+            migrationBuilder.DropTable(
+                name: "MenuItems");
 
             migrationBuilder.DropTable(
                 name: "Merchants");
 
             migrationBuilder.DropTable(
-                name: "MerchantTypes");
+                name: "MerTypes");
+
+            migrationBuilder.DropTable(
+                name: "MTMerchants");
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");
@@ -628,9 +631,6 @@ namespace ThenDelivery.Server.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ShippingAddresses");
-
-            migrationBuilder.DropTable(
-                name: "StoreMenues");
 
             migrationBuilder.DropTable(
                 name: "Topping");

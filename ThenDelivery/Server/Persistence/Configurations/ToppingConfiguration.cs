@@ -13,17 +13,14 @@ namespace ThenDelivery.Server.Persistence.Configurations
 			builder.HasKey(e => e.Id);
 
 			builder.Property(e => e.Name)
-					.HasColumnName("Name")
 					.HasMaxLength(64)
 					.IsRequired(true);
 
 			builder.Property(e => e.ProductId)
-					.HasColumnName("ProductId")
 					.HasColumnType("int")
 					.IsRequired(true);
 
 			builder.Property(e => e.UnitPrice)
-					.HasColumnName("UnitPrice")
 					.HasColumnType("smallmoney")
 					.IsRequired(true);
 		}

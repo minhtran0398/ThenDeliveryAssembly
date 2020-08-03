@@ -30,7 +30,7 @@ namespace ThenDelivery.Server.Application.MerchantTypeController.Queries
 				var result = new List<MerTypeDto>();
 				try
 				{
-					result = await (from mt in _dbContext.MerchantTypes
+					result = await (from mt in _dbContext.MerTypes
 										 select new MerTypeDto
 										 {
 											 Id = mt.Id,

@@ -14,17 +14,14 @@ namespace ThenDelivery.Server.Persistence.Configurations
          builder.HasIndex(e => e.Name).IsUnique(true);
 
          builder.Property(e => e.CityCode)
-                .HasColumnName("CityCode")
                 .HasMaxLength(2)
                 .IsFixedLength();
 
          builder.Property(e => e.Name)
-               .HasColumnName("Name")
                .HasMaxLength(64)
                .IsRequired(true);
 
          builder.Property(e => e.CityLevelId)
-               .HasColumnName("CityLevelId")
                .HasColumnType("tinyint")
                .IsRequired(true);
       }
