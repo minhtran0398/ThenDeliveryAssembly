@@ -10,7 +10,7 @@ namespace ThenDelivery.Client.ExtensionMethods
 {
 	public static class HttpClientExtension
 	{
-		public static async Task<IEnumerable<T>> CustomGetAsync<T>(
+		public static async Task<T> CustomGetAsync<T>(
 			this HttpClient httpClient, string baseUrl)
 			where T : class
 		{
@@ -19,7 +19,7 @@ namespace ThenDelivery.Client.ExtensionMethods
 			{
 				//Todo
 				//Need try catch here
-				return await response.Content.ReadFromJsonAsync<IEnumerable<T>>();
+				return await response.Content.ReadFromJsonAsync<T>();
 			}
 			return null;
 		}

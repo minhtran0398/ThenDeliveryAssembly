@@ -67,21 +67,23 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 
 			private Merchant GetMerchant(MerchantDto merchantDto)
 			{
-				var merchantResult = new Merchant();
-				merchantResult.UserId = merchantDto.UserId;
-				merchantResult.Name = merchantDto.Name;
-				merchantResult.Description = merchantDto.Description;
-				merchantResult.Avatar = merchantDto.Avatar;
-				merchantResult.CoverPicture = merchantDto.CoverPicture;
-				merchantResult.HouseNumber = merchantDto.HouseNumber;
-				merchantResult.PhoneNumber = merchantDto.PhoneNumber;
-				merchantResult.SearchKey = merchantDto.SearchKey;
-				merchantResult.TaxCode = merchantDto.TaxCode;
-				merchantResult.OpenTime = merchantDto.OpenTime.ToStringWithoutDelimiter();
-				merchantResult.CloseTime = merchantDto.CloseTime.ToStringWithoutDelimiter();
-				merchantResult.CityCode = merchantDto.City.CityCode;
-				merchantResult.DistrictCode = merchantDto.District.DistrictCode;
-				merchantResult.WardCode = merchantDto.Ward.WardCode;
+				var merchantResult = new Merchant
+				{
+					UserId = merchantDto.UserId,
+					Name = merchantDto.Name,
+					Description = merchantDto.Description,
+					Avatar = merchantDto.Avatar,
+					CoverPicture = merchantDto.CoverPicture,
+					HouseNumber = merchantDto.HouseNumber,
+					PhoneNumber = merchantDto.PhoneNumber,
+					SearchKey = merchantDto.SearchKey,
+					TaxCode = merchantDto.TaxCode,
+					OpenTime = merchantDto.OpenTime.ToStringWithoutDelimiter(),
+					CloseTime = merchantDto.CloseTime.ToStringWithoutDelimiter(),
+					CityCode = merchantDto.City.CityCode,
+					DistrictCode = merchantDto.District.DistrictCode,
+					WardCode = merchantDto.Ward.WardCode
+				};
 				return merchantResult;
 			}
 

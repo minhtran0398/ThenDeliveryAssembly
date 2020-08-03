@@ -10,7 +10,7 @@ namespace ThenDelivery.Client.Shared
 		[Inject] private NavigationManager Navigation { get; set; }
 		[Inject] private SignOutSessionStateManager SignOutManager { get; set; }
 
-		protected async Task BeginSignOut(MouseEventArgs args)
+		protected async Task BeginSignOut(MouseEventArgs _)
 		{
 			await SignOutManager.SetSignOutState();
 			Navigation.NavigateTo("authentication/logout");

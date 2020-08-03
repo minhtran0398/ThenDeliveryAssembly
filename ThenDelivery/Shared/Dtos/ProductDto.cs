@@ -36,7 +36,7 @@ namespace ThenDelivery.Shared.Dtos
 				}
 
 				if (ToppingList.Count == 0) return String.Empty;
-				return stringBuilder.ToString().Substring(0, stringBuilder.ToString().Length - 2);
+				return stringBuilder.ToString()[0..^2];
 			}
 		}
 	}

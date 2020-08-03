@@ -13,7 +13,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected override async Task OnInitializedAsync()
 		{
-			MerchantList = (await HttpClientAnonymous.CustomGetAsync<MerchantDto>("api/merchant")).ToList();
+			MerchantList = await HttpClientAnonymous.CustomGetAsync<List<MerchantDto>>("api/merchant");
 		}
 	}
 }

@@ -145,18 +145,13 @@ namespace ThenDelivery.Shared.Helper
 				}
 				else
 				{
-					switch (timeString.Length)
+					return timeString.Length switch
 					{
-						case 1:
-							return ParseWithOneNumber(timeString);
-						case 2:
-							return ParseWithTwoNumber(timeString);
-						case 3:
-							return ParseWithThreeNumber(timeString);
-						case 4:
-						default:
-							return ParseWithFourNumber(timeString);
-					}
+						1 => ParseWithOneNumber(timeString),
+						2 => ParseWithTwoNumber(timeString),
+						3 => ParseWithThreeNumber(timeString),
+						_ => ParseWithFourNumber(timeString),
+					};
 				}
 			}
 			catch (InvalidCastException)

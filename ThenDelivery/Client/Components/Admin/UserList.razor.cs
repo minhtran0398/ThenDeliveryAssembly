@@ -28,19 +28,25 @@ namespace ThenDelivery.Client.Components.Admin
 		{
 			Logger.LogDebug("Life Cycle - OnInitializedAsync");
 
-			UserList = (await HttpClientServer.CustomGetAsync<UserDto>($"{BaseUrl}api/user")).ToList();
+			UserList = await HttpClientServer.CustomGetAsync<List<UserDto>>("api/user");
 		}
 		#endregion
 
 		#region Event Handler
 		protected void HandleOnEditUser(UserDto userToEdit)
 		{
-
+			if (userToEdit is null)
+			{
+				throw new System.ArgumentNullException(nameof(userToEdit));
+			}
 		}
 
 		protected void HandleOnDeleteUser(UserDto userToDelete)
 		{
-
+			if (userToDelete is null)
+			{
+				throw new System.ArgumentNullException(nameof(userToDelete));
+			}
 		}
 		#endregion
 

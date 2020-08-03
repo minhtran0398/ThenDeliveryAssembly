@@ -44,8 +44,8 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected override async Task OnInitializedAsync()
 		{
-			MenuList = (await HttpClientServer
-				.CustomGetAsync<MenuItemDto>($"{BaseUrl}api/menuitem?merchantId={TargetMerchantId}")).ToList();
+			MenuList = await HttpClientServer
+				.CustomGetAsync<List<MenuItemDto>>($"api/menuitem?merchantId={TargetMerchantId}");
 		}
 		#endregion
 

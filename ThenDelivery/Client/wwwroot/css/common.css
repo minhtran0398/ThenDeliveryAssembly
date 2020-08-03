@@ -156,6 +156,28 @@ img {
 	position: relative;
 }
 
+	.now-list-restaurant .title-wrapper {
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-pack: justify;
+		justify-content: space-between;
+	}
+
+	.now-list-restaurant .title {
+		font-size: 16px;
+		font-weight: 700;
+	}
+
+.view-all-deal {
+	font-size: 14px;
+	font-weight: 400;
+	color: #0288d1;
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	float: right;
+}
+
 .now-list-restaurant .list-restaurant {
 	margin: 0 -8px;
 	position: relative;

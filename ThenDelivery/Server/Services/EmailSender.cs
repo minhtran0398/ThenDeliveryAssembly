@@ -8,20 +8,20 @@ namespace ThenDelivery.Server.Services
 	public class EmailSender : IEmailSender
 	{
       // Our private configuration variables
-      private string _host;
-      private int _port;
-      private bool _enableSSL;
-      private string _userName;
-      private string _password;
+      private readonly string _host;
+      private readonly int _port;
+      private readonly bool _enableSSL;
+      private readonly string _userName;
+      private readonly string _password;
 
       // Get our parameterized configuration
       public EmailSender(string host, int port, bool enableSSL, string userName, string password)
       {
-         this._host = host;
-         this._port = port;
-         this._enableSSL = enableSSL;
-         this._userName = userName;
-         this._password = password;
+         _host = host;
+         _port = port;
+         _enableSSL = enableSSL;
+         _userName = userName;
+         _password = password;
       }
 
       // Use our configuration to send the email by using SmtpClient

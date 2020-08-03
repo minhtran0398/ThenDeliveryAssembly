@@ -127,29 +127,29 @@ namespace ThenDelivery.Client.Components.Merchant
 		#endregion
 
 		#region Methods
-		protected async Task<IEnumerable<MerTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<MerTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<MerTypeDto>($"{BaseUrl}api/mertype");
+			return await HttpClientServer.CustomGetAsync<IEnumerable<MerTypeDto>>("api/mertype");
 		}
 
-		protected async Task<IEnumerable<FeaturedDishDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<FeaturedDishDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<FeaturedDishDto>($"{BaseUrl}api/featureddish");
+			return await HttpClientServer.CustomGetAsync<IEnumerable<FeaturedDishDto>>("api/featureddish");
 		}
 
-		protected async Task<IEnumerable<CityDto>> HandleLoadCitiesAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<CityDto>> HandleLoadCitiesAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<CityDto>($"{BaseUrl}api/city");
+			return await HttpClientServer.CustomGetAsync<IEnumerable<CityDto>>("api/city");
 		}
 
-		protected async Task<IEnumerable<DistrictDto>> HandleLoadDistrictsAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<DistrictDto>> HandleLoadDistrictsAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<DistrictDto>($"{BaseUrl}api/district");
+			return await HttpClientServer.CustomGetAsync<IEnumerable<DistrictDto>>("api/district");
 		}
 
-		protected async Task<IEnumerable<WardDto>> HandleLoadWardsAsync(CancellationToken token = default)
+		protected async Task<IEnumerable<WardDto>> HandleLoadWardsAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<WardDto>($"{BaseUrl}api/ward");
+			return await HttpClientServer.CustomGetAsync<IEnumerable<WardDto>>("api/ward");
 		}
 		#endregion
 	}
