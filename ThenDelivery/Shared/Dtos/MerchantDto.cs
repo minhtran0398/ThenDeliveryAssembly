@@ -11,8 +11,8 @@ namespace ThenDelivery.Shared.Dtos
 		{
 			OpenTime = new CustomTime();
 			CloseTime = new CustomTime();
-			MerchantTypeList = new List<MerTypeDto>();
-			FeaturedDishCategoryList = new List<FeaturedDishDto>();
+			MerTypeList = new List<MerTypeDto>();
+			FeaturedDishList = new List<FeaturedDishDto>();
 		}
 
 		public int Id { get; set; }
@@ -29,8 +29,8 @@ namespace ThenDelivery.Shared.Dtos
 		public CityDto City { get; set; }
 		public DistrictDto District { get; set; }
 		public WardDto Ward { get; set; }
-		public List<FeaturedDishDto> FeaturedDishCategoryList { get; set; }
-		public List<MerTypeDto> MerchantTypeList { get; set; }
+		public List<FeaturedDishDto> FeaturedDishList { get; set; }
+		public List<MerTypeDto> MerTypeList { get; set; }
 		public string HouseNumber { get; set; }
 		public string AddressString
 		{

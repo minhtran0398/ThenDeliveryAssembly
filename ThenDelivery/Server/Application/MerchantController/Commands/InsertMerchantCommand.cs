@@ -96,7 +96,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 			private List<MTMerchant> GetMerchantTypes(MerchantDto merchantDto)
 			{
 				var result = new List<MTMerchant>();
-				foreach (var typeItem in merchantDto.MerchantTypeList)
+				foreach (var typeItem in merchantDto.MerTypeList)
 				{
 					result.Add(new MTMerchant()
 					{
@@ -116,7 +116,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 			private List<FDMerchant> GetFeaturedDishCategoies(MerchantDto merchantDto)
 			{
 				var result = new List<FDMerchant>();
-				foreach (var typeItem in merchantDto.FeaturedDishCategoryList)
+				foreach (var typeItem in merchantDto.FeaturedDishList)
 				{
 					result.Add(new FDMerchant()
 					{

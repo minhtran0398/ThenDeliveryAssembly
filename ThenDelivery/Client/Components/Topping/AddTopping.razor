@@ -1,0 +1,37 @@
+﻿@inherits AddToppingBase
+
+<div class="topping-set__item-input">
+	<div class="topping-set__hint">
+		Nếu bạn đang tạo set topping cho món nước, vui lòng tạo set "Kích cỡ", "Lượng Đường",
+		"Nóng/Lạnh"
+	</div>
+	<div class="row-topping topping-set__topping-item-input">
+		<div class="col-xs-5">
+			<div class="row-topping form-item">
+				<div class="col-xs-12 form-item__label">
+					Tên Topping 1<span class="form-item__label--important">&nbsp;*</span>
+				</div>
+				<div class="col-xs-12 form-item__control-wrapper undefined">
+					<div class="input"><input placeholder="vd: Đường 0%, Đường 20%,..." value=""></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-5">
+			<div class="row-topping form-item">
+				<div class="col-xs-12 form-item__label">Giá<span class="form-item__label--important">&nbsp;*</span></div>
+				<div class="col-xs-12 form-item__control-wrapper undefined">
+					<div class="input"><input value="0"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-2 topping-set__topping-item-input--action"></div>
+	</div>
+	<span class="topping-set__item-input--add-btn">Thêm Topping</span>
+	<div class="register-shop__form-footer topping-set__item-input--submit">
+		<button class="btn" type="button">
+			<span class="btn__text">Huỷ</span>
+		</button><button class="btn btn--primary" type="button">
+			<span class="btn__text">Lưu</span>
+		</button>
+	</div>
+</div>

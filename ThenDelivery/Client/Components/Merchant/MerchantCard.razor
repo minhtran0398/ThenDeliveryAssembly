@@ -1,7 +1,7 @@
 ﻿@inherits MerchantCardBase
 
 <div class="item-restaurant">
-	<a target="_blank" class="item-content" href="/ho-chi-minh/nam-nhi-organic-coffee-tea-shop-online">
+	<a class="item-content" href="@String.Format("merchant/{0}", @MerchantModel.Id)">
 		<div class="img-restaurant">
 			<img src="@String.Format("data:image/jpg;base64,{0}", MerchantModel.CoverPicture)" width="186" height="116" class="">
 		</div>
@@ -10,7 +10,6 @@
 				<h4 class="name-res" title="@MerchantModel.Name">@MerchantModel.Name</h4>
 				<div class="address-res" title="@MerchantModel.AddressString">@MerchantModel.AddressString</div>
 			</div>
-			@*<p class="content-promotion"><i class="fas fa-tag"></i> Giảm hết 30%</p>*@
 		<div class="opentime-status">
 			@if (CustomTime.Now.IsInRange(MerchantModel.OpenTime, MerchantModel.CloseTime))
 			{

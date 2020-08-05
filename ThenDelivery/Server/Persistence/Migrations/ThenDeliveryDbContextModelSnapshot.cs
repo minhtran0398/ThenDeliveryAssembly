@@ -657,7 +657,11 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.Property<int>("FavoriteCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
+                   b.Property<int>("MerchantId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                   b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(MAX)");
 

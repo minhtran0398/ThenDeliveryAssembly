@@ -1,4 +1,99 @@
-﻿@page "/merchant/{id:Int}"
+﻿@page "/merchant/{MerchantId:int}"
 @inherits MerchantHomeBase
 
+<div class="now-detail-restaurant clearfix">
+	<div class="container">
+		<div class="detail-restaurant-img">
+			<img src="https://images.foody.vn/res/g95/949403/prof/s640x400/foody-upload-api-foody-mobile-531d9c2079dc9e82c7cd-190917113228.jpg"
+				  alt="Nam Nhi - Organic Coffee &amp; Tea - Shop Online" class="">
+		</div>
+		<div class="detail-restaurant-info">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="/">Home</a></li>
+					<li class="breadcrumb-item">
+						<a class="breadcrumb-link" rel="nofollow" href="/ho-chi-minh">TP. HCM</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a class="breadcrumb-link" rel="nofollow"
+							href="/ho-chi-minh/nam-nhi-organic-coffee-tea-shop-online">
+							Nam Nhi - Organic Coffee &amp; Tea -
+							Shop Online
+						</a>
+					</li>
+				</ol>
+			</nav>
+			<div class="kind-restaurant"><span> Shop Online</span></div>
+			<h1 class="name-restaurant">Nam Nhi - Organic Coffee &amp; Tea - Shop Online</h1>
+			<div class="address-restaurant">29 Đường Số 46, P. 5, Quận 4, TP. HCM</div>
+			<div class="status-restaurant">
+				<div class="opentime-status"><span class="stt offline" title="Đã đóng"></span></div>
+			</div>
+			<div class="cost-restaurant"><i class="fas fa-dollar-sign"></i>25,000 - 55,000</div>
+		</div>
+	</div>
+</div>
 
+<div class="then-detail-body">
+	<div class="then-detail-body-menu">
+		<h3>Thực đơn</h3>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 menu-list">
+				<div class="list-group">
+					@if (MenuItemList is null)
+					{
+						<p>Loading...</p>
+					}
+					else
+					{
+						foreach (var menuItem in MenuItemList)
+						{
+							<button type="button"
+									  class="list-group-item list-group-item-action@(menuItem.Id == SelectedMenu.Id ? " active" : "")"
+									  @onclick="() => HandleOnChangeMenu(menuItem)">
+								@menuItem.Name
+							</button>
+						}
+					}
+				</div>
+			</div>
+			<div class="col-md-6 bg-white">
+				<div class="product-container">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1">
+								<i class="fas fa-search"></i>
+							</span>
+						</div>
+						<input type="text" class="form-control" placeholder="Username" aria-label="Search..." aria-describedby="basic-addon1">
+					</div>
+				</div>
+				<div>
+					<h2>Menu name</h2>
+				</div>
+				<div class="product-list">
+					<ul class="list-group">
+						@if (ProductListMenu is null)
+						{
+							<li>Loading...</li>
+						}
+						else
+						{
+							foreach (var productItem in ProductListMenu)
+							{
+								<li class="list-group-item">
+									<ProductItem Product="productItem" />
+								</li>
+							}
+						}
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-3 bg-secondary">
+				qweqwe
+			</div>
+		</div>
+	</div>
+</div>

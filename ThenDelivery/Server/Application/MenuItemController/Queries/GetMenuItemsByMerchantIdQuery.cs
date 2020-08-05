@@ -37,13 +37,13 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 			public async Task<IEnumerable<MenuItemDto>> Handle(
 				GetMenuItemsByMerchantIdQuery request, CancellationToken cancellationToken)
 			{
-				var result = new List<MenuItemDto>();
 				try
 				{
-					result = await (from menu in _dbContext.MenuItems
+					return await (from menu in _dbContext.MenuItems
 										 where menu.MerchantId == request._merchantId
 										 select new MenuItemDto()
 										 {
+											 Id = menu.Id,
 											 Name = menu.Name,
 											 Description = menu.Description,
 											 MerchantId = menu.MerchantId
@@ -51,10 +51,9 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 				}
 				catch (Exception ex)
 				{
-					_logger.LogError(ex.Message);
-					return null;
+					_logger.LogError(ex, ex.Message);
+					throw;
 				}
-				return result;
 			}
 		}
 	}

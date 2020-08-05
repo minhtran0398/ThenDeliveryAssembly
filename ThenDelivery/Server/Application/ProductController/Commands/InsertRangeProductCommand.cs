@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
@@ -18,7 +17,7 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 
 		public InsertRangeProductCommand(IEnumerable<ProductDto> productList)
 		{
-			_productList = productList;
+			_productList = productList ?? throw new ArgumentNullException(nameof(productList));
 		}
 
 		public class Handler : IRequestHandler<InsertRangeProductCommand, Unit>

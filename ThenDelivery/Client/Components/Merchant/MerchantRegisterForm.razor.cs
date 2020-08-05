@@ -101,12 +101,12 @@ namespace ThenDelivery.Client.Components.Merchant
 
 		protected void HandleSelectedMerchantTypeChanged(IEnumerable<MerTypeDto> newValue)
 		{
-			MerchantModel.MerchantTypeList = newValue.ToList();
+			MerchantModel.MerTypeList = newValue.ToList();
 		}
 
 		protected void HandleSelectedFeaturedDishCategoryChanged(IEnumerable<FeaturedDishDto> newValue)
 		{
-			MerchantModel.FeaturedDishCategoryList = newValue.ToList();
+			MerchantModel.FeaturedDishList = newValue.ToList();
 		}
 
 		protected void HandleHouseNumberChanged(string newValue)

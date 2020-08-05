@@ -237,6 +237,7 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MenuItemId = table.Column<int>(type: "int", nullable: false),
+                    MerchantId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(maxLength: 128, nullable: true),

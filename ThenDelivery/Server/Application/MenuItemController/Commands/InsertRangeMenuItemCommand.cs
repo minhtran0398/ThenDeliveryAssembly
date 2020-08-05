@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
@@ -18,7 +17,7 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Commands
 
 		public InsertRangeMenuItemCommand(IEnumerable<MenuItemDto> menuList)
 		{
-			_menuList = menuList;
+			_menuList = menuList ?? throw new ArgumentNullException(nameof(menuList));
 		}
 
 		public class Handler : IRequestHandler<InsertRangeMenuItemCommand, Unit>
@@ -34,30 +33,32 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Commands
 
 			public async Task<Unit> Handle(InsertRangeMenuItemCommand request, CancellationToken cancellationToken)
 			{
-				using (var trans = _dbContext.Database.BeginTransaction())
+				using var trans = _dbContext.Database.BeginTransaction();
+				try
 				{
-					try
-					{
-						await _dbContext.MenuItems.AddRangeAsync(GetData(request._menuList));
-						await _dbContext.SaveChangesAsync();
-						await trans.CommitAsync();
-					}
-					catch(DbUpdateConcurrencyException)
-					{
-						await trans.RollbackAsync();
-						throw new DbUpdateConcurrencyException("A concurrency violation is encountered while saving to the database");
-					}
-					catch (DbUpdateException)
-					{
-						await trans.RollbackAsync();
-						throw new DbUpdateException("An error is encountered while saving to the database");
-					}
-					catch (Exception ex)
-					{
-						await trans.RollbackAsync();
-						_logger.LogError(ex, ex.Message);
-						throw;
-					}
+					await _dbContext.MenuItems.AddRangeAsync(GetData(request._menuList));
+					await _dbContext.SaveChangesAsync();
+					await trans.CommitAsync();
+				}
+				catch (DbUpdateConcurrencyException ex)
+				{
+					await trans.RollbackAsync();
+					_logger.LogError(ex, ex.Message);
+					throw new DbUpdateConcurrencyException
+						("[MenuItems] A concurrency violation is encountered while saving to the database");
+				}
+				catch (DbUpdateException ex)
+				{
+					await trans.RollbackAsync();
+					_logger.LogError(ex, ex.Message);
+					throw new DbUpdateException
+						("[MenuItems] An error is encountered while saving to the database");
+				}
+				catch (Exception ex)
+				{
+					await trans.RollbackAsync();
+					_logger.LogError(ex, ex.Message);
+					throw;
 				}
 				return Unit.Value;
 			}

@@ -256,3 +256,237 @@ img {
 		z-index: 2;
 	}
 /* End product components */
+
+/* Merchant Home*/
+.now-detail-restaurant {
+	background-color: #fff;
+	padding: 20px 0;
+}
+
+	.now-detail-restaurant .container, .container-fluid {
+		margin-right: auto;
+		margin-left: auto;
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+
+	.now-detail-restaurant .detail-restaurant-img {
+		width: 350px;
+		height: 225px;
+		position: relative;
+		float: left;
+	}
+
+	.now-detail-restaurant .detail-restaurant-info {
+		color: #252525;
+		float: right;
+		width: 645px;
+		padding-bottom: 15px;
+	}
+
+	.now-detail-restaurant .detail-restaurant-img img {
+		width: 100%;
+		height: 100%;
+	}
+
+img {
+	vertical-align: middle;
+	border-style: none;
+}
+
+.now-detail-restaurant .kind-restaurant {
+	font-size: 11px;
+	color: #959595;
+	text-transform: uppercase;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.now-detail-restaurant .name-restaurant {
+	font-size: 22px;
+	color: #464646;
+	font-weight: 700;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-bottom: 4px;
+	line-height: 33px;
+}
+
+.now-detail-restaurant .address-restaurant {
+	font-size: 13px;
+	margin-bottom: 2px;
+}
+
+.now-detail-restaurant .status-restaurant {
+	margin-bottom: 6px;
+}
+
+.now-detail-restaurant .cost-restaurant {
+	color: #959595;
+	font-size: 15px;
+}
+
+.now-detail-restaurant .share-social {
+	width: 100%;
+	height: auto;
+	margin-top: 10px;
+}
+
+.now-detail-restaurant .utility-restaurant {
+	border-top: 1px solid #ebebeb;
+}
+
+.now-detail-restaurant .breadcrumb {
+	padding-left: 0;
+	margin-bottom: 18px;
+	list-style: none;
+	overflow: hidden;
+	margin-top: -2px;
+}
+
+	.now-detail-restaurant .breadcrumb .breadcrumb-item {
+		float: left;
+		position: relative;
+		padding-right: 4px;
+	}
+
+	.now-detail-restaurant .breadcrumb .breadcrumb-link {
+		font-size: 13px;
+		color: #187caa;
+	}
+
+.now-detail-restaurant .kind-restaurant span {
+	margin: auto 0;
+}
+
+.now-detail-restaurant .opentime-status {
+	position: relative;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	z-index: 1;
+}
+
+	.now-detail-restaurant .opentime-status .stt {
+		width: inherit;
+		height: inherit;
+		vertical-align: middle;
+		display: inline-block;
+		background-color: transparent;
+	}
+
+.opentime-status .offline {
+	background-color: #6d6f71;
+	color: #6d6f71;
+}
+
+.opentime-status .stt {
+	border-radius: 50%;
+	cursor: pointer;
+	width: 15px;
+	height: 15px;
+	display: block;
+	position: relative;
+	z-index: 2;
+}
+
+.now-detail-restaurant .cost-restaurant .fas {
+	text-align: center;
+	font-size: 8px;
+	width: 16px;
+	height: 16px;
+	border: 1px solid;
+	border-radius: 50%;
+	line-height: 15px;
+	vertical-align: top;
+	margin-top: 3px;
+	margin-right: 3px;
+}
+
+.now-detail-restaurant .link-merchant {
+	margin-bottom: 8px;
+}
+
+.now-detail-restaurant .link-merchant {
+	color: #fff;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background-color: #525252;
+	border-radius: 3px;
+	padding: 9px 10px 9px 40px;
+	position: relative;
+	float: right;
+}
+
+.share-social-box {
+	display: inline-block;
+}
+
+.then-detail-body-menu{
+	padding: 0 30px;
+	padding-top: 20px;
+}
+
+.product-container{
+	padding-top: 10px;
+}
+
+.product-list .list-group-item{
+	border: none !important;
+}
+/* End Merchant Home */
+
+/* add topping */
+.topping-set__item-input {
+	padding: 20px;
+	background-color: #f6f9fe;
+	border: 1px solid #e6ecf3;
+	border-radius: 2px;
+}
+
+.topping-set__hint {
+	margin-bottom: 15px;
+	color: #969aa3;
+	line-height: 20px;
+}
+
+.row-topping {
+	box-sizing: border-box;
+	display: flex;
+	flex: 0 1 auto;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-right: -1rem;
+	margin-left: -1rem;
+}
+
+.topping-set__item-input .form-item {
+	padding-bottom: 15px;
+}
+
+.form-item .col-xs-12.form-item__label {
+	margin-bottom: 10px;
+}
+
+.col-xs-12 {
+	flex-basis: 100%;
+	max-width: 100%;
+}
+
+.topping-set__item-input--add-btn {
+	color: #4982f1;
+	cursor: pointer;
+}
+
+.topping-set__item-input--submit {
+	margin-top: 20px;
+}
+
+.register-shop__form-footer {
+	display: flex;
+	justify-content: flex-end;
+}
+
+/* end add topping */
