@@ -439,54 +439,11 @@ img {
 /* End Merchant Home */
 
 /* add topping */
-.topping-set__item-input {
-	padding: 20px;
-	background-color: #f6f9fe;
-	border: 1px solid #e6ecf3;
-	border-radius: 2px;
-}
 
-.topping-set__hint {
-	margin-bottom: 15px;
-	color: #969aa3;
-	line-height: 20px;
-}
-
-.row-topping {
-	box-sizing: border-box;
+.delete-topping {
 	display: flex;
-	flex: 0 1 auto;
-	flex-direction: row;
-	flex-wrap: wrap;
-	margin-right: -1rem;
-	margin-left: -1rem;
-}
-
-.topping-set__item-input .form-item {
-	padding-bottom: 15px;
-}
-
-.form-item .col-xs-12.form-item__label {
-	margin-bottom: 10px;
-}
-
-.col-xs-12 {
-	flex-basis: 100%;
-	max-width: 100%;
-}
-
-.topping-set__item-input--add-btn {
-	color: #4982f1;
-	cursor: pointer;
-}
-
-.topping-set__item-input--submit {
-	margin-top: 20px;
-}
-
-.register-shop__form-footer {
-	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	align-items: flex-end;
 }
 
 /* end add topping */

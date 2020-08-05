@@ -14,7 +14,12 @@ namespace ThenDelivery.Client.Components.Commons
 		[Parameter] public decimal? MaxValue { get; set; }
 		[Parameter] public string DisplayFormat { get; set; } = "C0";
 
-		protected string ValueString { get; set; } = "0";
+		protected string ValueString { get; set; }
+
+		protected override void OnInitialized()
+		{
+			ValueString = InputValue.ToString();
+		}
 
 		protected async Task HandleValueChanged(string newValueString)
 		{

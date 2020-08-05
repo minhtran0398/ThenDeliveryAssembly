@@ -1,37 +1,52 @@
 ﻿@inherits AddToppingBase
 
-<div class="topping-set__item-input">
-	<div class="topping-set__hint">
-		Nếu bạn đang tạo set topping cho món nước, vui lòng tạo set "Kích cỡ", "Lượng Đường",
-		"Nóng/Lạnh"
-	</div>
-	<div class="row-topping topping-set__topping-item-input">
-		<div class="col-xs-5">
-			<div class="row-topping form-item">
-				<div class="col-xs-12 form-item__label">
-					Tên Topping 1<span class="form-item__label--important">&nbsp;*</span>
-				</div>
-				<div class="col-xs-12 form-item__control-wrapper undefined">
-					<div class="input"><input placeholder="vd: Đường 0%, Đường 20%,..." value=""></div>
-				</div>
+@if (ToppingList is null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	foreach (var toppingItem in ToppingList)
+	{
+		<div class="row">
+			<div class="col-sm-5">
+				<label>Tên topping @toppingItem.Id:</label>
+				<DxTextBox NullText="vd: 'Đường'"
+							  Text="@toppingItem.Name"
+							  TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
+							  TextExpression="() => toppingItem.Name" />
+			</div>
+			<div class="col-sm-5">
+				<label>Giá:</label>
+				<CustomCurrencyEdit InputValue="@toppingItem.UnitPrice"
+										  ValueChanged="async (newValue) => await HandlePriceChanged(newValue, toppingItem.Id)" />
+			</div>
+			<div class="col-sm-2 delete-topping">
+				<button type="button"
+						  class="btn btn-sm btn-outline-danger"
+						  @onclick="async () => await HandleDeleteTopping(toppingItem.Id)">
+					<i class="fas fa-trash-alt"></i>
+				</button>
 			</div>
 		</div>
-		<div class="col-xs-5">
-			<div class="row-topping form-item">
-				<div class="col-xs-12 form-item__label">Giá<span class="form-item__label--important">&nbsp;*</span></div>
-				<div class="col-xs-12 form-item__control-wrapper undefined">
-					<div class="input"><input value="0"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-2 topping-set__topping-item-input--action"></div>
+	}
+}
+<div class="row">
+	<div class="col-md-12 row-item">
+		<a href="javascript:void(0)"
+			@onclick="HandleAddTopping"
+			style="text-decoration:none">Thêm Topping</a>
 	</div>
-	<span class="topping-set__item-input--add-btn">Thêm Topping</span>
-	<div class="register-shop__form-footer topping-set__item-input--submit">
-		<button class="btn" type="button">
-			<span class="btn__text">Huỷ</span>
-		</button><button class="btn btn--primary" type="button">
-			<span class="btn__text">Lưu</span>
-		</button>
+	<div class="col-md-12 add-product__form-footer">
+		<DxButton SubmitFormOnClick="false"
+					 Text="Hủy"
+					 @onclick="HandleOnCancel"
+					 RenderStyle="@ButtonRenderStyle.Secondary"
+					 CssClass="add-product__form-footer-button" />
+		<DxButton SubmitFormOnClick="false"
+					 @onclick="HandleOnSubmit"
+					 Text="Lưu"
+					 RenderStyle="@ButtonRenderStyle.Secondary"
+					 CssClass="add-product__form-footer-button" />
 	</div>
 </div>

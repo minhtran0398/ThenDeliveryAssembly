@@ -33,35 +33,55 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 
 			public async Task<Unit> Handle(InsertRangeProductCommand request, CancellationToken cancellationToken)
 			{
-				using (var trans = _dbContext.Database.BeginTransaction())
+				using var trans = _dbContext.Database.BeginTransaction();
+				try
 				{
-					try
+					foreach (var productDto in request._productList)
 					{
-						await _dbContext.Products.AddRangeAsync(GetData(request._productList));
+						var productToInsert = GetProductData(productDto);
+						await _dbContext.Products.AddAsync(productToInsert);
 						await _dbContext.SaveChangesAsync();
-						await trans.CommitAsync();
+						await _dbContext.Toppings.AddRangeAsync(GetToppingData(productDto.ToppingList, productToInsert.Id));
 					}
-					catch (DbUpdateConcurrencyException)
-					{
-						await trans.RollbackAsync();
-						throw new DbUpdateConcurrencyException("A concurrency violation is encountered while saving to the database");
-					}
-					catch (DbUpdateException)
-					{
-						await trans.RollbackAsync();
-						throw new DbUpdateException("An error is encountered while saving to the database");
-					}
-					catch (Exception ex)
-					{
-						await trans.RollbackAsync();
-						_logger.LogError(ex, ex.Message);
-						throw;
-					}
+					await trans.CommitAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					await trans.RollbackAsync();
+					throw new DbUpdateConcurrencyException("A concurrency violation is encountered while saving to the database");
+				}
+				catch (DbUpdateException)
+				{
+					await trans.RollbackAsync();
+					throw new DbUpdateException("An error is encountered while saving to the database");
+				}
+				catch (Exception ex)
+				{
+					await trans.RollbackAsync();
+					_logger.LogError(ex, ex.Message);
+					throw;
 				}
 				return Unit.Value;
 			}
 
-			private IEnumerable<Product> GetData(IEnumerable<ProductDto> productDtoList)
+			private Product GetProductData(ProductDto productDto)
+			{
+				return new Product()
+				{
+					Id = 0,
+					Description = productDto.Description,
+					FavoriteCount = productDto.FavoriteCount,
+					Image = productDto.Image,
+					IsAvailable = productDto.IsAvailable,
+					MenuItemId = productDto.MenuItem.Id,
+					Name = productDto.Name,
+					OrderCount = productDto.OrderCount,
+					UnitPrice = productDto.UnitPrice,
+					MerchantId = productDto.MerchantId
+				};
+			}
+
+			private IEnumerable<Product> GetProductData(IEnumerable<ProductDto> productDtoList)
 			{
 				foreach (var productDto in productDtoList)
 				{
@@ -75,7 +95,22 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 						MenuItemId = productDto.MenuItem.Id,
 						Name = productDto.Name,
 						OrderCount = productDto.OrderCount,
-						UnitPrice = productDto.UnitPrice
+						UnitPrice = productDto.UnitPrice,
+						MerchantId = productDto.MerchantId
+					};
+				}
+			}
+
+			private IEnumerable<Topping> GetToppingData(IEnumerable<ToppingDto> toppingDtoList, int productId)
+			{
+				foreach (var toppingDto in toppingDtoList)
+				{
+					yield return new Topping()
+					{
+						Id = 0,
+						Name = toppingDto.Name,
+						ProductId = productId,
+						UnitPrice = toppingDto.UnitPrice
 					};
 				}
 			}

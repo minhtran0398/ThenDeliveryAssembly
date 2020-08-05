@@ -19,6 +19,7 @@ namespace ThenDelivery.Client.Components.Product
 
 		#region Properties
 		protected ProductDto ProductModel { get; set; }
+		public bool IsShowFormTopping { get; set; }
 		#endregion
 
 		#region Life Cycle
@@ -39,6 +40,22 @@ namespace ThenDelivery.Client.Components.Product
 		{
 			await OnCancel.InvokeAsync(false);
 			ProductModel = new ProductDto();
+		}
+
+		protected void HandleCreateTopping()
+		{
+			IsShowFormTopping = true;
+		}
+
+		protected void HandleCancelCreateTopping()
+		{
+			IsShowFormTopping = false;
+		}
+
+		protected void HandleSubmitCreateTopping(List<ToppingDto> newValue)
+		{
+			ProductModel.ToppingList = newValue;
+			IsShowFormTopping = false;
 		}
 
 		protected void HandleProductNameChanged(string newValue)

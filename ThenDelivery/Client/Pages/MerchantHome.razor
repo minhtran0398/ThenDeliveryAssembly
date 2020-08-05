@@ -4,8 +4,8 @@
 <div class="now-detail-restaurant clearfix">
 	<div class="container">
 		<div class="detail-restaurant-img">
-			<img src="https://images.foody.vn/res/g95/949403/prof/s640x400/foody-upload-api-foody-mobile-531d9c2079dc9e82c7cd-190917113228.jpg"
-				  alt="Nam Nhi - Organic Coffee &amp; Tea - Shop Online" class="">
+			<img src="@String.Format("data:image/jpg;base64,{0}", Merchant.Avatar)"
+				  alt="@Merchant.Name &amp; @Merchant.FeaturedDishList?[0].Name - Shop Online" class="">
 		</div>
 		<div class="detail-restaurant-info">
 			<nav aria-label="breadcrumb">

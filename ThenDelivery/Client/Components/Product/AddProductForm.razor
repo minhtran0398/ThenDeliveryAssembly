@@ -7,7 +7,7 @@
 			<label>Image: </label>
 			<CustomImageEdit Base64String="@ProductModel.Image"
 								  Width="200"
-								  OnChangeImage="HandleImageChanged"/>
+								  OnChangeImage="HandleImageChanged" />
 		</div>
 		<div class="col-md-12 row-item">
 			<label>Name: </label>
@@ -30,9 +30,23 @@
 							SelectedItemExpression="() => ProductModel.MenuItem" />
 		</div>
 		<div class="col-md-12 row-item">
-			<div class="col-sm-6">Nội dung</div>
-			<div class="col-sm">Sửa</div>
-			<div class="col-sm">Xóa</div>
+			<label>Set topping: </label>
+			@if (IsShowFormTopping == false)
+			{
+				<p>@ProductModel.ToppingListString</p>
+				<a href="javascript:void(0)"
+					@onclick="HandleCreateTopping"
+					style="text-decoration:none">
+					<i class="fas fa-plus"></i>
+					Tạo Set Topping
+				</a>
+			}
+			else
+			{
+				<AddTopping ToppingList="ProductModel.ToppingList"
+								OnCancel="HandleCancelCreateTopping"
+								OnSubmit="HandleSubmitCreateTopping" />
+			}
 		</div>
 		<div class="col-md-12 row-item">
 			<label>Description: </label>
