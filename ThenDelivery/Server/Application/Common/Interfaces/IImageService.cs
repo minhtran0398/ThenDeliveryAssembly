@@ -1,7 +1,7 @@
 ﻿namespace ThenDelivery.Server.Application.Common.Interfaces
 {
-	public interface IImageReaderService
+	public interface IImageService
 	{
-		void SaveImage();
+		string SaveImage(string base64String);
 	}
 }

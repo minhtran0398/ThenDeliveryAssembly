@@ -41,7 +41,7 @@ namespace ThenDelivery.Server.Persistence.Configurations
 					.IsRequired(true);
 
 			builder.Property(e => e.UnitPrice)
-					.HasColumnType("smallmoney")
+					.HasColumnType("decimal(8, 0)")
 					.IsRequired(true);
 
 			builder.Property(e => e.Image)

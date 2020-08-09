@@ -10,10 +10,20 @@ namespace ThenDelivery.Server.Persistence.Configurations
 		{
 			builder.ToTable("OrderDetails");
 
-			builder.HasKey(e => new { e.OrderId, e.ProductId });
+			builder.HasKey(e => e.Id);
+
+			builder.Property(e => e.OrderId)
+					.IsRequired(true);
+
+			builder.Property(e => e.ProductId)
+					.IsRequired(true);
+
+			builder.Property(e => e.Note)
+					.HasMaxLength(256)
+					.IsRequired(false);
 
 			builder.Property(e => e.UnitPrice)
-					.HasColumnType("smallmoney")
+					.HasColumnType("decimal(8, 0)")
 					.IsRequired(true);
 
 			builder.Property(e => e.Quantity)

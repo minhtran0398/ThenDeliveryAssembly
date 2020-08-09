@@ -1,0 +1,6 @@
+﻿@inherits CustomNumberEditBase
+
+<div class="input-group input-group-sm">
+	<input value="@InputValueString" type="text" class="form-control"
+			 @onchange="async (newValue) => await HandleOnChangeNumber(newValue)" />
+</div>

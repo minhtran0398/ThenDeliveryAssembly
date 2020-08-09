@@ -25,6 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
   </ItemGroup>
 
@@ -46,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\ToppingController\Commands\" />
     <Folder Include="Application\UserController\Commands\" />
   </ItemGroup>
 

@@ -1,29 +1,32 @@
 ﻿@inherits MerchantCardBase
 
-<div class="item-restaurant">
-	<a class="item-content" href="@String.Format("merchant/{0}", @MerchantModel.Id)">
-		<div class="img-restaurant">
-			<img src="@String.Format("data:image/jpg;base64,{0}", MerchantModel.CoverPicture)" width="186" height="116" class="">
-		</div>
-		<div class="info-restaurant">
-			<div class="info-basic-res">
-				<h4 class="name-res" title="@MerchantModel.Name">@MerchantModel.Name</h4>
-				<div class="address-res" title="@MerchantModel.AddressString">@MerchantModel.AddressString</div>
+@if (MerchantModel != null)
+{
+	<div class="item-restaurant">
+		<a class="item-content" href="@String.Format("merchant/{0}", @MerchantModel.Id)">
+			<div class="img-restaurant">
+				<img src="@MerchantModel.Avatar" width="186" height="116" class="">
 			</div>
-		<div class="opentime-status">
-			@if (CustomTime.Now.IsInRange(MerchantModel.OpenTime, MerchantModel.CloseTime))
-			{
-				<span class="stt online" title="Mở cửa"
-						style="color: rgb(35, 152, 57); background-color: rgb(35, 152, 57);">
-				</span>
-			}
-			else
-			{
-				<span class="stt offline" title="Đã đóng"
-						style="color: rgb(211, 211, 211); background-color: rgb(211, 211, 211);">
-				</span>
-			}
-		</div>
-		</div>
-	</a>
-</div>
+			<div class="info-restaurant">
+				<div class="info-basic-res">
+					<h4 class="name-res" title="@MerchantModel.Name">@MerchantModel.Name</h4>
+					<div class="address-res" title="@MerchantModel.AddressString">@MerchantModel.AddressString</div>
+				</div>
+				<div class="opentime-status">
+					@if (CustomTime.Now.IsInRange(MerchantModel.OpenTime, MerchantModel.CloseTime))
+					{
+						<span class="stt online" title="Mở cửa"
+								style="color: rgb(35, 152, 57); background-color: rgb(35, 152, 57);">
+						</span>
+					}
+					else
+					{
+						<span class="stt offline" title="Đã đóng"
+								style="color: rgb(211, 211, 211); background-color: rgb(211, 211, 211);">
+						</span>
+					}
+				</div>
+			</div>
+		</a>
+	</div>
+}

@@ -1,0 +1,54 @@
+﻿@inherits OrderedItemListBase
+
+<div class="ordered-container">
+	<div class="ordered-header">
+		<h5>@(OrderItemList?.Count ?? 0) món</h5>
+	</div>
+	<div class="ordered-list">
+		@foreach (var orderItem in OrderItemList)
+		{
+			<div class="ordered_item">
+				<div class="row">
+					<div class="col-auto pr-1">
+						<DxButton IconCssClass="fas fa-minus"
+									 CssClass="btn-change-quantity-order"
+									 @onclick="() => HandleDecreaseQuantity(orderItem.Id)" />
+						<div class="quantity-label-order">@orderItem.Quantity</div>
+						<DxButton IconCssClass="fas fa-plus"
+									 CssClass="btn-change-quantity-order"
+									 @onclick="() => HandleIncreaseQuantity(orderItem.Id)" />
+					</div>
+					<div class="col pl-0">
+						<b>@orderItem.OrderProduct.Name</b> - <small>@orderItem.ToppingListString</small>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col input-group input-group-sm">
+						<input class="form-control input-note-order" placeholder="Thêm ghi chú" value="@orderItem.Note" />
+					</div>
+					<div class="col-auto pl-0">
+						<p><strong>@orderItem.OrderProduct.UnitPrice</strong></p>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+	<div class="ordered-summary">
+		<div class="ordered-total">
+			<div class="row">
+				<div class="col-sm">
+					Tổng cộng
+				</div>
+				<div class="col-sm-auto">
+					<span>@TotalPrice</span>
+				</div>
+			</div>
+		</div>
+		<div class="ordered-confirm-order">
+			<button type="button" class="btn btn-danger btn-confirm-order btn-sm">
+				<i class="fas fa-check-circle"></i>
+				Đặt
+			</button>
+		</div>
+	</div>
+</div>

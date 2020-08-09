@@ -27,6 +27,9 @@ namespace ThenDelivery.Client
 			builder.Services
 				.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>()
 				.CreateClient("ThenDelivery.ServerAPI"));
+			builder.Services
+				.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>()
+				.CreateClient("ThenDelivery.AnonymousAPI"));
 
 			builder.Services.AddDevExpressBlazor();
 

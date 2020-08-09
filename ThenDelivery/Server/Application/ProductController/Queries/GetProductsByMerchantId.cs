@@ -55,7 +55,17 @@ namespace ThenDelivery.Server.Application.ProductController.Queries
 												Description = m.Description,
 												MerchantId = m.MerchantId,
 												Name = m.Name
-											}).Single()
+											}).Single(),
+							MerchantId = p.MerchantId,
+							ToppingList = _dbContext.Toppings
+											.Where(t => t.ProductId == p.Id)
+											.Select(t => new ToppingDto()
+											{
+												Id = t.Id,
+												Name = t.Name,
+												ProductId = t.ProductId,
+												UnitPrice = t.UnitPrice,
+											}).ToList()
 						})
 						.ToListAsync();
 				}

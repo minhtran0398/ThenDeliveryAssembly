@@ -11,11 +11,20 @@ namespace ThenDelivery.Client.Pages
 	public class MerchantHomeBase : CustomComponentBase<MerchantHomeBase>
 	{
 		[Parameter] public int MerchantId { get; set; }
-		public MerchantDto Merchant { get; set; }
-		public List<ProductDto> ProductListFull { get; set; }
-		public List<ProductDto> ProductListMenu { get; set; }
-		public List<MenuItemDto> MenuItemList { get; set; }
-		public MenuItemDto SelectedMenu { get; set; }
+		protected MerchantDto Merchant { get; set; }
+		protected List<ProductDto> ProductListFull { get; set; }
+		protected List<ProductDto> ProductListMenu { get; set; }
+		protected List<MenuItemDto> MenuItemList { get; set; }
+
+		protected MenuItemDto SelectedMenu { get; set; }
+		protected bool IsShowPopupTopping { get; set; }
+		protected ProductDto SelectedProduct { get; set; }
+		public List<OrderItem> OrderItemList { get; set; }
+
+		protected override void OnInitialized()
+		{
+			OrderItemList = new List<OrderItem>();
+		}
 
 		protected override async Task OnInitializedAsync()
 		{
@@ -42,6 +51,30 @@ namespace ThenDelivery.Client.Pages
 			{
 				ProductListMenu = ProductListFull.Where(p => p.MenuItem.Id == selectedMenu.Id).ToList();
 			}
+		}
+
+		/// <summary>
+		/// Occur when click plus icon product item
+		/// </summary>
+		/// <param name="product"></param>
+		protected void HandleOrderProduct(ProductDto product)
+		{
+			SelectedProduct = product;
+			IsShowPopupTopping = true;
+		}
+
+		protected void HandleCancelOrder()
+		{
+			IsShowPopupTopping = false;
+			StateHasChanged();
+		}
+
+		protected void HandleAddOrder(OrderItem orderItem)
+		{
+			IsShowPopupTopping = false;
+			orderItem.Id = OrderItemList.Max(e => e?.Id) + 1 ?? 1;
+			OrderItemList.Add(orderItem);
+			StateHasChanged();
 		}
 	}
 }

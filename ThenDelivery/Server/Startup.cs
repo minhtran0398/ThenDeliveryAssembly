@@ -38,6 +38,7 @@ namespace ThenDelivery.Server
 			#region default
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+			services.AddTransient<IImageService, ImageService>();
 			#endregion
 		}
 

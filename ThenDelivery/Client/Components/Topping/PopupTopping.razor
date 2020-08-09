@@ -1,0 +1,45 @@
+﻿@inherits PopupToppingBase
+
+<DxPopup HeaderCssClass="modal-header">
+	<HeaderTemplate>
+		<div class="text-white w-100">
+			<div class="row mr-0">
+				<div class="col-sm-4">
+					<img src="@Product.Image" style="width:120px;height:120px" />
+				</div>
+				<div class="col-sm-8">
+					<h3>@Product.Name</h3>
+					<p>@Product.UnitPrice</p>
+				</div>
+				<div>
+					<i class="fas fa-times btn-close-popup" @onclick="async () => await HandleCancel()" />
+				</div>
+			</div>
+		</div>
+	</HeaderTemplate>
+	<Content>
+		<h3>Thêm topping</h3>
+		<DxListBox Data="@Product.ToppingList"
+					  TextFieldName="Text"
+					  SelectionMode="ListBoxSelectionMode.Multiple"
+					  ShowCheckboxes="true"
+					  @bind-SelectedItems="SelectedToppingList">
+		</DxListBox>
+	</Content>
+	<FooterTemplate>
+		<div class="col">
+			<DxButton IconCssClass="fas fa-minus"
+						 CssClass="btn-change-quantity"
+						 @onclick="HandleDecreaseQuantity" />
+			<div class="quantity-label">@Quantity</div>
+			<DxButton IconCssClass="fas fa-plus"
+						 CssClass="btn-change-quantity"
+						 @onclick="HandleIncreaseQuantity" />
+		</div>
+		<div class="col-auto">
+			<button class="btn btn-primary btn-sm" @onclick="async () => await HandleAddOrder()">
+				OK +@(Product.UnitPrice * Quantity)đ
+			</button>
+		</div>
+	</FooterTemplate>
+</DxPopup>

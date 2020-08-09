@@ -16,16 +16,21 @@ namespace ThenDelivery.Server.Controllers
 	public class MerchantController : CustomControllerBase<MerchantController>
 	{
 		private readonly ICurrentUserService _currentUserService;
+		private readonly IImageService _imageService;
 
-		public MerchantController(ICurrentUserService currentUserService)
+		public MerchantController(ICurrentUserService currentUserService,
+			IImageService imageService)
 		{
 			_currentUserService = currentUserService;
+			_imageService = imageService;
 		}
 
 		[HttpPost]
 		[Authorize(Roles = Const.Role.UserRole)]
 		public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
 		{
+			string path = _imageService.SaveImage(merchantDto.Avatar);
+			merchantDto.Avatar = merchantDto.CoverPicture = path;
 			merchantDto.UserId = _currentUserService.GetLoggedInUserId();
 			int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
 
@@ -43,7 +48,7 @@ namespace ThenDelivery.Server.Controllers
 			if(merchantId == -1)
 			{
 				IEnumerable<MerchantDto> merchantList =
-				await Mediator.Send(new GetAllMerchantQuery());
+					await Mediator.Send(new GetAllMerchantQuery());
 
 				// valid if data returned null
 				if (merchantList == null)
