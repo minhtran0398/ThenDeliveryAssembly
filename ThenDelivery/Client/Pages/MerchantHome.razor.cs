@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Client.Components;
 using ThenDelivery.Client.ExtensionMethods;
+using ThenDelivery.Client.Shared;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Pages
@@ -28,6 +31,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected override async Task OnInitializedAsync()
 		{
+			await base.OnInitializedAsync();
 			Merchant = await HttpClientAnonymous
 				.CustomGetAsync<MerchantDto>($"api/merchant?merchantId={MerchantId}");
 			ProductListFull = await HttpClientAnonymous
@@ -59,8 +63,15 @@ namespace ThenDelivery.Client.Pages
 		/// <param name="product"></param>
 		protected void HandleOrderProduct(ProductDto product)
 		{
-			SelectedProduct = product;
-			IsShowPopupTopping = true;
+			if (IsAuthenticated() == false)
+			{
+				NavigateToLogin();
+			}
+			else
+			{
+				SelectedProduct = product;
+				IsShowPopupTopping = true;
+			}
 		}
 
 		protected void HandleCancelOrder()
@@ -72,9 +83,28 @@ namespace ThenDelivery.Client.Pages
 		protected void HandleAddOrder(OrderItem orderItem)
 		{
 			IsShowPopupTopping = false;
-			orderItem.Id = OrderItemList.Max(e => e?.Id) + 1 ?? 1;
-			OrderItemList.Add(orderItem);
+			bool isAdd = true;
+			foreach (var orderedItem in OrderItemList)
+			{
+				if (orderedItem.JsonEqualProductAndTopping(orderItem))
+				{
+					orderedItem.Quantity += orderItem.Quantity;
+					isAdd = false;
+					break;
+				}
+			}
+			if (isAdd)
+			{
+				orderItem.Id = OrderItemList.Max(e => e?.Id) + 1 ?? 1;
+				OrderItemList.Add(orderItem);
+			}
 			StateHasChanged();
+		}
+
+		protected void HandleConfirmOrder(List<OrderItem> orderItemList)
+		{
+			Logger.LogWarning(JsonConvert.SerializeObject(orderItemList));
+			Logger.LogWarning(JsonConvert.SerializeObject(OrderItemList));
 		}
 	}
 }

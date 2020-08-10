@@ -1,0 +1,28 @@
+﻿@page "/test"
+@inherits PopupConfirmOrderBase
+
+<DxPopup HeaderText="Confirm Order" ShowCloseButton="true" CloseButtonClick="HandleCloseConfirm">
+	<Content>
+		<ul class="list-group list-group-flush">
+			@foreach (var orderItem in OrderItemList)
+			{
+				<li class="list-group-item d-flex justify-content-between align-items-center confirm-order-item">
+					<span class="badge badge-primary badge-pill">14</span>
+					@orderItem.OrderProductToppingName
+					<span class="float-right">@orderItem.OrderItemPrice</span>
+				</li>}
+		</ul>
+		<div class="row">
+			<div class="col">Total @TotalProduct món</div>
+			<div class="col-auto">@TotalPrice</div>
+		</div>
+		<div class="row">
+			<div class="col">Total</div>
+			<div class="col-auto">@FinalPrice</div>
+		</div>
+	</Content>
+	<FooterTemplate>
+		<button class="btn btn-primary btn-submit-confirm-order" type="button"
+				  @onclick="@HandleSubmitConfirm">Submit Order -></button>
+	</FooterTemplate>
+</DxPopup>

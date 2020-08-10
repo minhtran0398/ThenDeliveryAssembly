@@ -105,9 +105,8 @@ else
 					</div>
 				</div>
 				<div class="col-md-3 pr-0">
-					<CascadingValue Value="OrderItemList">
-						<OrderedItemList />
-					</CascadingValue>
+					<OrderedItemList OrderItemList="OrderItemList"
+										  OnOrderConfirm="HandleConfirmOrder"/>
 				</div>
 			</div>
 		</div>

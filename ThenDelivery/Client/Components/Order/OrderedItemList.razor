@@ -10,24 +10,32 @@
 			<div class="ordered_item">
 				<div class="row">
 					<div class="col-auto pr-1">
-						<DxButton IconCssClass="fas fa-minus"
-									 CssClass="btn-change-quantity-order"
-									 @onclick="() => HandleDecreaseQuantity(orderItem.Id)" />
-						<div class="quantity-label-order">@orderItem.Quantity</div>
-						<DxButton IconCssClass="fas fa-plus"
-									 CssClass="btn-change-quantity-order"
+						<button class="btn-change-quantity-order fas fa-plus-square"
 									 @onclick="() => HandleIncreaseQuantity(orderItem.Id)" />
+						<div class="quantity-label-order">@orderItem.Quantity</div>
+						<button class="btn-change-quantity-order fas fa-minus-square"
+									 @onclick="() => HandleDecreaseQuantity(orderItem.Id)" />
 					</div>
 					<div class="col pl-0">
-						<b>@orderItem.OrderProduct.Name</b> - <small>@orderItem.ToppingListString</small>
+						@if (orderItem.SelectedToppingList?.Count > 0)
+						{
+							<strong>@orderItem.OrderProduct.Name</strong>@orderItem.ToppingListString.Insert(0, "-")
+						}
+						else
+						{
+							<strong>@orderItem.OrderProduct.Name</strong>
+						}
 					</div>
 				</div>
 				<div class="row">
-					<div class="col input-group input-group-sm">
-						<input class="form-control input-note-order" placeholder="Thêm ghi chú" value="@orderItem.Note" />
+					<div class="col">
+						<input class="input-note-order"
+									  placeholder="Thêm ghi chú"
+									  value="@orderItem.Note"
+									  @onchange="async (newValue) => await HandleNoteChanged(orderItem.Id, newValue)"/>
 					</div>
 					<div class="col-auto pl-0">
-						<p><strong>@orderItem.OrderProduct.UnitPrice</strong></p>
+						<strong>@orderItem.OrderProduct.UnitPrice</strong>
 					</div>
 				</div>
 			</div>
@@ -40,12 +48,14 @@
 					Tổng cộng
 				</div>
 				<div class="col-sm-auto">
-					<span>@TotalPrice</span>
+					<span class="text-primary font-weight-bold">@TotalPrice</span>
 				</div>
 			</div>
 		</div>
 		<div class="ordered-confirm-order">
-			<button type="button" class="btn btn-danger btn-confirm-order btn-sm">
+			<button type="button"
+					  class="btn btn-danger btn-confirm-order btn-sm"
+					  @onclick="async () => await HandleConfirmOrder()">
 				<i class="fas fa-check-circle"></i>
 				Đặt
 			</button>

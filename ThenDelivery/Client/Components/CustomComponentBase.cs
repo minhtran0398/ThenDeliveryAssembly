@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ThenDelivery.Client.Components
 {
@@ -12,6 +15,7 @@ namespace ThenDelivery.Client.Components
 		[Inject] public HttpClient HttpClientServer { get; set; }
 		[Inject] public HttpClient HttpClientAnonymous { get; set; }
 		[Inject] public NavigationManager NavigationManager { get; set; }
+		[Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
 		public string BaseUrl { get; set; }
 		public ClaimsPrincipal User { get; set; }
@@ -22,6 +26,22 @@ namespace ThenDelivery.Client.Components
 			HttpClientServer = HttpClientFactory.CreateClient("ThenDelivery.ServerAPI");
 			HttpClientAnonymous = HttpClientFactory.CreateClient("ThenDelivery.AnonymousAPI");
 			base.OnInitialized();
+		}
+
+		protected override async Task OnInitializedAsync()
+		{
+			var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+			User = authState.User;
+		}
+
+		protected bool IsAuthenticated()
+		{
+			return User.Identity.IsAuthenticated;
+		}
+
+		protected void NavigateToLogin()
+		{
+			NavigationManager.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
 		}
 	}
 }
