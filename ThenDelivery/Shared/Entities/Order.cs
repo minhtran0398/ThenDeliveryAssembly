@@ -10,6 +10,7 @@ namespace ThenDelivery.Shared.Entities
 		public string ShipperId { get; set; }
 		public int? ShippingAddressId { get; set; }
 		public DateTime OrderDateTime { get; set; }
+		public DateTime DeliveryDateTime { get; set; }
 		public string Note { get; set; }
 		public byte ReceiveVia { get; set; }
 	}

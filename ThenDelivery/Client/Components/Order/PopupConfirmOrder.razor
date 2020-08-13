@@ -1,24 +1,43 @@
 ﻿@page "/test"
 @inherits PopupConfirmOrderBase
 
-<DxPopup HeaderText="Confirm Order" ShowCloseButton="true" CloseButtonClick="HandleCloseConfirm">
+<DxPopup HeaderText="Confirm Order"
+			ShowCloseButton="true"
+			CloseButtonClick="HandleCloseConfirm"
+			CssClass="confirm-order-popup">
 	<Content>
-		<ul class="list-group list-group-flush">
-			@foreach (var orderItem in OrderItemList)
-			{
-				<li class="list-group-item d-flex justify-content-between align-items-center confirm-order-item">
-					<span class="badge badge-primary badge-pill">14</span>
-					@orderItem.OrderProductToppingName
-					<span class="float-right">@orderItem.OrderItemPrice</span>
-				</li>}
-		</ul>
 		<div class="row">
-			<div class="col">Total @TotalProduct món</div>
-			<div class="col-auto">@TotalPrice</div>
-		</div>
-		<div class="row">
-			<div class="col">Total</div>
-			<div class="col-auto">@FinalPrice</div>
+			<div class="col-5">
+				<div class="row">
+					<span class="d-block font-weight-bold">@ShippingAddress.FullName - @ShippingAddress.PhoneNumber</span>
+					<span>@ShippingAddress.AddressString</span>
+				</div>
+				<div class="row">
+					<button class="btn btn-outline-primary">Change shipping info</button>
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="row">
+					<ul class="list-group list-group-flush">
+						@foreach (var orderItem in OrderItemList)
+						{
+							<li class="list-group-item d-flex justify-content-between align-items-center confirm-order-item">
+								<span class="badge badge-primary badge-pill">@orderItem.Quantity</span>
+								@orderItem.OrderProductToppingName
+								<span class="float-right">@orderItem.OrderItemPrice</span>
+							</li>
+						}
+					</ul>
+				</div>
+				<div class="row">
+					<div class="col">Total @TotalProduct món</div>
+					<div class="col-auto">@TotalPrice</div>
+				</div>
+				<div class="row">
+					<div class="col">Total</div>
+					<div class="col-auto">@FinalPrice</div>
+				</div>
+			</div>
 		</div>
 	</Content>
 	<FooterTemplate>

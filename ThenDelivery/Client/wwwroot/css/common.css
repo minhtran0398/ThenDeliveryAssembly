@@ -550,3 +550,23 @@ img {
 }
 
 /* end popup confirm order*/
+
+/* popup class */
+
+.shipping-info-address {
+	padding: 20px 0;
+}
+
+.shipping-info-edit-popup {
+	max-width: 900px;
+}
+
+.shipping-info-address-item{
+	border-bottom: 1px solid gray;
+}
+
+.confirm-order-popup {
+	max-width: 700px;
+}
+
+/* end popup class */

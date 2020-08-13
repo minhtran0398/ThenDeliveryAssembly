@@ -1,0 +1,48 @@
+﻿@inherits PopupUpdateAddressBase
+
+<DxPopup HeaderText="Edit Shipping Info"
+			ShowCloseButton="true"
+			CssClass="shipping-info-edit-popup">
+	<Content>
+		<div class="shipping-info-delivery-time">
+			Delivery time <br/>
+			<div class="row">
+				<div class="col">
+					<DxDateEdit @bind-Date="@DeleveryDateTime"
+									SizeMode="SizeMode.Small" />
+				</div>
+				<div class="col">
+					<CustomTimeEdit InputTime="new CustomTime()" />
+				</div>
+			</div>
+		</div>
+		<div class="shipping-info-address">
+			Choose your shipping info
+			<br />
+			<div class="shipping-info-address-list">
+				@if (ShippingAddressList is null)
+				{
+					<p>Loading...</p>
+				}
+				else
+				{
+					foreach (var addressItem in ShippingAddressList)
+					{
+						<div class="form-check shipping-info-address-item">
+							<input class="form-check-input mt-3" type="radio" id="@addressItem.Id" name="group">
+							<div class="form-check-label" for="@addressItem.Id">
+								<span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>
+								<span>@addressItem.AddressString</span>
+								<a class="float-right text-decoration-none" href="javascript:void(0)" @onclick="HanldeEditShippingAddress">Edit</a>
+							</div>
+						</div>
+					}
+				}
+			</div>
+		</div>
+	</Content>
+	<FooterTemplate>
+		<button class="btn btn-dark w-100">Back</button>
+		<button class="btn btn-success w-100">Complete</button>
+	</FooterTemplate>
+</DxPopup>

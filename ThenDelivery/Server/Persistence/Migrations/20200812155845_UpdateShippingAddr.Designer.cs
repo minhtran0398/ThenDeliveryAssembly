@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThenDelivery.Server.Persistence;
 
 namespace ThenDelivery.Server.Persistence.Migrations
 {
     [DbContext(typeof(ThenDeliveryDbContext))]
-    partial class ThenDeliveryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200812155845_UpdateShippingAddr")]
+    partial class UpdateShippingAddr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,29 +134,29 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2a5460f1-fed5-4351-a576-306c840472d0",
-                            ConcurrencyStamp = "9608202d-8fa0-4c74-9f76-b3455a671be6",
+                            Id = "89f5aea7-4b77-49ea-96c8-e04adf882373",
+                            ConcurrencyStamp = "8676c8c1-6a02-4ef1-acd2-82c6c992c981",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "eec8546f-c8dc-4b4f-9d56-72c0858f59d4",
-                            ConcurrencyStamp = "dc9e22ad-7a04-4c40-a32a-614a90c1b86f",
+                            Id = "af214a51-c097-46fc-ad6d-aedc611d70fe",
+                            ConcurrencyStamp = "a146b798-92b8-48f8-9b4e-40955ef27efe",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         },
                         new
                         {
-                            Id = "17e0f6e9-9767-4867-bb4d-cda85034bcac",
-                            ConcurrencyStamp = "3552523c-03f2-453d-9de9-c216b68c6d25",
+                            Id = "d33f4da0-1cad-4f04-9da8-e4cfde37139a",
+                            ConcurrencyStamp = "44ae84e1-ba45-48f2-835a-931f8217d14a",
                             Name = "Merchant",
                             NormalizedName = "MERCHANT"
                         },
                         new
                         {
-                            Id = "bda33fe1-783c-46eb-8444-309fdc06cd2c",
-                            ConcurrencyStamp = "0c0ee1c5-ee7f-4e9d-b9e0-512c3163931c",
+                            Id = "406bc413-08c7-4311-9a96-cfd540591334",
+                            ConcurrencyStamp = "ce5af9ce-302c-4902-bea7-711faf0d912d",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -570,9 +572,6 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<DateTime>("DeliveryDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -707,25 +706,19 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .IsFixedLength(true)
                         .HasMaxLength(2);
 
+                    b.Property<DateTime>("DeliveryDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DistrictCode")
                         .IsRequired()
                         .HasColumnType("nchar(3)")
                         .IsFixedLength(true)
                         .HasMaxLength(3);
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
                     b.Property<string>("HouseNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nchar(10)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

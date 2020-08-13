@@ -34,6 +34,14 @@ namespace ThenDelivery.Server.Persistence.Configurations
 			builder.Property(e => e.HouseNumber)
 					.HasMaxLength(256)
 					.IsRequired(true);
+
+			builder.Property(e => e.FullName)
+					.HasMaxLength(256)
+					.IsRequired(true);
+
+			builder.Property(e => e.PhoneNumber)
+					.HasColumnType("nchar(10)")
+					.IsRequired(true);
 		}
 	}
 }

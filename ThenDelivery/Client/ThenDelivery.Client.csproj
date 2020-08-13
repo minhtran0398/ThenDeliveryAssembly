@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Shared\ThenDelivery.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\User\" />
+  </ItemGroup>
+
 </Project>

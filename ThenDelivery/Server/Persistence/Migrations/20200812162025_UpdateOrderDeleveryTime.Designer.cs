@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThenDelivery.Server.Persistence;
 
 namespace ThenDelivery.Server.Persistence.Migrations
 {
     [DbContext(typeof(ThenDeliveryDbContext))]
-    partial class ThenDeliveryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200812162025_UpdateOrderDeleveryTime")]
+    partial class UpdateOrderDeleveryTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,29 +134,29 @@ namespace ThenDelivery.Server.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2a5460f1-fed5-4351-a576-306c840472d0",
-                            ConcurrencyStamp = "9608202d-8fa0-4c74-9f76-b3455a671be6",
+                            Id = "46d2c8f1-b4c1-4aa8-8f52-72f7e476748a",
+                            ConcurrencyStamp = "77728e20-2f52-46e4-8520-d68572b6cab5",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "eec8546f-c8dc-4b4f-9d56-72c0858f59d4",
-                            ConcurrencyStamp = "dc9e22ad-7a04-4c40-a32a-614a90c1b86f",
+                            Id = "ead1d7da-5359-451c-9717-27032e850aaa",
+                            ConcurrencyStamp = "a4a44c05-c905-4ae3-a8b4-208763bde965",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         },
                         new
                         {
-                            Id = "17e0f6e9-9767-4867-bb4d-cda85034bcac",
-                            ConcurrencyStamp = "3552523c-03f2-453d-9de9-c216b68c6d25",
+                            Id = "c8327ec2-2e4d-4828-9e1f-95a8abdd6d6e",
+                            ConcurrencyStamp = "bba915c3-1a1c-45dd-82a1-cf73fce7400b",
                             Name = "Merchant",
                             NormalizedName = "MERCHANT"
                         },
                         new
                         {
-                            Id = "bda33fe1-783c-46eb-8444-309fdc06cd2c",
-                            ConcurrencyStamp = "0c0ee1c5-ee7f-4e9d-b9e0-512c3163931c",
+                            Id = "53c72f77-8a4e-4bcb-8915-9bd3d2306b06",
+                            ConcurrencyStamp = "368cba6c-1d43-4d26-9848-5acbca61369f",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -713,19 +715,10 @@ namespace ThenDelivery.Server.Persistence.Migrations
                         .IsFixedLength(true)
                         .HasMaxLength(3);
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
                     b.Property<string>("HouseNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nchar(10)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

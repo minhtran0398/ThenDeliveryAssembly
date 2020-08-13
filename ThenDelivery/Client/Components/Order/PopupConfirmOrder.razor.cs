@@ -21,6 +21,7 @@ namespace ThenDelivery.Client.Components.Order
 		/// Final price will inclue all anothers cast like VAT, trans...
 		/// </summary>
 		public decimal FinalPrice { get; set; }
+		public ShippingAddressDto ShippingAddress { get; set; }
 
 		protected override void OnInitialized()
 		{
@@ -113,7 +114,16 @@ namespace ThenDelivery.Client.Components.Order
 					}
 				},
 			};
-
+			ShippingAddress = new ShippingAddressDto()
+			{
+				Id = 1,
+				City = new CityDto(),
+				District = new DistrictDto(),
+				HouseNumber = "123",
+				Ward = new WardDto(),
+				FullName = "Minh",
+				PhoneNumber = "0123456789"
+			};
 			UpdateTotalPrice();
 			UpdateFinalPrice();
 			UpdateTotalProduct();

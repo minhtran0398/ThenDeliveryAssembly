@@ -35,6 +35,10 @@ namespace ThenDelivery.Server.Persistence.Configurations
 			builder.Property(e => e.ReceiveVia)
 					.HasColumnType("tinyint")
 					.IsRequired(true);
+
+			builder.Property(e => e.DeliveryDateTime)
+					.HasColumnType("datetime2")
+					.IsRequired(true);
 		}
 	}
 }

@@ -8,11 +8,12 @@ namespace ThenDelivery.Shared.Dtos
 		public int Id { get; set; }
 		public string UserId { get; set; }
 		public string ShipperId { get; set; }
-		public int? ShippingAddressId { get; set; }
+		public ShippingAddressDto ShippingAddress { get; set; }
 		public DateTime OrderDateTime { get; set; }
+		public DateTime DeliveryDateTime { get; set; }
 		public string Note { get; set; }
 		public byte ReceiveVia { get; set; }
 
-		public Dictionary<ProductDto, int> ProductList { get; set; }
+		public List<OrderItem> OrderItemList { get; set; }
 	}
 }
