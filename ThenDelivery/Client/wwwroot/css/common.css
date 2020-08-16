@@ -2,6 +2,10 @@
 	padding-bottom: 12px
 }
 
+.font-small{
+	font-size: small;
+}
+
 .main-content{
 	padding-bottom: 32px;
 }

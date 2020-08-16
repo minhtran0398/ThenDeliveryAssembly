@@ -42,7 +42,9 @@
 		</div>
 	</Content>
 	<FooterTemplate>
-		<button class="btn btn-dark w-100">Back</button>
-		<button class="btn btn-success w-100">Complete</button>
+		<button class="btn btn-dark w-100"
+					@onclick="async () => await HandleClose()">Back</button>
+		<button class="btn btn-success w-100"
+					@onclick="async () => await HandleConfirm()">Complete</button>
 	</FooterTemplate>
 </DxPopup>

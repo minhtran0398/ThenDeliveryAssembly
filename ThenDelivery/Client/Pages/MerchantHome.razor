@@ -1,11 +1,21 @@
 ﻿@page "/merchant/{MerchantId:int}"
 @inherits MerchantHomeBase
 
-<div class="@(IsShowPopupTopping ? "" : "d-none")">
-	<PopupTopping Product="SelectedProduct ?? new ProductDto()"
-					  OnCancel="HandleCancelOrder"
-					  OnAddOrderItem="HandleAddOrder" />
-</div>
+@if(SelectedProduct != null)
+{
+	<div class="@(IsShowPopupTopping ? "" : "d-none")">
+		<PopupTopping Product="SelectedProduct"
+						  OnCancel="HandleCancelOrder"
+						  OnAddOrderItem="HandleAddOrder" />
+	</div>
+}
+
+@if(OrderItemList != null && OrderItemList.Count > 0)
+{
+	<div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
+		<PopupConfirmOrder OrderItemList="OrderItemList" />
+	</div>
+}
 
 @if (Merchant is null)
 {

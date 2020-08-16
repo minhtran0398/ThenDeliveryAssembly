@@ -7,21 +7,26 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Components.Address
 {
-	public class PopupUpdateAddressBase : CustomComponentBase<PopupUpdateAddressBase>
-	{
-		public DateTime DeleveryDateTime { get; set; }
+   public class PopupUpdateAddressBase : CustomComponentBase<PopupUpdateAddressBase>
+   {
+      [Parameter] public DateTime DeleveryDateTime { get; set; }
+      [Parameter] public List<ShippingAddressDto> ShippingAddressList { get; set; }
+      [Parameter] public EventCallback OnCLose { get; set; }
+      [Parameter] public EventCallback OnConfirm { get; set; }
 
-		protected List<ShippingAddressDto> ShippingAddressList { get; set; }
+      protected void HanldeEditShippingAddress()
+      {
 
-		protected override async Task OnInitializedAsync()
-		{
-			ShippingAddressList =
-				await HttpClientServer.CustomGetAsync<List<ShippingAddressDto>>("api/ShippingAddress?userId=bc59a6fe-b41a-4f54-bb0f-5bb9664e1785");
-		}
+      }
 
-		protected void HanldeEditShippingAddress()
-		{
+      protected async Task HandleClose()
+      {
+         await OnCLose.InvokeAsync(null);
+      }
 
-		}
-	}
+      protected async Task HandleConfirm()
+      {
+         await OnConfirm.InvokeAsync(null);
+      }
+   }
 }

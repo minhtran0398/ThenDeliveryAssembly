@@ -6,25 +6,35 @@ using System.Threading.Tasks;
 using ThenDelivery.Server.Application.ShippingAddress.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Server.Application.Common.Interfaces;
 
 namespace ThenDelivery.Server.Controllers
 {
-	[Authorize(Roles = Const.Role.UserRole)]
-	public class ShippingAddressController : CustomControllerBase<ShippingAddressDto>
-	{
-		[HttpGet]
-		public async Task<IActionResult> GetShippingAddressByUserId(string userId)
-		{
-			try
-			{
-				IEnumerable<ShippingAddressDto> result =
-					await Mediator.Send(new GetShippingAddressByUserIdQuery(userId));
-				return Ok(result);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
-	}
+   [Authorize(Roles = Const.Role.UserRole)]
+   public class ShippingAddressController : CustomControllerBase<ShippingAddressDto>
+   {
+      private readonly ICurrentUserService _currentUserService;
+
+      public ShippingAddressController(ICurrentUserService currentUserService)
+      {
+         _currentUserService = currentUserService;
+      }
+
+      [HttpGet]
+      public async Task<IActionResult> GetShippingAddressByUserId()
+      {
+         try
+         {
+            string userId = _currentUserService.GetLoggedInUserId();
+
+            IEnumerable<ShippingAddressDto> result =
+               await Mediator.Send(new GetShippingAddressByUserIdQuery(userId));
+            return Ok(result);
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(ex.Message);
+         }
+      }
+   }
 }

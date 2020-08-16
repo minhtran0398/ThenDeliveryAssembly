@@ -1,47 +1,67 @@
-﻿@page "/test"
-@inherits PopupConfirmOrderBase
+﻿@inherits PopupConfirmOrderBase
 
-<DxPopup HeaderText="Confirm Order"
-			ShowCloseButton="true"
-			CloseButtonClick="HandleCloseConfirm"
-			CssClass="confirm-order-popup">
-	<Content>
-		<div class="row">
-			<div class="col-5">
-				<div class="row">
-					<span class="d-block font-weight-bold">@ShippingAddress.FullName - @ShippingAddress.PhoneNumber</span>
-					<span>@ShippingAddress.AddressString</span>
-				</div>
-				<div class="row">
-					<button class="btn btn-outline-primary">Change shipping info</button>
-				</div>
-			</div>
-			<div class="col-7">
-				<div class="row">
-					<ul class="list-group list-group-flush">
-						@foreach (var orderItem in OrderItemList)
+@if(SelectedPopup == DisplayPopup.OrderConfirm)
+{
+	<DxPopup HeaderText="Confirm Order"
+				ShowCloseButton="true"
+				CloseButtonClick="async () => await HandleCloseConfirm()"
+				CssClass="confirm-order-popup">
+		<Content>
+			<div class="row">
+				<div class="col-5">
+					<div class="row mr-0 ml-0">
+						@if(ShippingAddress is null)
 						{
-							<li class="list-group-item d-flex justify-content-between align-items-center confirm-order-item">
-								<span class="badge badge-primary badge-pill">@orderItem.Quantity</span>
-								@orderItem.OrderProductToppingName
-								<span class="float-right">@orderItem.OrderItemPrice</span>
-							</li>
+							<span>Loading...</span>
 						}
-					</ul>
+						else
+						{
+							<span class="d-block font-weight-bold font-small">@ShippingAddress.FullName - @ShippingAddress.PhoneNumber</span>
+							<span class="font-small">@ShippingAddress.AddressString</span>
+						}
+					</div>
+					<div class="row ml-0 mr-0">
+						<span class="font-small">Est.Time: @DeleveryDateTime.ToString("HH:mm dd/MM/yyyy")</span>
+					</div>
+					<div class="row mr-0 ml-0 mt-2">
+						<a class="text-decoration-none" href="javascript:void(0)"
+									@onclick="HandleChangeShippingAddress">Change shipping info</a>
+					</div>
 				</div>
-				<div class="row">
-					<div class="col">Total @TotalProduct món</div>
-					<div class="col-auto">@TotalPrice</div>
-				</div>
-				<div class="row">
-					<div class="col">Total</div>
-					<div class="col-auto">@FinalPrice</div>
+				<div class="col-7">
+					<div class="row">
+						<ul class="list-group list-group-flush col pl-3">
+							@foreach (var orderItem in OrderItemList)
+							{
+								<li class="list-group-item confirm-order-item">
+									<span class="badge badge-primary badge-pill">@orderItem.Quantity</span>
+									@orderItem.OrderProductToppingName
+									<span class="float-right">@orderItem.OrderItemPrice</span>
+								</li>
+							}
+						</ul>
+					</div>
+					<div class="row mt-3">
+						<div class="col">Total @TotalProduct món</div>
+						<div class="col-auto">@TotalPrice</div>
+					</div>
+					<div class="row">
+						<div class="col">Total</div>
+						<div class="col-auto">@FinalPrice</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</Content>
-	<FooterTemplate>
-		<button class="btn btn-primary btn-submit-confirm-order" type="button"
-				  @onclick="@HandleSubmitConfirm">Submit Order -></button>
-	</FooterTemplate>
-</DxPopup>
+		</Content>
+		<FooterTemplate>
+			<button class="btn btn-primary btn-submit-confirm-order" type="button"
+					  @onclick="@HandleSubmitConfirm">Submit Order -></button>
+		</FooterTemplate>
+	</DxPopup>
+}
+else if(SelectedPopup == DisplayPopup.ChangeAddress)
+{
+	<PopupUpdateAddress DeleveryDateTime="@DeleveryDateTime"
+							ShippingAddressList="@ShippingAddressList"
+							OnCLose="HandleCloseChangeAddress"
+							OnConfirm="HandleConfirmChangeAddress" />
+}
