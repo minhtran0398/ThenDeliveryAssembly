@@ -8,17 +8,17 @@ namespace ThenDelivery.Server.Persistence.Configurations
 	{
 		public void Configure(EntityTypeBuilder<WardLevel> builder)
 		{
-         builder.ToTable("WardLevels");
+			builder.ToTable("WardLevels");
 
-         builder.HasKey(e => e.Id);
-         builder.HasIndex(e => e.Name).IsUnique(true);
+			builder.HasKey(e => e.Id);
+			builder.HasIndex(e => e.Name).IsUnique(true);
 
-         builder.Property(e => e.Id)
-                .HasColumnType("tinyint");
+			builder.Property(e => e.Id)
+					 .HasColumnType("tinyint");
 
-         builder.Property(e => e.Name)
-               .HasMaxLength(64)
-               .IsRequired(true);
-      }
+			builder.Property(e => e.Name)
+					.HasMaxLength(64)
+					.IsRequired(true);
+		}
 	}
 }

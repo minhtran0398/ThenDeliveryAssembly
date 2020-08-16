@@ -16,7 +16,7 @@ namespace ThenDelivery.Client.Components.Topping
 		protected override void OnInitialized()
 		{
 			ToppingList ??= new List<ToppingDto>();
-			if(ToppingList.Count == 0)
+			if (ToppingList.Count == 0)
 			{
 				ToppingList.Add(new ToppingDto() { Id = 1 });
 			}

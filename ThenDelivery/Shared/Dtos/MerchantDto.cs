@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ThenDelivery.Shared.Helper;
-using ThenDelivery.Shared.Helper.ExtensionMethods;
 
 namespace ThenDelivery.Shared.Dtos
 {

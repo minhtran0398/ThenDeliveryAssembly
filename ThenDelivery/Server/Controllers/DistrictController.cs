@@ -25,12 +25,12 @@ namespace ThenDelivery.Server.Controllers
 			}
 
 			// valid if data returned null
-			if(districts == null)
+			if (districts == null)
 			{
 				Logger.LogError("District returned null");
 				return BadRequest();
 			}
-			
+
 			return Ok(districts.ToList());
 		}
 	}

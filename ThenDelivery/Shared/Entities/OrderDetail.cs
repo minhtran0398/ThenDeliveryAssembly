@@ -1,6 +1,4 @@
-﻿using ThenDelivery.Shared.Common;
-
-namespace ThenDelivery.Shared.Entities
+﻿namespace ThenDelivery.Shared.Entities
 {
 	public class OrderDetail
 	{

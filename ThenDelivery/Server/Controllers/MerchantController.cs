@@ -45,7 +45,7 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetMerchant(int merchantId = -1)
 		{
-			if(merchantId == -1)
+			if (merchantId == -1)
 			{
 				IEnumerable<MerchantDto> merchantList =
 					await Mediator.Send(new GetAllMerchantQuery());

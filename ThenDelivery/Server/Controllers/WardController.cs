@@ -15,7 +15,7 @@ namespace ThenDelivery.Server.Controllers
 		public async Task<IActionResult> GetAllWard(string districtCode = null)
 		{
 			IEnumerable<WardDto> ward;
-			if(String.IsNullOrEmpty(districtCode))
+			if (String.IsNullOrEmpty(districtCode))
 			{
 				ward = await Mediator.Send(new GetAllWardQuery());
 			}

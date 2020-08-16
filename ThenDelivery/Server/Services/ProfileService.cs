@@ -5,26 +5,26 @@ using System.Threading.Tasks;
 
 namespace ThenDelivery.Server.Services
 {
-   public class ProfileService : IProfileService
-   {
-      public ProfileService()
-      {
-      }
+	public class ProfileService : IProfileService
+	{
+		public ProfileService()
+		{
+		}
 
-      public Task GetProfileDataAsync(ProfileDataRequestContext context)
-      {
-         var nameClaim = context.Subject.FindAll(JwtClaimTypes.Name);
-         context.IssuedClaims.AddRange(nameClaim);
+		public Task GetProfileDataAsync(ProfileDataRequestContext context)
+		{
+			var nameClaim = context.Subject.FindAll(JwtClaimTypes.Name);
+			context.IssuedClaims.AddRange(nameClaim);
 
-         var roleClaims = context.Subject.FindAll(JwtClaimTypes.Role);
-         context.IssuedClaims.AddRange(roleClaims);
+			var roleClaims = context.Subject.FindAll(JwtClaimTypes.Role);
+			context.IssuedClaims.AddRange(roleClaims);
 
-         return Task.CompletedTask;
-      }
+			return Task.CompletedTask;
+		}
 
-      public Task IsActiveAsync(IsActiveContext context)
-      {
-         return Task.CompletedTask;
-      }
-   }
+		public Task IsActiveAsync(IsActiveContext context)
+		{
+			return Task.CompletedTask;
+		}
+	}
 }

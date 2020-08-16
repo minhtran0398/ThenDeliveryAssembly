@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ThenDelivery.Shared.Entities
+﻿namespace ThenDelivery.Shared.Entities
 {
 	public class ShippingAddress
 	{

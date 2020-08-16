@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Common;
@@ -16,7 +12,7 @@ namespace ThenDelivery.Client.Components.Admin
 	public class UserListBase : CustomComponentBase<UserListBase>
 	{
 		#region Inject
-		
+
 		#endregion
 
 		#region Properties
@@ -51,7 +47,7 @@ namespace ThenDelivery.Client.Components.Admin
 		#endregion
 
 		#region Methods
-		
+
 		#endregion
 	}
 }

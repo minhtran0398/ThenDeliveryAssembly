@@ -23,7 +23,7 @@ namespace ThenDelivery.Server.Controllers
 				await Mediator.Send(new InsertRangeProductCommand(productList));
 				return Ok("Insert products success");
 			}
-			catch(ArgumentNullException ex)
+			catch (ArgumentNullException ex)
 			{
 				Logger.LogError(ex, ex.Message);
 				return BadRequest(ex.Message);

@@ -40,14 +40,14 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 				try
 				{
 					return await (from menu in _dbContext.MenuItems
-										 where menu.MerchantId == request._merchantId
-										 select new MenuItemDto()
-										 {
-											 Id = menu.Id,
-											 Name = menu.Name,
-											 Description = menu.Description,
-											 MerchantId = menu.MerchantId
-										 }).ToListAsync();
+									  where menu.MerchantId == request._merchantId
+									  select new MenuItemDto()
+									  {
+										  Id = menu.Id,
+										  Name = menu.Name,
+										  Description = menu.Description,
+										  MerchantId = menu.MerchantId
+									  }).ToListAsync();
 				}
 				catch (Exception ex)
 				{

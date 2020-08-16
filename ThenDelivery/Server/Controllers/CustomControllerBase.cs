@@ -12,7 +12,7 @@ namespace ThenDelivery.Server.Controllers
 		private IMediator _mediator;
 		private ILogger<T> _logger;
 
-		protected IMediator Mediator 
+		protected IMediator Mediator
 			=> _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 		protected ILogger<T> Logger
 			=> _logger ??= HttpContext.RequestServices.GetService<ILogger<T>>();

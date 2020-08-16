@@ -4,21 +4,21 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Persistence.Configurations
 {
-   public class CityLevelConfiguration : IEntityTypeConfiguration<CityLevel>
-   {
-      public void Configure(EntityTypeBuilder<CityLevel> builder)
-      {
-         builder.ToTable("CityLevels");
+	public class CityLevelConfiguration : IEntityTypeConfiguration<CityLevel>
+	{
+		public void Configure(EntityTypeBuilder<CityLevel> builder)
+		{
+			builder.ToTable("CityLevels");
 
-         builder.HasKey(e => e.Id);
-         builder.HasIndex(e => e.Name).IsUnique(true);
+			builder.HasKey(e => e.Id);
+			builder.HasIndex(e => e.Name).IsUnique(true);
 
-         builder.Property(e => e.Id)
-                .HasColumnType("tinyint");
+			builder.Property(e => e.Id)
+					 .HasColumnType("tinyint");
 
-         builder.Property(e => e.Name)
-               .HasMaxLength(64)
-               .IsRequired(true);
-      }
-   }
+			builder.Property(e => e.Name)
+					.HasMaxLength(64)
+					.IsRequired(true);
+		}
+	}
 }

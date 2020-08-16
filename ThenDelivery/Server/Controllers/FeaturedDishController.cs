@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllFeaturedDishCategory()
 		{
-			IEnumerable<FeaturedDishDto> featuredDuishCategories = 
+			IEnumerable<FeaturedDishDto> featuredDuishCategories =
 				await Mediator.Send(new GetAllFeaturedDishQuery());
 
 			// valid if data returned null
