@@ -13,17 +13,11 @@ namespace ThenDelivery.Client.Components.Topping
 		[Parameter] public EventCallback OnCancel { get; set; }
 
 		protected IEnumerable<ToppingDto> SelectedToppingList { get; set; }
-		protected int Quantity { get; set; }
+		protected short Quantity { get; set; }
 
 		protected override void OnParametersSet()
 		{
 			SetInitState();
-		}
-
-		protected void HandleQuantityChanged(int newValue)
-		{
-			Quantity = newValue;
-			StateHasChanged();
 		}
 
 		protected void HandleDecreaseQuantity()

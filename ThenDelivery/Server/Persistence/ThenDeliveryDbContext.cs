@@ -62,6 +62,7 @@ namespace ThenDelivery.Server.Persistence
 		public DbSet<MerType> MerTypes { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<OrderDetail> OrderDetails { get; set; }
+		public DbSet<OrderDetailTopping> OrderDetailToppings { get; set; }
 		public DbSet<Product> Products { get; set; }
 		public DbSet<ShippingAddress> ShippingAddresses { get; set; }
 		public DbSet<MenuItem> MenuItems { get; set; }

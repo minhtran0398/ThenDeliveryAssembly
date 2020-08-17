@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,9 +86,10 @@ namespace ThenDelivery.Client.Components.Order
 			await OnClose.InvokeAsync(null);
 		}
 
-		protected void HandleSubmitConfirm()
+		protected async Task HandleSubmitConfirm()
 		{
-
+			Logger.LogInformation(JsonConvert.SerializeObject(Order));
+			Logger.LogInformation(await HttpClientServer.CustomPostAsync("api/Order", Order));
 		}
 
 		protected void HandleChangeShippingAddress()

@@ -11,7 +11,7 @@ namespace ThenDelivery.Shared.Dtos
 		public ProductDto OrderProduct { get; set; }
 		public int OrderId { get; set; }
 		public List<ToppingDto> SelectedToppingList { get; set; }
-		public int Quantity { get; set; }
+		public short Quantity { get; set; }
 		public string Note { get; set; }
 		public string ToppingListString
 		{

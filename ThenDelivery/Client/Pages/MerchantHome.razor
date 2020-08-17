@@ -10,7 +10,7 @@
 	</div>
 }
 
-@if(Order.OrderItemList?.Count > 0)
+@if(Order.OrderItemList?.Count > 0 && IsShowPopupOrderConfirm)
 {
 	<div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
 		<PopupConfirmOrder Order="Order" />

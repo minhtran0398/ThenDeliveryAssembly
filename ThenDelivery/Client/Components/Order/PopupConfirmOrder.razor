@@ -54,7 +54,7 @@
 		</Content>
 		<FooterTemplate>
 			<button class="btn btn-primary btn-submit-confirm-order" type="button"
-					  @onclick="@HandleSubmitConfirm">Submit Order -></button>
+					  @onclick="async () => await HandleSubmitConfirm()">Submit Order -></button>
 		</FooterTemplate>
 	</DxPopup>
 }

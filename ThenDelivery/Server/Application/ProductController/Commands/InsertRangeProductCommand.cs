@@ -81,26 +81,6 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 				};
 			}
 
-			private IEnumerable<Product> GetProductData(IEnumerable<ProductDto> productDtoList)
-			{
-				foreach (var productDto in productDtoList)
-				{
-					yield return new Product()
-					{
-						Id = 0,
-						Description = productDto.Description,
-						FavoriteCount = productDto.FavoriteCount,
-						Image = productDto.Image,
-						IsAvailable = productDto.IsAvailable,
-						MenuItemId = productDto.MenuItem.Id,
-						Name = productDto.Name,
-						OrderCount = productDto.OrderCount,
-						UnitPrice = productDto.UnitPrice,
-						MerchantId = productDto.MerchantId
-					};
-				}
-			}
-
 			private IEnumerable<Topping> GetToppingData(IEnumerable<ToppingDto> toppingDtoList, int productId)
 			{
 				foreach (var toppingDto in toppingDtoList)
