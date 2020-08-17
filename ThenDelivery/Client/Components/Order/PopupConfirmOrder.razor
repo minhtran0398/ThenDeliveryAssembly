@@ -10,14 +10,14 @@
 			<div class="row">
 				<div class="col-5">
 					<div class="row mr-0 ml-0">
-						@if(ShippingAddress is null)
+						@if(Order.ShippingAddress is null)
 						{
 							<span>Loading...</span>
 						}
 						else
 						{
-							<span class="d-block font-weight-bold font-small">@ShippingAddress.FullName - @ShippingAddress.PhoneNumber</span>
-							<span class="font-small">@ShippingAddress.AddressString</span>
+							<span class="d-block font-weight-bold font-small">@Order.ShippingAddress.FullName - @Order.ShippingAddress.PhoneNumber</span>
+							<span class="font-small">@Order.ShippingAddress.AddressString</span>
 						}
 					</div>
 					<div class="row ml-0 mr-0">
@@ -31,7 +31,7 @@
 				<div class="col-7">
 					<div class="row">
 						<ul class="list-group list-group-flush col pl-3">
-							@foreach (var orderItem in OrderItemList)
+							@foreach (var orderItem in Order.OrderItemList)
 							{
 								<li class="list-group-item confirm-order-item">
 									<span class="badge badge-primary badge-pill">@orderItem.Quantity</span>
@@ -60,8 +60,8 @@
 }
 else if(SelectedPopup == DisplayPopup.ChangeAddress)
 {
-	<PopupUpdateAddress DeleveryDateTime="@DeleveryDateTime"
-							ShippingAddressList="@ShippingAddressList"
-							OnCLose="HandleCloseChangeAddress"
-							OnConfirm="HandleConfirmChangeAddress" />
+	<PopupUpdateAddress Order="@Order"
+							  ShippingAddressList="@ShippingAddressList"
+							  OnClose="HandleCloseChangeAddress"
+							  OnConfirm="HandleConfirmChangeAddress" />
 }

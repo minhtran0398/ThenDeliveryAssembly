@@ -98,12 +98,12 @@ namespace ThenDelivery.Client.Components.Merchant
 			MerchantModel.Ward = newValue;
 		}
 
-		protected void HandleSelectedMerchantTypeChanged(IEnumerable<MerTypeDto> newValue)
+		protected void HandleSelectedMerTypeChanged(IEnumerable<MerTypeDto> newValue)
 		{
 			MerchantModel.MerTypeList = newValue.ToList();
 		}
 
-		protected void HandleSelectedFeaturedDishCategoryChanged(IEnumerable<FeaturedDishDto> newValue)
+		protected void HandleSelectedFeaturedDishChanged(IEnumerable<FeaturedDishDto> newValue)
 		{
 			MerchantModel.FeaturedDishList = newValue.ToList();
 		}

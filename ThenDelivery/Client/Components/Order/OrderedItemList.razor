@@ -2,10 +2,10 @@
 
 <div class="ordered-container">
 	<div class="ordered-header">
-		<h5>@(OrderItemList?.Count ?? 0) món</h5>
+		<h5>@(Order.OrderItemList?.Count ?? 0) món</h5>
 	</div>
 	<div class="ordered-list">
-		@foreach (var orderItem in OrderItemList)
+		@foreach (var orderItem in Order.OrderItemList)
 		{
 			<div class="ordered_item">
 				<div class="row">

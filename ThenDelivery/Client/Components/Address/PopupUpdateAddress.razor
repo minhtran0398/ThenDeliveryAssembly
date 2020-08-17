@@ -8,7 +8,7 @@
 			Delivery time <br/>
 			<div class="row">
 				<div class="col">
-					<DxDateEdit @bind-Date="@DeleveryDateTime"
+					<DxDateEdit @bind-Date="@Order.DeliveryDateTime"
 									SizeMode="SizeMode.Small" />
 				</div>
 				<div class="col">
@@ -16,30 +16,98 @@
 				</div>
 			</div>
 		</div>
-		<div class="shipping-info-address">
-			Choose your shipping info
-			<br />
-			<div class="shipping-info-address-list">
-				@if (ShippingAddressList is null)
-				{
-					<p>Loading...</p>
-				}
-				else
-				{
-					foreach (var addressItem in ShippingAddressList)
-					{
-						<div class="form-check shipping-info-address-item">
-							<input class="form-check-input mt-3" type="radio" id="@addressItem.Id" name="group">
-							<div class="form-check-label" for="@addressItem.Id">
-								<span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>
-								<span>@addressItem.AddressString</span>
-								<a class="float-right text-decoration-none" href="javascript:void(0)" @onclick="HanldeEditShippingAddress">Edit</a>
-							</div>
-						</div>
-					}
-				}
-			</div>
-		</div>
+      <div class="shipping-info-address">
+         <div class="shipping-info-title">
+            Choose your shipping info
+            <div class="float-right">
+               <a href="javascript:void(0)" class="text-decoration-none"
+                     @onclick="async () => await HandleChangeMode()">@GetStringMode()</a>
+            </div>
+         </div>
+         <div class="shipping-info-address-list">
+            @if (ShippingAddressList is null)
+            {
+               <p>Loading...</p>
+            }
+            else if(AddressMode == PopupAddressMode.Select || AddressMode == PopupAddressMode.SelectEdit)
+            {
+               foreach (var addressItem in ShippingAddressList)
+               {
+                  <div class="form-check shipping-info-address-item">
+                     <input class="form-check-input mt-3" type="radio"
+                            id="@addressItem.Id" name="group"
+                            @onchange="async () => await HandleChangeShippingAddress(addressItem)">
+                     <div class="form-check-label" for="@addressItem.Id">
+                        <span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>
+                        <span>@addressItem.AddressString</span>
+                        <a class="float-right text-decoration-none" href="javascript:void(0)"
+                           @onclick="async () => await HanldeEditShippingAddress(addressItem)">Edit</a>
+                     </div>
+                  </div>
+               }
+            }
+         </div>
+         @if (Order.ShippingAddress != null && AddressMode != PopupAddressMode.Select)
+         {
+            <div class="shipping-info-create-address">
+               <EditForm Model="Order">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <label>Full name:</label>
+                        <DxTextBox Text="@Order.ShippingAddress.FullName"
+                                   TextExpression="() => Order.ShippingAddress.FullName"
+                                   TextChanged="async (newValue) => await HandleChangeFullName(newValue)" />
+                     </div>
+                     <div class="col-md-6">
+                        <label>Phone number:</label>
+                        <DxTextBox Text="@Order.ShippingAddress.PhoneNumber"
+                                   TextExpression="() => Order.ShippingAddress.PhoneNumber"
+                                   TextChanged="async (newValue) => await HandleChangePhoneNumber(newValue)" />
+                     </div>
+                     <div class="col-md-6 row-item">
+                        <label>City: </label>
+                        <DxComboBox NullText="Select city ..."
+                                    AllowUserInput="true"
+                                    FilteringMode="DataGridFilteringMode.Contains"
+                                    TextFieldName="DisplayText"
+                                    DataAsync="HandleLoadCitiesAsync"
+                                    SelectedItem="@Order.ShippingAddress.City"
+                                    SelectedItemChanged="HandleSelectedCityChanged"
+                                    SelectedItemExpression="() => Order.ShippingAddress.City" />
+                     </div>
+                     <div class="col-md-6 row-item">
+                        <label>District: </label>
+                        <DxComboBox NullText="Select district ..."
+                                    AllowUserInput="true"
+                                    FilteringMode="DataGridFilteringMode.Contains"
+                                    TextFieldName="DisplayText"
+                                    DataAsync="HandleLoadDistrictsAsync"
+                                    SelectedItem="@Order.ShippingAddress.District"
+                                    SelectedItemChanged="HandleSelectedDistrictChanged"
+                                    SelectedItemExpression="() => Order.ShippingAddress.District" />
+                     </div>
+                     <div class="col-md-6 row-item">
+                        <label>Ward: </label>
+                        <DxComboBox NullText="Select ward ..."
+                                    AllowUserInput="true"
+                                    FilteringMode="DataGridFilteringMode.Contains"
+                                    TextFieldName="DisplayText"
+                                    DataAsync="HandleLoadWardsAsync"
+                                    SelectedItem="@Order.ShippingAddress.Ward"
+                                    SelectedItemChanged="HandleSelectedWardChanged"
+                                    SelectedItemExpression="() => Order.ShippingAddress.Ward" />
+                     </div>
+                     <div class="col-md-6 row-item">
+                        <label>Store number: </label>
+                        <DxTextBox Text="@Order.ShippingAddress.HouseNumber"
+                                   TextChanged="HandleHouseNumberChanged"
+                                   TextExpression="() => Order.ShippingAddress.HouseNumber" />
+                     </div>
+                  </div>
+               </EditForm>
+            </div>
+         }
+      </div>
 	</Content>
 	<FooterTemplate>
 		<button class="btn btn-dark w-100"

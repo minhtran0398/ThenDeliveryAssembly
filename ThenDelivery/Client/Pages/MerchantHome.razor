@@ -10,10 +10,10 @@
 	</div>
 }
 
-@if(OrderItemList != null && OrderItemList.Count > 0)
+@if(Order.OrderItemList?.Count > 0)
 {
 	<div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
-		<PopupConfirmOrder OrderItemList="OrderItemList" />
+		<PopupConfirmOrder Order="Order" />
 	</div>
 }
 
@@ -46,8 +46,8 @@ else
 					</ol>
 				</nav>
 				<div class="kind-restaurant"><span> Shop Online</span></div>
-				<h1 class="name-restaurant">Nam Nhi - Organic Coffee &amp; Tea - Shop Online</h1>
-				<div class="address-restaurant">29 Đường Số 46, P. 5, Quận 4, TP. HCM</div>
+				<h1 class="name-restaurant">@Merchant.Name - Shop Online</h1>
+				<div class="address-restaurant">@Merchant.AddressString</div>
 				<div class="status-restaurant">
 					<div class="opentime-status"><span class="stt offline" title="Đã đóng"></span></div>
 				</div>
@@ -115,7 +115,7 @@ else
 					</div>
 				</div>
 				<div class="col-md-3 pr-0">
-					<OrderedItemList OrderItemList="OrderItemList"
+					<OrderedItemList Order="Order"
 										  OnOrderConfirm="HandleConfirmOrder"/>
 				</div>
 			</div>

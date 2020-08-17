@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,10 @@ namespace ThenDelivery.Client.Components.Order
 
 	public class PopupConfirmOrderBase : CustomComponentBase<PopupConfirmOrder>
 	{
-		[Parameter] public List<OrderItem> OrderItemList { get; set; }
+		[Parameter] public OrderDto Order { get; set; }
+		[Parameter] public EditContext FormContext { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
 		public List<ShippingAddressDto> ShippingAddressList { get; set; }
-		public ShippingAddressDto ShippingAddress { get; set; }
 		public DisplayPopup SelectedPopup { get; set; }
 
 		public decimal TotalPrice { get; set; }
@@ -55,19 +56,19 @@ namespace ThenDelivery.Client.Components.Order
 				.CustomGetAsync<List<ShippingAddressDto>>("api/ShippingAddress");
 			if (ShippingAddressList != null)
 			{
-				ShippingAddress = ShippingAddressList.FirstOrDefault();
+				Order.ShippingAddress = ShippingAddressList.FirstOrDefault();
 			}
 		}
 
 		private void UpdateTotalProduct()
 		{
-			TotalProduct = OrderItemList.Sum(e => e.Quantity);
+			TotalProduct = Order.OrderItemList.Sum(e => e.Quantity);
 		}
 
 		private void UpdateTotalPrice()
 		{
 			TotalPrice = 0;
-			OrderItemList.ForEach(order =>
+			Order.OrderItemList.ForEach(order =>
 			{
 				TotalPrice += order.OrderItemPrice;
 			});

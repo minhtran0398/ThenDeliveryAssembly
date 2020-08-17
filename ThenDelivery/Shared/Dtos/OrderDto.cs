@@ -5,6 +5,11 @@ namespace ThenDelivery.Shared.Dtos
 {
 	public class OrderDto
 	{
+      public OrderDto()
+      {
+			OrderItemList = new List<OrderItem>();
+      }
+
 		public int Id { get; set; }
 		public string UserId { get; set; }
 		public string ShipperId { get; set; }

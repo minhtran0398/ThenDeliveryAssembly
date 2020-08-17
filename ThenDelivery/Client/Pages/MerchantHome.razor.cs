@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,16 +16,18 @@ namespace ThenDelivery.Client.Pages
 		protected List<ProductDto> ProductListFull { get; set; }
 		protected List<ProductDto> ProductListMenu { get; set; }
 		protected List<MenuItemDto> MenuItemList { get; set; }
-
-		protected MenuItemDto SelectedMenu { get; set; }
+		protected OrderDto Order { get; set; }
+      public EditContext FormContext { get; set; }
+      protected MenuItemDto SelectedMenu { get; set; }
 		protected bool IsShowPopupTopping { get; set; }
 		protected bool IsShowPopupOrderConfirm { get; set; }
 		protected ProductDto SelectedProduct { get; set; }
-		public List<OrderItem> OrderItemList { get; set; }
 
 		protected override void OnInitialized()
 		{
-			OrderItemList = new List<OrderItem>();
+			base.OnInitialized();
+			Order = new OrderDto();
+			FormContext = new EditContext(Order);
 		}
 
 		protected override async Task OnInitializedAsync()
@@ -82,7 +85,7 @@ namespace ThenDelivery.Client.Pages
 		{
 			IsShowPopupTopping = false;
 			bool isAdd = true;
-			foreach (var orderedItem in OrderItemList)
+			foreach (var orderedItem in Order.OrderItemList)
 			{
 				if (orderedItem.JsonEqualProductAndTopping(orderItem))
 				{
@@ -93,13 +96,13 @@ namespace ThenDelivery.Client.Pages
 			}
 			if (isAdd)
 			{
-				orderItem.Id = OrderItemList.Max(e => e?.Id) + 1 ?? 1;
-				OrderItemList.Add(orderItem);
+				orderItem.Id = Order.OrderItemList.Max(e => e?.Id) + 1 ?? 1;
+				Order.OrderItemList.Add(orderItem);
 			}
 			StateHasChanged();
 		}
 
-		protected void HandleConfirmOrder(List<OrderItem> orderItemList)
+		protected void HandleConfirmOrder()
 		{
 			IsShowPopupOrderConfirm = true;
 		}
