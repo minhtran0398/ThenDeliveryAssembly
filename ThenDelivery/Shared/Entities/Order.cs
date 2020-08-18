@@ -13,5 +13,6 @@ namespace ThenDelivery.Shared.Entities
 		public DateTime DeliveryDateTime { get; set; }
 		public string Note { get; set; }
 		public byte ReceiveVia { get; set; }
+		public byte Status { get; set; }
 	}
 }

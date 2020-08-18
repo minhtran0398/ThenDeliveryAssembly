@@ -5,10 +5,10 @@ namespace ThenDelivery.Shared.Dtos
 {
 	public class OrderDto
 	{
-      public OrderDto()
-      {
+		public OrderDto()
+		{
 			OrderItemList = new List<OrderItem>();
-      }
+		}
 
 		public int Id { get; set; }
 		public string UserId { get; set; }
@@ -18,6 +18,7 @@ namespace ThenDelivery.Shared.Dtos
 		public DateTime DeliveryDateTime { get; set; }
 		public string Note { get; set; }
 		public byte ReceiveVia { get; set; }
+		public byte Status { get; set; }
 
 		public List<OrderItem> OrderItemList { get; set; }
 	}
