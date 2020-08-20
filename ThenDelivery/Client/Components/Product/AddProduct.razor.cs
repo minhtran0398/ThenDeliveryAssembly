@@ -70,7 +70,7 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected void HandleAddProduct(ProductDto product)
 		{
-			product.MerchantId = TargetMerchantId;
+			product.Merchant = new MerchantDto() { Id = TargetMerchantId };
 			AddProduct(product);
 			IsShowPopupAddProduct = false;
 		}

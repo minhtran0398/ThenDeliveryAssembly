@@ -21,10 +21,17 @@
 				</NavLink>
 			</li>
 		</AuthorizeView>
-		<AuthorizeView Roles=@($"{Const.Role.MerchantRole}, {Const.Role.UserRole}")>
+		<AuthorizeView Roles=@($"{Const.Role.MerchantRole}, {Const.Role.UserRole}, Demo")>
 			<li class="nav-item px-3">
 				<NavLink class="nav-link" href="merchant-register">
 					<span class="oi oi-plus" aria-hidden="true"></span> Merchant register
+				</NavLink>
+			</li>
+		</AuthorizeView>
+		<AuthorizeView Roles="@Const.Role.ShipperRole">
+			<li class="nav-item px-3">
+				<NavLink class="nav-link" href="order-list">
+					<span class="oi oi-plus" aria-hidden="true"></span> Order list
 				</NavLink>
 			</li>
 		</AuthorizeView>

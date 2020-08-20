@@ -31,7 +31,7 @@ namespace ThenDelivery.Server.Controllers
 		{
 			string path = _imageService.SaveImage(merchantDto.Avatar);
 			merchantDto.Avatar = merchantDto.CoverPicture = path;
-			merchantDto.UserId = _currentUserService.GetLoggedInUserId();
+			merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
 			int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
 
 			// valid if data insert fail

@@ -42,6 +42,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 					if (request._take > 0)
 					{
 						result = await (from merchant in _dbContext.Merchants
+											 join user in _dbContext.Users on merchant.UserId equals user.Id
 											 let queryType = (from mtype in _dbContext.MTMerchants
 																	where mtype.MerchantId == merchant.Id
 																	join type in _dbContext.MerTypes
@@ -103,8 +104,8 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 												 City = queryCity.SingleOrDefault(),
 												 District = queryDistrict.SingleOrDefault(),
 												 Ward = queryWard.SingleOrDefault(),
-												 OpenTime = GetTime(merchant.OpenTime),
-												 CloseTime = GetTime(merchant.CloseTime),
+												 OpenTime = CustomTime.GetTime(merchant.OpenTime),
+												 CloseTime = CustomTime.GetTime(merchant.CloseTime),
 												 CoverPicture = merchant.CoverPicture,
 												 Description = merchant.Description,
 												 MerTypeList = queryType.ToList(),
@@ -113,7 +114,16 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 												 PhoneNumber = merchant.PhoneNumber,
 												 SearchKey = merchant.SearchKey,
 												 TaxCode = merchant.TaxCode,
-												 UserId = merchant.UserId
+												 User = new UserDto()
+												 {
+													 Id = user.Id,
+													 BirthDate = user.BirthDate,
+													 Email = user.Email,
+													 IsEmailConfirmed = user.EmailConfirmed,
+													 IsPhoneNumberConfirmed = user.PhoneNumberConfirmed,
+													 PhoneNumber = user.PhoneNumber,
+													 UserName = user.UserName,
+												 }
 											 })
 											.Skip(request._skip)
 											.Take(request._take)
@@ -122,6 +132,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 					else
 					{
 						result = await (from merchant in _dbContext.Merchants
+											 join user in _dbContext.Users on merchant.UserId equals user.Id
 											 let queryType = (from mtype in _dbContext.MTMerchants
 																	where mtype.MerchantId == merchant.Id
 																	join type in _dbContext.MerTypes
@@ -183,8 +194,8 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 												 City = queryCity.SingleOrDefault(),
 												 District = queryDistrict.SingleOrDefault(),
 												 Ward = queryWard.SingleOrDefault(),
-												 OpenTime = GetTime(merchant.OpenTime),
-												 CloseTime = GetTime(merchant.CloseTime),
+												 OpenTime = CustomTime.GetTime(merchant.OpenTime),
+												 CloseTime = CustomTime.GetTime(merchant.CloseTime),
 												 CoverPicture = merchant.CoverPicture,
 												 Description = merchant.Description,
 												 MerTypeList = queryType.ToList(),
@@ -193,7 +204,16 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 												 PhoneNumber = merchant.PhoneNumber,
 												 SearchKey = merchant.SearchKey,
 												 TaxCode = merchant.TaxCode,
-												 UserId = merchant.UserId
+												 User = new UserDto()
+												 {
+													 Id = user.Id,
+													 BirthDate = user.BirthDate,
+													 Email = user.Email,
+													 IsEmailConfirmed = user.EmailConfirmed,
+													 IsPhoneNumberConfirmed = user.PhoneNumberConfirmed,
+													 PhoneNumber = user.PhoneNumber,
+													 UserName = user.UserName,
+												 }
 											 })
 											.Skip(request._skip)
 											.ToListAsync();
@@ -205,11 +225,6 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 					return null;
 				}
 				return result;
-			}
-
-			private static CustomTime GetTime(string time)
-			{
-				return new CustomTime(Int16.Parse(time.Substring(0, 2)), Int16.Parse(time.Substring(2)));
 			}
 		}
 	}

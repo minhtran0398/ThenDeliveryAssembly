@@ -14,7 +14,7 @@ namespace ThenDelivery.Shared.Dtos
 
 		public int Id { get; set; }
 		public MenuItemDto MenuItem { get; set; }
-		public int MerchantId { get; set; }
+		public MerchantDto Merchant { get; set; }
 		public string Name { get; set; }
 		public bool IsAvailable { get; set; }
 		public string Description { get; set; }

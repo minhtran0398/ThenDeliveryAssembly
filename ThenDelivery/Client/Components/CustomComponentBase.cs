@@ -12,8 +12,8 @@ namespace ThenDelivery.Client.Components
 	{
 		[Inject] public ILogger<T> Logger { get; set; }
 		[Inject] IHttpClientFactory HttpClientFactory { get; set; }
-		[Inject] public HttpClient HttpClientServer { get; set; }
-		[Inject] public HttpClient HttpClientAnonymous { get; set; }
+		public HttpClient HttpClientServer { get; set; }
+		public HttpClient HttpClientAnonymous { get; set; }
 		[Inject] public NavigationManager NavigationManager { get; set; }
 		[Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 

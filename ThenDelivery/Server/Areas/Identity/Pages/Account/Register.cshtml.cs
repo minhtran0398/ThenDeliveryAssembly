@@ -24,17 +24,20 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account
 		private readonly UserManager<User> _userManager;
 		private readonly ILogger<RegisterModel> _logger;
 		private readonly IEmailSender _emailSender;
+		private readonly RoleManager<IdentityRole> _roleManager;
 
 		public RegisterModel(
 			 UserManager<User> userManager,
 			 SignInManager<User> signInManager,
 			 ILogger<RegisterModel> logger,
-			 IEmailSender emailSender)
+			 IEmailSender emailSender,
+			 RoleManager<IdentityRole> roleManager)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_logger = logger;
 			_emailSender = emailSender;
+			_roleManager = roleManager;
 		}
 
 		[BindProperty]
@@ -71,6 +74,7 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account
 
 		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
 		{
+			//await _roleManager.CreateAsync(new IdentityRole("Demo"));
 			returnUrl ??= Url.Content("~/");
 			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 			if (ModelState.IsValid)

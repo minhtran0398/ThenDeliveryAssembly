@@ -28,6 +28,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
+			base.OnInitialized();
 			EditContext = new EditContext(MerchantModel);
 		}
 		#endregion

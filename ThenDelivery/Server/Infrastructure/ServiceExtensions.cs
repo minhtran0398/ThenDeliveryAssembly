@@ -9,6 +9,7 @@ using System.Security.Claims;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Server.Services;
 using ThenDelivery.Shared.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace ThenDelivery.Server.Infrastructure
 {
@@ -52,7 +53,7 @@ namespace ThenDelivery.Server.Infrastructure
 			services.AddDbContext<ThenDeliveryDbContext>(options =>
 			{
 				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-				//options.UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddDebug(); }));
+				options.UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddConsole(); }));
 			});
 		}
 

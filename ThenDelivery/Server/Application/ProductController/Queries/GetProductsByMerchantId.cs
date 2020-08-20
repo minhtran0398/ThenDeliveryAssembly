@@ -56,7 +56,10 @@ namespace ThenDelivery.Server.Application.ProductController.Queries
 												MerchantId = m.MerchantId,
 												Name = m.Name
 											}).Single(),
-							MerchantId = p.MerchantId,
+							Merchant = new MerchantDto()
+							{
+								Id = request._merchantId
+							},
 							ToppingList = _dbContext.Toppings
 											.Where(t => t.ProductId == p.Id)
 											.Select(t => new ToppingDto()

@@ -43,6 +43,8 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 						await _dbContext.SaveChangesAsync();
 						await _dbContext.Toppings.AddRangeAsync(GetToppingData(productDto.ToppingList, productToInsert.Id));
 					}
+
+					await _dbContext.SaveChangesAsync();
 					await trans.CommitAsync();
 				}
 				catch (DbUpdateConcurrencyException)
@@ -77,7 +79,7 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 					Name = productDto.Name,
 					OrderCount = productDto.OrderCount,
 					UnitPrice = productDto.UnitPrice,
-					MerchantId = productDto.MerchantId
+					MerchantId = productDto.Merchant.Id
 				};
 			}
 

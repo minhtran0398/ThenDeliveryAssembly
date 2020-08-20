@@ -69,7 +69,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 			{
 				var merchantResult = new Merchant
 				{
-					UserId = merchantDto.UserId,
+					UserId = merchantDto.User.Id,
 					Name = merchantDto.Name,
 					Description = merchantDto.Description,
 					Avatar = merchantDto.Avatar,

@@ -214,6 +214,11 @@ namespace ThenDelivery.Shared.Helper
 			short minute = Int16.Parse(timeStringSplited[1]);
 			return new CustomTime(hour, minute);
 		}
+
+		public static CustomTime GetTime(string time)
+		{
+			return new CustomTime(Int16.Parse(time.Substring(0, 2)), Int16.Parse(time.Substring(2)));
+		}
 		#endregion
 	}
 }
