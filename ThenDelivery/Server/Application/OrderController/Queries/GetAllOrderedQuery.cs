@@ -1,3 +1,4 @@
+using ThenDelivery.Shared.Helper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,11 +9,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Enums;
 
 namespace ThenDelivery.Server.Application.OrderController.Queries
 {
 	public class GetAllOrderedQuery : IRequest<IEnumerable<OrderDto>>
 	{
+		private readonly string _shipperId;
+		private readonly OrderStatus _orderStatus;
+
+		public GetAllOrderedQuery(OrderStatus orderStatus, string shipperId = null)
+		{
+			_shipperId = shipperId;
+			_orderStatus = orderStatus;
+		}
+
 		public class Handler : IRequestHandler<GetAllOrderedQuery, IEnumerable<OrderDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
@@ -30,61 +41,54 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 				var result = new List<OrderDto>();
 				try
 				{
+					var queryCity = (from city in _dbContext.Cities
+										  join lv in _dbContext.CityLevels
+												on city.CityLevelId equals lv.Id
+										  select new CityDto()
+										  {
+											  CityCode = city.CityCode,
+											  Name = city.Name,
+											  CityLevelId = lv.Id,
+											  CityLevelName = lv.Name
+										  });
+					var queryDistrict = (from district in _dbContext.Districts
+												join lv in _dbContext.DistrictLevels
+													 on district.DistrictLevelId equals lv.Id
+												select new DistrictDto()
+												{
+													CityCode = district.CityCode,
+													DistrictCode = district.DistrictCode,
+													Name = district.Name,
+													DistrictLevelId = lv.Id,
+													DistrictLevelName = lv.Name
+												});
+					var queryWard = (from ward in _dbContext.Wards
+										  join lv in _dbContext.WardLevels
+												on ward.WardLevelId equals lv.Id
+										  select new WardDto()
+										  {
+											  WardCode = ward.WardCode,
+											  DistrictCode = ward.DistrictCode,
+											  Name = ward.Name,
+											  WardLevelId = lv.Id,
+											  WardLevelName = lv.Name
+										  });
 					var queryUser = (from u in _dbContext.Users
 										  select new UserDto
 										  {
 											  Id = u.Id,
 											  UserName = u.UserName,
-											  //Email = u.Email,
-											  //BirthDate = u.BirthDate,
-											  //IsEmailConfirmed = u.EmailConfirmed,
-											  //IsPhoneNumberConfirmed = u.PhoneNumberConfirmed,
 											  PhoneNumber = u.PhoneNumber,
 											  RoleList = null
 										  });
 					var queryShippingAddress = from address in _dbContext.ShippingAddresses
-														let queryCity = (from city in _dbContext.Cities
-																			  where city.CityCode == address.CityCode
-																			  join lv in _dbContext.CityLevels
-																					on city.CityLevelId equals lv.Id
-																			  select new CityDto()
-																			  {
-																				  CityCode = city.CityCode,
-																				  Name = city.Name,
-																				  CityLevelId = lv.Id,
-																				  CityLevelName = lv.Name
-																			  })
-														let queryDistrict = (from district in _dbContext.Districts
-																					where district.DistrictCode == address.DistrictCode
-																					join lv in _dbContext.DistrictLevels
-																						 on district.DistrictLevelId equals lv.Id
-																					select new DistrictDto()
-																					{
-																						CityCode = district.CityCode,
-																						DistrictCode = district.DistrictCode,
-																						Name = district.Name,
-																						DistrictLevelId = lv.Id,
-																						DistrictLevelName = lv.Name
-																					})
-														let queryWard = (from ward in _dbContext.Wards
-																			  where ward.WardCode == address.WardCode
-																			  join lv in _dbContext.WardLevels
-																					on ward.WardLevelId equals lv.Id
-																			  select new WardDto()
-																			  {
-																				  WardCode = ward.WardCode,
-																				  DistrictCode = ward.DistrictCode,
-																				  Name = ward.Name,
-																				  WardLevelId = lv.Id,
-																				  WardLevelName = lv.Name
-																			  })
 														select new ShippingAddressDto()
 														{
 															Id = address.Id,
 															UserId = address.UserId,
-															City = queryCity.SingleOrDefault(),
-															District = queryDistrict.SingleOrDefault(),
-															Ward = queryWard.SingleOrDefault(),
+															City = queryCity.SingleOrDefault(c => c.CityCode == address.CityCode),
+															District = queryDistrict.SingleOrDefault(c => c.DistrictCode == address.DistrictCode),
+															Ward = queryWard.SingleOrDefault(c => c.WardCode == address.DistrictCode),
 															HouseNumber = address.HouseNumber,
 															FullName = address.FullName,
 															PhoneNumber = address.PhoneNumber
@@ -114,7 +118,13 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 															PhoneNumber = mer.PhoneNumber,
 															Avatar = mer.Avatar,
 															User = queryUser.SingleOrDefault(e => e.Id == mer.UserId),
-															
+															Name = mer.Name,
+															OpenTime = CustomTime.GetTime(mer.OpenTime),
+															CloseTime = CustomTime.GetTime(mer.CloseTime),
+															HouseNumber = mer.HouseNumber,
+															City = queryCity.SingleOrDefault(e => e.CityCode == mer.CityCode),
+															District = queryDistrict.SingleOrDefault(e => e.DistrictCode == mer.DistrictCode),
+															Ward = queryWard.SingleOrDefault(e => e.WardCode == mer.WardCode),
 														},
 														OrderCount = p.OrderCount,
 														MenuItem = new MenuItemDto()
@@ -148,22 +158,37 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 																				  }).ToList()
 												};
 
-
-					result = await (from order in _dbContext.Orders
-										 where order.Status == 1
-										 select new OrderDto
-										 {
-											 Id = order.Id,
-											 DeliveryDateTime = order.DeliveryDateTime,
-											 OrderDateTime = order.OrderDateTime,
-											 Note = order.Note,
-											 ReceiveVia = order.ReceiveVia,
-											 Status = order.Status,
-											 Shipper = queryUser.SingleOrDefault(e => e.Id == order.ShipperId),
-											 User = queryUser.SingleOrDefault(e => e.Id == order.UserId),
-											 ShippingAddress = queryShippingAddress.SingleOrDefault(s => s.Id == order.ShippingAddressId),
-											 OrderItemList = queryOrderItem.Where(o => o.OrderId == order.Id).ToList()
-										 }).ToListAsync();
+					var queryResult = (from order in _dbContext.Orders
+											 where order.Status == (byte)request._orderStatus
+											 select new OrderDto
+											 {
+												 Id = order.Id,
+												 DeliveryDateTime = order.DeliveryDateTime,
+												 OrderDateTime = order.OrderDateTime,
+												 Note = order.Note,
+												 ReceiveVia = order.ReceiveVia,
+												 Status = (OrderStatus)order.Status,
+												 Shipper = queryUser.SingleOrDefault(e => e.Id == order.ShipperId),
+												 User = queryUser.SingleOrDefault(e => e.Id == order.UserId),
+												 ShippingAddress = queryShippingAddress.SingleOrDefault(s => s.Id == order.ShippingAddressId),
+												 OrderItemList = queryOrderItem.Where(o => o.OrderId == order.Id).ToList()
+											 });
+					if (string.IsNullOrWhiteSpace(request._shipperId))
+					{
+						result = await queryResult.ToListAsync();
+					}
+					else
+					{
+						// if status is ordersucces => not contain shipper
+						if (request._orderStatus == OrderStatus.OrderSuccess)
+						{
+							result = new List<OrderDto>();
+						}
+						else
+						{
+							result = await queryResult.Where(e => e.Shipper.Id == request._shipperId).ToListAsync();
+						}
+					}
 				}
 				catch (Exception ex)
 				{

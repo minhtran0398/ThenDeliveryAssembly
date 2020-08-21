@@ -10,11 +10,11 @@ using ThenDelivery.Shared.Dtos;
 namespace ThenDelivery.Client.Components.Address
 {
 	public enum PopupAddressMode
-   {
+	{
 		Select,
 		SelectEdit,
 		CreateNew
-   }
+	}
 
 	public class PopupUpdateAddressBase : CustomComponentBase<PopupUpdateAddressBase>
 	{
@@ -23,14 +23,15 @@ namespace ThenDelivery.Client.Components.Address
 		[Parameter] public EventCallback OnClose { get; set; }
 		[Parameter] public EventCallback OnConfirm { get; set; }
 
-      public PopupAddressMode AddressMode { get; set; }
+		public PopupAddressMode AddressMode { get; set; }
 
-      protected override void OnInitialized()
-      {
+		protected override void OnInitialized()
+		{
+			base.OnInitialized();
 			AddressMode = PopupAddressMode.Select;
-      }
+		}
 
-      protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
+		protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
 		{
 			AddressMode = PopupAddressMode.SelectEdit;
 			// set value => not set directly to another object
@@ -39,46 +40,46 @@ namespace ThenDelivery.Client.Components.Address
 		}
 
 		protected string GetStringMode()
-      {
-         return AddressMode switch
-         {
+		{
+			return AddressMode switch
+			{
 				PopupAddressMode.Select => "Create new",
-            PopupAddressMode.SelectEdit => "Create new",
-            PopupAddressMode.CreateNew => "Choose your address",
-            _ => "Unspecified mode",
-         };
-      }
+				PopupAddressMode.SelectEdit => "Create new",
+				PopupAddressMode.CreateNew => "Choose your address",
+				_ => "Unspecified mode",
+			};
+		}
 
 		protected async Task HandleChangeShippingAddress(ShippingAddressDto shippingAddress)
-      {
+		{
 			Order.ShippingAddress = shippingAddress;
 			await InvokeAsync(StateHasChanged);
-      }
+		}
 
 		protected async Task HandleChangeMode()
-      {
-         switch (AddressMode)
-         {
-            case PopupAddressMode.Select:
-            case PopupAddressMode.SelectEdit:
+		{
+			switch (AddressMode)
+			{
+				case PopupAddressMode.Select:
+				case PopupAddressMode.SelectEdit:
 					// not new model of form context => set default value
 					Order.ShippingAddress = new ShippingAddressDto();
 					AddressMode = PopupAddressMode.CreateNew;
-               break;
-            case PopupAddressMode.CreateNew:
+					break;
+				case PopupAddressMode.CreateNew:
 					AddressMode = PopupAddressMode.SelectEdit;
 					break;
-            default:
-               break;
-         }
-         await InvokeAsync(StateHasChanged);
-      }
+				default:
+					break;
+			}
+			await InvokeAsync(StateHasChanged);
+		}
 
 		protected async Task HandleChangeFullName(string newValue)
-      {
+		{
 			Order.ShippingAddress.FullName = newValue;
 			await InvokeAsync(StateHasChanged);
-      }
+		}
 
 		protected async Task HandleChangePhoneNumber(string newValue)
 		{

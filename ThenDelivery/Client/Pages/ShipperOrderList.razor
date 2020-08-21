@@ -1,0 +1,35 @@
+@page "/my-order-list"
+@inherits ShipperOrderListBase
+
+@if(OrderList is null)
+{
+	<p>Loading...</p>
+}
+else if(OrderList.Count == 0)
+{
+	<p>No content to display</p>
+}
+else
+{
+	@foreach (var order in OrderList)
+	{
+		<ul class="list-group">
+			<li class="list-group-item d-flex justify-content-between align-items-center">
+				@(order.User.UserName)
+				@if (order.Status == OrderStatus.ShipperAccept)
+				{
+					<button class="badge badge-primary badge-pill"
+							@onclick="async () => await HandleOnChangeOrderStatus(order)">
+						@order.Status.GetString()
+					</button>
+				}
+				else if (order.Status == OrderStatus.Delivery)
+				{
+					<span class="badge badge-success badge-pill">
+						@order.Status.GetString()
+					</span>
+				}
+			</li>
+		</ul>
+	}
+}

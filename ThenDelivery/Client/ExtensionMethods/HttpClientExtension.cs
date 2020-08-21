@@ -53,5 +53,18 @@ namespace ThenDelivery.Client.ExtensionMethods
 			}
 			return null;
 		}
+
+		public static async Task<TResult> CustomPutAsync<TValue, TResult>(
+			this HttpClient httpClient, string baseUrl, TValue objectToPut)
+			where TValue : class
+			where TResult : class
+		{
+			string jsonInString = JsonConvert.SerializeObject(objectToPut);
+			var stringContent = new StringContent(jsonInString, Encoding.UTF8, "application/json");
+
+			HttpResponseMessage response = await httpClient.PutAsync(baseUrl, stringContent);
+			string content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<TResult>(content);
+		}
 	}
 }

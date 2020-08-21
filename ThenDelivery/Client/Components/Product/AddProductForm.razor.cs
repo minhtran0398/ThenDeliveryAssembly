@@ -25,6 +25,7 @@ namespace ThenDelivery.Client.Components.Product
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
+			base.OnInitialized();
 			ProductModel = new ProductDto();
 		}
 		#endregion

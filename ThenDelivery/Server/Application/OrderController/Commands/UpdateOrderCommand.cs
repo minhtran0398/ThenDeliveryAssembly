@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,27 +10,27 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Application.OrderController.Commands
 {
-	public class InsertOrderCommand : IRequest<Unit>
+	public class UpdateOrderCommand : IRequest<Unit>
 	{
 		private readonly OrderDto _orderDto;
 
-		public InsertOrderCommand(OrderDto orderDto)
+		public UpdateOrderCommand(OrderDto orderDto)
 		{
 			_orderDto = orderDto;
 		}
 
-		public class Handler : IRequestHandler<InsertOrderCommand, Unit>
+		public class Handler : IRequestHandler<UpdateOrderCommand, Unit>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
-			private readonly ILogger<InsertOrderCommand> _logger;
+			private readonly ILogger<UpdateOrderCommand> _logger;
 
-			public Handler(ThenDeliveryDbContext dbContext, ILogger<InsertOrderCommand> logger)
+			public Handler(ThenDeliveryDbContext dbContext, ILogger<UpdateOrderCommand> logger)
 			{
 				_dbContext = dbContext;
 				_logger = logger;
 			}
 
-			public async Task<Unit> Handle(InsertOrderCommand request, CancellationToken cancellationToken)
+			public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
 			{
 				using var trans = _dbContext.Database.BeginTransaction();
 				try
@@ -40,11 +40,11 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 						throw new Exception("UserId is not valid");
 					}
 
-					// insert when user create new shipping address
+					// Update when user create new shipping address
 					var shippingAddress = request._orderDto.ShippingAddress;
 					if (shippingAddress.Id == 0)
 					{
-						var shippingAddressToInsert = new ShippingAddress()
+						var shippingAddressToUpdate = new ShippingAddress()
 						{
 							Id = 0,
 							CityCode = shippingAddress.City.CityCode,
@@ -55,22 +55,22 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 							UserId = request._orderDto.User.Id,
 							WardCode = shippingAddress.Ward.WardCode
 						};
-						await _dbContext.ShippingAddresses.AddAsync(shippingAddressToInsert);
+						await _dbContext.ShippingAddresses.AddAsync(shippingAddressToUpdate);
 						await _dbContext.SaveChangesAsync();
-						shippingAddress.Id = shippingAddressToInsert.Id;
+						shippingAddress.Id = shippingAddressToUpdate.Id;
 					}
 
-					Order orderToInsert = GetOrderData(request._orderDto, shippingAddress.Id);
-					await _dbContext.Orders.AddAsync(orderToInsert);
+					Order orderToUpdate = GetOrderData(request._orderDto, shippingAddress.Id);
+					await _dbContext.Orders.AddAsync(orderToUpdate);
 					await _dbContext.SaveChangesAsync();
 
 					foreach (var orderItem in request._orderDto.OrderItemList)
 					{
-						var orderDetailToInsert = GetOrderDetailData(orderItem, orderToInsert.Id);
-						await _dbContext.OrderDetails.AddAsync(orderDetailToInsert);
+						var orderDetailToUpdate = GetOrderDetailData(orderItem, orderToUpdate.Id);
+						await _dbContext.OrderDetails.AddAsync(orderDetailToUpdate);
 						await _dbContext.SaveChangesAsync();
 						await _dbContext.OrderDetailToppings
-							.AddRangeAsync(GetODToppingData(orderItem.SelectedToppingList, orderDetailToInsert.Id));
+							.AddRangeAsync(GetODToppingData(orderItem.SelectedToppingList, orderDetailToUpdate.Id));
 					}
 
 					await _dbContext.SaveChangesAsync();

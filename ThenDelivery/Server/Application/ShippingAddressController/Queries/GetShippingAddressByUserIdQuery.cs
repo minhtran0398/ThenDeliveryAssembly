@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
 
-namespace ThenDelivery.Server.Application.ShippingAddress.Queries
+namespace ThenDelivery.Server.Application.ShippingAddressController.Queries
 {
 	public class GetShippingAddressByUserIdQuery : IRequest<IEnumerable<ShippingAddressDto>>
 	{

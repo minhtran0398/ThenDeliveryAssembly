@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Application.Common.Interfaces;
-using ThenDelivery.Server.Application.ShippingAddress.Queries;
+using ThenDelivery.Server.Application.ShippingAddressController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
 

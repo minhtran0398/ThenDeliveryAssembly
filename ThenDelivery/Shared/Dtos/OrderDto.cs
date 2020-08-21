@@ -1,4 +1,5 @@
 ﻿using System;
+using ThenDelivery.Shared.Enums;
 using System.Collections.Generic;
 
 namespace ThenDelivery.Shared.Dtos
@@ -18,7 +19,7 @@ namespace ThenDelivery.Shared.Dtos
 		public DateTime DeliveryDateTime { get; set; }
 		public string Note { get; set; }
 		public byte ReceiveVia { get; set; }
-		public byte Status { get; set; }
+		public OrderStatus Status { get; set; }
 
 		public List<OrderItem> OrderItemList { get; set; }
 	}

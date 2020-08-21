@@ -14,6 +14,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected override void OnInitialized()
 		{
+			base.OnInitialized();
 			ActiveTabIndex = 0;
 			MerchantModel = new MerchantDto();
 		}

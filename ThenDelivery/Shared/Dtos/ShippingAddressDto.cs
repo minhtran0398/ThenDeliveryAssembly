@@ -15,8 +15,15 @@
 		{
 			get
 			{
-				return string.Format("{0}, {1}, {2}, {3}",
-					HouseNumber, Ward.DisplayText, District.DisplayText, City.DisplayText);
+				if (HouseNumber != null && Ward != null && District != null && City != null)
+				{
+					return string.Format("{0}, {1}, {2}, {3}",
+						HouseNumber, Ward.DisplayText, District.DisplayText, City.DisplayText);
+				}
+				else
+				{
+					return string.Empty;
+				}
 			}
 		}
 	}
