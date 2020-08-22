@@ -17,8 +17,8 @@ namespace ThenDelivery.Client.Pages
 		protected List<ProductDto> ProductListMenu { get; set; }
 		protected List<MenuItemDto> MenuItemList { get; set; }
 		protected OrderDto Order { get; set; }
-      public EditContext FormContext { get; set; }
-      protected MenuItemDto SelectedMenu { get; set; }
+		public EditContext FormContext { get; set; }
+		protected MenuItemDto SelectedMenu { get; set; }
 		protected bool IsShowPopupTopping { get; set; }
 		protected bool IsShowPopupOrderConfirm { get; set; }
 		protected ProductDto SelectedProduct { get; set; }
@@ -100,6 +100,11 @@ namespace ThenDelivery.Client.Pages
 				Order.OrderItemList.Add(orderItem);
 			}
 			StateHasChanged();
+		}
+
+		protected void HandleCloseConfirmPopup()
+		{
+			IsShowPopupOrderConfirm = false;
 		}
 
 		protected void HandleConfirmOrder()

@@ -13,7 +13,7 @@
 @if(Order.OrderItemList?.Count > 0 && IsShowPopupOrderConfirm)
 {
 	<div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
-		<PopupConfirmOrder Order="Order" />
+		<PopupConfirmOrder Order="Order" OnClose="HandleCloseConfirmPopup" />
 	</div>
 }
 
@@ -26,7 +26,7 @@ else
 	<div class="now-detail-restaurant clearfix">
 		<div class="container">
 			<div class="detail-restaurant-img">
-				<img src="@Merchant.Avatar"
+				<img src="@Merchant.CoverPicture"
 					  alt=" &amp; - Shop Online" class="">
 			</div>
 			<div class="detail-restaurant-info">
@@ -34,13 +34,9 @@ else
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="/">Home</a></li>
 						<li class="breadcrumb-item">
-							<a class="breadcrumb-link" rel="nofollow" href="/ho-chi-minh">TP. HCM</a>
-						</li>
-						<li class="breadcrumb-item">
 							<a class="breadcrumb-link" rel="nofollow"
-								href="/ho-chi-minh/nam-nhi-organic-coffee-tea-shop-online">
-								Nam Nhi - Organic Coffee &amp; Tea -
-								Shop Online
+								href="/merchant/@(Merchant.Id)">
+								@(Merchant.Name) - Shop Online
 							</a>
 						</li>
 					</ol>

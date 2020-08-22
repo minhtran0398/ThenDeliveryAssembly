@@ -11,22 +11,30 @@ else if(OrderList.Count == 0)
 }
 else
 {
-	@foreach (var order in OrderList)
+	@foreach (var order in OrderList.OrderBy(e => e.Status))
 	{
 		<ul class="list-group">
 			<li class="list-group-item d-flex justify-content-between align-items-center">
-				@(order.User.UserName)
+				@(order.ShippingAddress.FullName) - @(order.ShippingAddress.PhoneNumber) <br/>
+				@(order.User.UserName) - @(order.User.PhoneNumber) <br/>
+				@(order.ShippingAddress.AddressString)
 				@if (order.Status == OrderStatus.ShipperAccept)
 				{
-					<button class="badge badge-primary badge-pill"
+					<button class="btn btn-sm btn-primary btn-pill"
 							@onclick="async () => await HandleOnChangeOrderStatus(order)">
-						@order.Status.GetString()
+						Tiến hành giao hàng
 					</button>
 				}
-				else if (order.Status == OrderStatus.Delivery)
+				else if(order.Status == OrderStatus.Delivery)
+				{
+					<span class="badge badge-danger badge-pill">
+						@order.Status.GetStringValue()
+					</span>
+				}
+				else if(order.Status == OrderStatus.DeliverySuccess)
 				{
 					<span class="badge badge-success badge-pill">
-						@order.Status.GetString()
+						@order.Status.GetStringValue()
 					</span>
 				}
 			</li>

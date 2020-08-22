@@ -1,0 +1,11 @@
+@page "/order-history"
+@inherits OrderHistoryBase
+
+@if(OrderList is null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<OrderListCpn OrderList="@OrderList" />
+}

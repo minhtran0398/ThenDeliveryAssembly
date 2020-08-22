@@ -2,6 +2,6 @@
 {
 	public interface IImageService
 	{
-		string SaveImage(string base64String);
+		string SaveImage(string base64String, string path);
 	}
 }

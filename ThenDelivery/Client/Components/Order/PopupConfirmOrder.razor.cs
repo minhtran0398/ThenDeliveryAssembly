@@ -90,6 +90,7 @@ namespace ThenDelivery.Client.Components.Order
 		{
 			Logger.LogInformation(JsonConvert.SerializeObject(Order));
 			Logger.LogInformation(await HttpClientServer.CustomPostAsync("api/Order", Order));
+			await OnClose.InvokeAsync(null);
 		}
 
 		protected void HandleChangeShippingAddress()

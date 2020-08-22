@@ -35,7 +35,7 @@
 									  @onchange="async (newValue) => await HandleNoteChanged(orderItem.Id, newValue)"/>
 					</div>
 					<div class="col-auto pl-0">
-						<strong>@orderItem.OrderProduct.UnitPrice</strong>
+						<strong>@orderItem.OrderProduct.UnitPrice.ToString("N0")</strong>
 					</div>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 					Tổng cộng
 				</div>
 				<div class="col-sm-auto">
-					<span class="text-primary font-weight-bold">@TotalPrice</span>
+					<span class="text-primary font-weight-bold">@TotalPrice.ToString("N0")</span>
 				</div>
 			</div>
 		</div>

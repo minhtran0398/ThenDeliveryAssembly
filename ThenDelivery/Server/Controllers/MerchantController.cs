@@ -29,8 +29,10 @@ namespace ThenDelivery.Server.Controllers
 		[Authorize(Roles = Const.Role.UserRole)]
 		public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
 		{
-			string path = _imageService.SaveImage(merchantDto.Avatar);
-			merchantDto.Avatar = merchantDto.CoverPicture = path;
+			string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
+			string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
+			merchantDto.Avatar = pathAvatar;
+			merchantDto.CoverPicture = pathCoverPicture;
 			merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
 			int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
 

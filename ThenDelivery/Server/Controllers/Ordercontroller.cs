@@ -13,11 +13,11 @@ using ThenDelivery.Shared.Enums;
 
 namespace ThenDelivery.Server.Controllers
 {
-	public class Ordercontroller : CustomControllerBase<Ordercontroller>
+	public class OrderController : CustomControllerBase<OrderController>
 	{
 		private readonly ICurrentUserService _currentUserService;
 
-		public Ordercontroller(ICurrentUserService currentUserService)
+		public OrderController(ICurrentUserService currentUserService)
 		{
 			_currentUserService = currentUserService;
 		}
@@ -80,6 +80,28 @@ namespace ThenDelivery.Server.Controllers
 				}
 				IEnumerable<OrderDto> orderList =
 					await Mediator.Send(new GetAllOrderedQuery((OrderStatus)orderStatus, shipperId));
+				return Ok(orderList);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+		/// <summary>
+		/// Get order list
+		/// </summary>
+		/// <param name="orderStatus">Enum OrderStatus value [default is OrderSuccess]</param>
+		/// <returns>IEnumerable of OrderDto</returns>
+		[HttpGet("user-order-history/{orderStatus}")]
+		[Authorize(Roles = Const.Role.UserRole)]
+		public async Task<IActionResult> GetOrderedListByUserId(byte orderStatus = (byte)OrderStatus.OrderSuccess)
+		{
+			try
+			{
+				string userId = _currentUserService.GetLoggedInUserId();
+				IEnumerable<OrderDto> orderList =
+					await Mediator.Send(new GetOrderHistoryQuery((OrderStatus)orderStatus, userId));
 				return Ok(orderList);
 			}
 			catch (Exception ex)

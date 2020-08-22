@@ -6,9 +6,9 @@ namespace ThenDelivery.Server.Services
 {
 	public class ImageService : IImageService
 	{
-		public string SaveImage(string base64String)
+		public string SaveImage(string base64String, string path)
 		{
-			string fileName = @$"wwwroot\Images\Merchant\Avatar\{Guid.NewGuid()}.jpg";
+			string fileName = @$"wwwroot\Images\{path}\{Guid.NewGuid()}.jpg";
 			try
 			{
 				var byteArr = Convert.FromBase64String(base64String);

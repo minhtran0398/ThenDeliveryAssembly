@@ -13,29 +13,29 @@ using ThenDelivery.Shared.Enums;
 
 namespace ThenDelivery.Server.Application.OrderController.Queries
 {
-	public class GetAllOrderedQuery : IRequest<IEnumerable<OrderDto>>
+	public class GetOrderHistoryQuery : IRequest<IEnumerable<OrderDto>>
 	{
-		private readonly string _shipperId;
+		private readonly string _userId;
 		private readonly OrderStatus _orderStatus;
 
-		public GetAllOrderedQuery(OrderStatus orderStatus, string shipperId = null)
+		public GetOrderHistoryQuery(OrderStatus orderStatus, string userId = null)
 		{
-			_shipperId = shipperId;
+			_userId = userId;
 			_orderStatus = orderStatus;
 		}
 
-		public class Handler : IRequestHandler<GetAllOrderedQuery, IEnumerable<OrderDto>>
+		public class Handler : IRequestHandler<GetOrderHistoryQuery, IEnumerable<OrderDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
-			private readonly ILogger<GetAllOrderedQuery> _logger;
+			private readonly ILogger<GetOrderHistoryQuery> _logger;
 
-			public Handler(ThenDeliveryDbContext dbContext, ILogger<GetAllOrderedQuery> logger)
+			public Handler(ThenDeliveryDbContext dbContext, ILogger<GetOrderHistoryQuery> logger)
 			{
 				_dbContext = dbContext;
 				_logger = logger;
 			}
 
-			public async Task<IEnumerable<OrderDto>> Handle(GetAllOrderedQuery request,
+			public async Task<IEnumerable<OrderDto>> Handle(GetOrderHistoryQuery request,
 				CancellationToken cancellationToken)
 			{
 				var result = new List<OrderDto>();
@@ -88,7 +88,7 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 															UserId = address.UserId,
 															City = queryCity.SingleOrDefault(c => c.CityCode == address.CityCode),
 															District = queryDistrict.SingleOrDefault(c => c.DistrictCode == address.DistrictCode),
-															Ward = queryWard.SingleOrDefault(c => c.WardCode == address.WardCode),
+															Ward = queryWard.SingleOrDefault(c => c.WardCode == address.DistrictCode),
 															HouseNumber = address.HouseNumber,
 															FullName = address.FullName,
 															PhoneNumber = address.PhoneNumber
@@ -173,7 +173,7 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 												 ShippingAddress = queryShippingAddress.SingleOrDefault(s => s.Id == order.ShippingAddressId),
 												 OrderItemList = queryOrderItem.Where(o => o.OrderId == order.Id).ToList()
 											 });
-					if (string.IsNullOrWhiteSpace(request._shipperId))
+					if (string.IsNullOrWhiteSpace(request._userId))
 					{
 						if (request._orderStatus == OrderStatus.None)
 						{
@@ -188,12 +188,12 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 					{
 						if (request._orderStatus == OrderStatus.None)
 						{
-							result = await queryResult.Where(e => e.Shipper.Id == request._shipperId).ToListAsync();
+							result = await queryResult.Where(e => e.User.Id == request._userId).ToListAsync();
 						}
 						else
 						{
 							result = await queryResult
-								.Where(e => e.Status == request._orderStatus && e.Shipper.Id == request._shipperId)
+								.Where(e => e.Status == request._orderStatus && e.User.Id == request._userId)
 								.ToListAsync();
 						}
 					}

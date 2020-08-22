@@ -9,7 +9,7 @@
 				</div>
 				<div class="col-sm-8">
 					<h3>@Product.Name</h3>
-					<p>@Product.UnitPrice</p>
+					<p>@Product.UnitPrice.ToString("N0")</p>
 				</div>
 				<div>
 					<i class="fas fa-times btn-close-popup" @onclick="async () => await HandleCancel()" />
@@ -18,13 +18,19 @@
 		</div>
 	</HeaderTemplate>
 	<Content>
-		<h3>Thêm topping</h3>
-		<DxListBox Data="@Product.ToppingList"
-					  TextFieldName="Text"
-					  SelectionMode="ListBoxSelectionMode.Multiple"
-					  ShowCheckboxes="true"
-					  @bind-SelectedItems="SelectedToppingList">
-		</DxListBox>
+		@if(Product.ToppingList is null || Product.ToppingList.Count == 0)
+		{
+		}
+		else
+		{
+			<h3>Thêm topping</h3>
+			<DxListBox Data="@Product.ToppingList"
+							TextFieldName="Text"
+							SelectionMode="ListBoxSelectionMode.Multiple"
+							ShowCheckboxes="true"
+							@bind-SelectedItems="SelectedToppingList">
+			</DxListBox>
+		}
 	</Content>
 	<FooterTemplate>
 		<div class="col">
@@ -38,7 +44,7 @@
 		</div>
 		<div class="col-auto">
 			<button class="btn btn-primary btn-sm" @onclick="async () => await HandleAddOrder()">
-				OK +@(Product.UnitPrice * Quantity)đ
+				OK +@((Product.UnitPrice * Quantity).ToString("N0"))đ
 			</button>
 		</div>
 	</FooterTemplate>

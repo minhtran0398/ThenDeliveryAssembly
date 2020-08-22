@@ -1,17 +1,18 @@
 ﻿@inherits ProductItemBase
 
+@if(Product != null)
+{
 <div class="item-restaurant-row">
 	<div class="row">
 		<div class="col-auto item-restaurant-img">
 			<button class="inline">
-				<img src="https://images.foody.vn/res/g71/705899/s120x120/21a852ef-821b-4c82-91be-5b2f0123be02.jpg"
-					  alt="Cà phê sữa" width="60" height="60">
+				<img src="@Product.Image" alt="Cà phê sữa" width="60" height="60">
 			</button>
 		</div>
 		<div class="col item-restaurant-info">
 			<h2 class="item-restaurant-name">@Product.Name</h2>
-			<div class="item-restaurant-desc">Vietnamese milk coffee</div>
-			<div class="item-restaurant-total">Đã được đặt<span class="txt-bold">&nbsp;10+&nbsp;</span>lần</div>
+			<div class="item-restaurant-desc">@Product.Description</div>
+			<div class="item-restaurant-total">Đã được đặt<span class="txt-bold">&nbsp;@Product.OrderCount&nbsp;</span>lần</div>
 		</div>
 		<div class="col-auto item-restaurant-more">
 			<div class="row ">
@@ -20,7 +21,7 @@
 							29,000<span style="font-weight: 400;position: relative;top: -9px;font-size: 10px;right: 0;">đ</span>
 						</div>*@
 					<div class="current-price">
-						@Product.UnitPrice<span style="font-weight: 400;position: relative;top: -9px;font-size: 10px;right: 0;">đ</span>
+						@Product.UnitPrice.ToString("N0")<span style="font-weight: 400;position: relative;top: -9px;font-size: 10px;right: 0;">đ</span>
 					</div>
 				</div>
 				<div class="col-auto adding-food-cart txt-right">
@@ -33,3 +34,4 @@
 		</div>
 	</div>
 </div>
+}

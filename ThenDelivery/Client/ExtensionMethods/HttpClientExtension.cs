@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -17,7 +18,14 @@ namespace ThenDelivery.Client.ExtensionMethods
 			{
 				//Todo
 				//Need try catch here
-				return await response.Content.ReadFromJsonAsync<T>();
+				try
+				{
+					return await response.Content.ReadFromJsonAsync<T>();
+				}
+				catch (Exception ex)
+				{
+					throw new Exception(await response.Content.ReadAsStringAsync(), ex);
+				}
 			}
 			return null;
 		}

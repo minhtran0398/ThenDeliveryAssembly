@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Exceptions;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace ThenDelivery.Client.Pages
 {
@@ -17,7 +18,8 @@ namespace ThenDelivery.Client.Pages
 		{
 			await base.OnInitializedAsync();
 			OrderList = await HttpClientServer
-				.CustomGetAsync<List<OrderDto>>($"api/Order?orderStatus={(byte)OrderStatus.ShipperAccept}&isShipper={true}");
+				.CustomGetAsync<List<OrderDto>>($"api/Order?orderStatus={(byte)OrderStatus.None}&isShipper={true}");
+			Logger.LogInformation(JsonConvert.SerializeObject(OrderList));
 		}
 
 		protected async Task HandleOnChangeOrderStatus(OrderDto order)

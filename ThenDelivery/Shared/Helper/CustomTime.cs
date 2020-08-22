@@ -88,7 +88,7 @@ namespace ThenDelivery.Shared.Helper
 
 		public string ToStringWithoutDelimiter()
 		{
-			return String.Format("{0:D2}{1:D2}", _minute, _hour);
+			return String.Format("{0:D2}{1:D2}", _hour, _minute);
 		}
 
 		public int TotalMinutes()

@@ -22,5 +22,18 @@ namespace ThenDelivery.Shared.Dtos
 		public OrderStatus Status { get; set; }
 
 		public List<OrderItem> OrderItemList { get; set; }
+
+		public decimal TotalAmount
+		{
+			get
+			{
+				decimal result = 0;
+				OrderItemList.ForEach(item =>
+				{
+					result += (item.Quantity * item.OrderProduct.UnitPrice);
+				});
+				return result;
+			}
+		}
 	}
 }
