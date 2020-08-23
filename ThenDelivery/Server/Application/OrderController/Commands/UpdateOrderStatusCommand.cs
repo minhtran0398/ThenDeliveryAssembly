@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Exceptions;
 using ThenDelivery.Shared.Entities;
 using ThenDelivery.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,12 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 					{
 						throw new Exception("Order doesnt exist");
 					}
+
+					if(order.Status == (byte)request._orderStatus)
+					{
+						throw new UpdateOrderStatusException();
+					}
+
 					order.Status = (byte)request._orderStatus;
 					order.ShipperId = request._shipperId;
 

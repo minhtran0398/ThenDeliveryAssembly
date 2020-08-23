@@ -22,7 +22,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected override async Task OnInitializedAsync()
 		{
-			OrderList = await HttpClientServer.CustomGetAsync<List<OrderDto>>("api/Order?orderStatus=1");
+			await LoadOrderList();
 			Logger.LogInformation(JsonConvert.SerializeObject(OrderList));
 		}
 
@@ -46,13 +46,19 @@ namespace ThenDelivery.Client.Pages
 				await HttpClientServer.CustomPutAsync<OrderDto, CustomResponse>("api/Order", SelectedOrder);
 			if (ResponseModel.IsSuccess == false)
 			{
-				SelectedOrder.Status = OrderStatus.OrderSuccess;
+				await LoadOrderList();
 			}
 			else
 			{
 				OrderList.RemoveFirst(e => e.Id == SelectedOrder.Id);
 			}
 			IsShowPopupResult = true;
+		}
+
+		protected async Task LoadOrderList()
+		{
+			OrderList =
+				await HttpClientServer.CustomGetAsync<List<OrderDto>>($"api/Order?orderStatus={(byte)OrderStatus.OrderSuccess}");
 		}
 	}
 }

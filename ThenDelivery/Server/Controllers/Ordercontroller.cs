@@ -37,6 +37,10 @@ namespace ThenDelivery.Server.Controllers
 				await Mediator.Send(new UpdateOrderStatusCommand(orderDto.Id, orderDto.Status, shipperId));
 				return Ok(new CustomResponse(200, "Update success"));
 			}
+			catch (UpdateOrderStatusException ex)
+			{
+				return BadRequest(new CustomResponse(ex.StatusCode, "Đơn hàng đã được shipper khác chọn, vui lòng chọn đơn hàng khác"));
+			}
 			catch (Exception ex)
 			{
 				return BadRequest(new CustomResponse(400, ex.Message));
