@@ -71,5 +71,7 @@ namespace ThenDelivery.Server.Persistence
 		public DbSet<WardLevel> WardLevels { get; set; }
 		public DbSet<MTMerchant> MTMerchants { get; set; }
 		public DbSet<FDMerchant> FDMerchants { get; set; }
+		public DbSet<Chat> Chats { get; set; }
+		public DbSet<ChatMessage> ChatMessages { get; set; }
 	}
 }

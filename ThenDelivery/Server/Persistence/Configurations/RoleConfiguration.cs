@@ -17,26 +17,6 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.Property(e => e.Name)
 				.IsRequired(true);
-
-			builder.HasData(new List<IdentityRole>
-			{
-				new IdentityRole(Const.Role.UserRole)
-				{
-					NormalizedName = Const.Role.UserRole.ToUpper()
-				},
-				new IdentityRole(Const.Role.ShipperRole)
-				{
-					NormalizedName = Const.Role.ShipperRole.ToUpper()
-				},
-				new IdentityRole(Const.Role.MerchantRole)
-				{
-					NormalizedName = Const.Role.MerchantRole.ToUpper()
-				},
-				new IdentityRole(Const.Role.AdministrationRole)
-				{
-					NormalizedName = Const.Role.AdministrationRole.ToUpper()
-				},
-			});
 		}
 	}
 }
