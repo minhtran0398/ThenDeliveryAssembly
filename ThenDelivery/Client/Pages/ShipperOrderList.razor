@@ -18,18 +18,13 @@ else
 				@(order.ShippingAddress.FullName) - @(order.ShippingAddress.PhoneNumber) <br/>
 				@(order.User.UserName) - @(order.User.PhoneNumber) <br/>
 				@(order.ShippingAddress.AddressString)
-				@if (order.Status == OrderStatus.ShipperAccept)
+				@if (order.Status == OrderStatus.ShipperAccept || order.Status == OrderStatus.Delivery)
 				{
-					<button class="btn btn-sm btn-primary btn-pill"
-							@onclick="async () => await HandleOnChangeOrderStatus(order)">
-						Tiến hành giao hàng
+					<button class="btn btn-sm btn-pill
+										@(order.Status == OrderStatus.ShipperAccept ? "btn-primary" : "btn-danger")"
+							@onclick="async () => await HandleChangeOrderStatus(order)">
+						@order.Status.GetStringNextAction()
 					</button>
-				}
-				else if(order.Status == OrderStatus.Delivery)
-				{
-					<span class="badge badge-danger badge-pill">
-						@order.Status.GetStringValue()
-					</span>
 				}
 				else if(order.Status == OrderStatus.DeliverySuccess)
 				{

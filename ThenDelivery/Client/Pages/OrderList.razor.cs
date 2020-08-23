@@ -22,6 +22,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected override async Task OnInitializedAsync()
 		{
+			await InvokeAsync(StateHasChanged);
 			await LoadOrderList();
 			Logger.LogInformation(JsonConvert.SerializeObject(OrderList));
 		}

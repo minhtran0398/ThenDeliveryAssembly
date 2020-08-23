@@ -1,3 +1,4 @@
+using ThenDelivery.Shared.Helper.ExtensionMethods;
 using ThenDelivery.Client.Components;
 using System.Collections.Generic;
 using ThenDelivery.Shared.Dtos;
@@ -22,10 +23,10 @@ namespace ThenDelivery.Client.Pages
 			Logger.LogInformation(JsonConvert.SerializeObject(OrderList));
 		}
 
-		protected async Task HandleOnChangeOrderStatus(OrderDto order)
+		protected async Task HandleChangeOrderStatus(OrderDto order)
 		{
 			Logger.LogInformation("HandleOnChangeOrderStatus");
-			order.Status = OrderStatus.Delivery;
+			order.Status = order.Status.GetNextStatus();
 			var responseModel =
 				await HttpClientServer.CustomPutAsync<OrderDto, CustomResponse>("api/Order", order);
 			if (responseModel.IsSuccess == false)
