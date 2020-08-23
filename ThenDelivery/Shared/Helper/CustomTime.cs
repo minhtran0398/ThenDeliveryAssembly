@@ -101,6 +101,11 @@ namespace ThenDelivery.Shared.Helper
 			return _hour * 60 + _minute;
 		}
 
+		public TimeSpan ToTimeSpan()
+      {
+			return new TimeSpan(_hour, _minute, 0);
+      }
+
 		#region operator
 		public static bool operator >(CustomTime time1, CustomTime time2)
 		{

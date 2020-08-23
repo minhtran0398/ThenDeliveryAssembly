@@ -103,6 +103,8 @@ namespace ThenDelivery.Client.Components.Address
 
 		protected async Task HandleConfirm()
 		{
+			TimeSpan time = DeliveryTime.ToTimeSpan();
+			Order.DeliveryDateTime = Order.DeliveryDateTime.Date + time;
 			await OnConfirm.InvokeAsync(null);
 		}
 

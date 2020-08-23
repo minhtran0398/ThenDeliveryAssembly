@@ -11,7 +11,7 @@ else if(OrderList.Count == 0)
 }
 else
 {
-	@foreach (var order in OrderList.OrderBy(e => e.Status))
+	@foreach (var order in OrderList.OrderBy(e => e.Status).ThenBy(e => e.OrderDateTime))
 	{
 		<ul class="list-group">
 			<li class="list-group-item d-flex justify-content-between align-items-center">

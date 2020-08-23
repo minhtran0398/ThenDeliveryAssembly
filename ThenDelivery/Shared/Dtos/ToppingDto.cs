@@ -11,7 +11,7 @@
 		{
 			get
 			{
-				return string.Format("{0} - {1}", Name, UnitPrice);
+				return string.Format("{0} - {1:N0}", Name, UnitPrice);
 			}
 		}
 	}

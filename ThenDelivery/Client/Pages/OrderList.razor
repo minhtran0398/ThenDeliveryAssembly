@@ -8,10 +8,10 @@
 			<p>Bạn chắc chắn muốn giao đơn hàng này?</p>
 		</Content>
 		<FooterTemplate>
-			<button class="btn btn-dark"
-					@onclick="HandleClose">Close</button>
 			<button class="btn btn-success"
 					@onclick="async () => await HandleConfirm()">Confirm</button>
+			<button class="btn btn-dark"
+					@onclick="HandleClose">Close</button>
 		</FooterTemplate>
 	</DxPopup>
 }
@@ -42,7 +42,7 @@ else
 				class="mb-2 list-group-item list-group-item-action active">
 			   <div class="d-flex w-100 justify-content-between">
 			      <h5 class="mb-1">@order.OrderItemList[0].OrderProduct.Merchant.Name</h5>
-			      <small>@TimeRange.DaysBetween(DateTime.Now, order.DeliveryDateTime) days ago</small>
+			      <small>@TimeRange.GetDurationStringToNow(order.OrderDateTime)</small>
 			   </div>
 			   <p class="mb-1">@(order.OrderItemList[0].OrderProduct.Merchant.OpenTime.TimeString) - 
 					@(order.OrderItemList[0].OrderProduct.Merchant.CloseTime.TimeString)</p>

@@ -43,16 +43,24 @@ namespace ThenDelivery.Shared.Dtos
 				}
 			}
 		}
+
+		public decimal OrderUnitItemPrice
+      {
+         get
+         {
+				var result = OrderProduct.UnitPrice;
+				foreach (var toppingItem in SelectedToppingList)
+				{
+					result += toppingItem.UnitPrice;
+				}
+				return result;
+			}
+      }
 		public decimal OrderItemPrice
 		{
 			get
 			{
-				var result = OrderProduct.UnitPrice * Quantity;
-				foreach (var toppingItem in SelectedToppingList)
-				{
-					result += toppingItem.UnitPrice * Quantity;
-				}
-				return result;
+				return OrderUnitItemPrice * Quantity;
 			}
 		}
 

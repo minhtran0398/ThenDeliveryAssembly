@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace ThenDelivery.Shared.Helper
 {
@@ -8,6 +8,25 @@ namespace ThenDelivery.Shared.Helper
 		{
 			TimeSpan timeBetween = time1 - time2;
 			return Math.Abs(timeBetween.Days);
+		}
+
+		public static string GetDurationString(DateTime largeTime, DateTime smallTime)
+      {
+			TimeSpan duration = largeTime - smallTime;
+			if(duration.TotalSeconds < 60)
+         {
+				return string.Format("{0:s} giây trước", duration);
+         }
+			if(duration.TotalMinutes < 60)
+         {
+				return string.Format("{0:m} phút trước", duration);
+         }
+			return string.Format("{0} giờ trước", Math.Truncate(duration.TotalHours));
+		}
+
+		public static string GetDurationStringToNow(DateTime time)
+		{
+			return GetDurationString(DateTime.Now, time);
 		}
 	}
 }

@@ -19,7 +19,7 @@
 					<div class="col pl-0">
 						@if (orderItem.SelectedToppingList?.Count > 0)
 						{
-							<strong>@orderItem.OrderProduct.Name</strong>@orderItem.ToppingListString.Insert(0, "-")
+							<strong>@orderItem.OrderProduct.Name</strong>@orderItem.ToppingListString.Insert(0, "- ")
 						}
 						else
 						{
@@ -35,7 +35,7 @@
 									  @onchange="async (newValue) => await HandleNoteChanged(orderItem.Id, newValue)"/>
 					</div>
 					<div class="col-auto pl-0">
-						<strong>@orderItem.OrderProduct.UnitPrice.ToString("N0")</strong>
+						<strong>@orderItem.OrderUnitItemPrice.ToString("N0")</strong>
 					</div>
 				</div>
 			</div>

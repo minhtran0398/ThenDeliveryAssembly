@@ -114,6 +114,10 @@ namespace ThenDelivery.Client.Pages
 			IsShowPopupOrderConfirm = false;
 			OrderResponse = response;
 			OrderResponse.IsShowPopup = true;
+			if(response.IsSuccess)
+         {
+				Order = new OrderDto();
+         }
 		}
 
 		protected void HandleConfirmOrder()
