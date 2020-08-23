@@ -29,6 +29,11 @@ namespace ThenDelivery.Shared.Helper
 			_minute = 0;
 			_hour = 0;
 		}
+      public CustomTime(DateTime dateTime)
+      {
+			_minute = (short)dateTime.Minute;
+			_hour = (short)dateTime.Hour;
+      }
 		public CustomTime(short hour, short minute, bool isCheckValidTime = true)
 		{
 			if (isCheckValidTime)

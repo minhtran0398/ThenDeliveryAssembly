@@ -1,120 +1,135 @@
 ﻿@page "/merchant/{MerchantId:int}"
 @inherits MerchantHomeBase
 
-@if(SelectedProduct != null)
+@if (OrderResponse?.IsShowPopup == true)
 {
-	<div class="@(IsShowPopupTopping ? "" : "d-none")">
-		<PopupTopping Product="SelectedProduct"
-						  OnCancel="HandleCancelOrder"
-						  OnAddOrderItem="HandleAddOrder" />
-	</div>
+   <DxPopup HeaderText="@(OrderResponse.IsSuccess ? "Thành công" : "Thất bại")"
+            @bind-Visible="@OrderResponse.IsShowPopup" ShowCloseButton="false">
+      <Content>
+         <p>@(OrderResponse.Message)</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-success"
+                 @onclick="@(() => OrderResponse.IsShowPopup = false)">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
 }
 
-@if(Order.OrderItemList?.Count > 0 && IsShowPopupOrderConfirm)
+<div class="@(IsShowPopupTopping ? "" : "d-none")">
+   <PopupTopping Product="SelectedProduct ?? new ProductDto()"
+                 OnCancel="HandleCancelOrder"
+                 OnAddOrderItem="HandleAddOrder" />
+</div>
+
+@if (Order.OrderItemList?.Count > 0)
 {
-	<div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
-		<PopupConfirmOrder Order="Order" OnClose="HandleCloseConfirmPopup" />
-	</div>
+   <div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
+      <PopupConfirmOrder Order="Order"
+                         OnClose="HandleCloseConfirmPopup"
+                         OnAfterConfirm="HandleOnAfterConfirmOrder"/>
+   </div>
 }
 
 @if (Merchant is null)
 {
-	<p>Loading...</p>
+   <p>Loading...</p>
 }
 else
 {
-	<div class="now-detail-restaurant clearfix">
-		<div class="container">
-			<div class="detail-restaurant-img">
-				<img src="@Merchant.CoverPicture"
-					  alt=" &amp; - Shop Online" class="">
-			</div>
-			<div class="detail-restaurant-info">
-				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="/">Home</a></li>
-						<li class="breadcrumb-item">
-							<a class="breadcrumb-link" rel="nofollow"
-								href="/merchant/@(Merchant.Id)">
-								@(Merchant.Name) - Shop Online
-							</a>
-						</li>
-					</ol>
-				</nav>
-				<div class="kind-restaurant"><span> Shop Online</span></div>
-				<h1 class="name-restaurant">@Merchant.Name - Shop Online</h1>
-				<div class="address-restaurant">@Merchant.AddressString</div>
-				<div class="status-restaurant">
-					<div class="opentime-status"><span class="stt offline" title="Đã đóng"></span></div>
-				</div>
-				<div class="cost-restaurant"><i class="fas fa-dollar-sign"></i>25,000 - 55,000</div>
-			</div>
-		</div>
-	</div>
+   <div class="now-detail-restaurant clearfix">
+      <div class="container">
+         <div class="detail-restaurant-img">
+            <img src="@Merchant.CoverPicture"
+                 alt=" &amp; - Shop Online" class="">
+         </div>
+         <div class="detail-restaurant-info">
+            <nav aria-label="breadcrumb">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="/">Home</a></li>
+                  <li class="breadcrumb-item">
+                     <a class="breadcrumb-link" rel="nofollow"
+                        href="/merchant/@(Merchant.Id)">
+                        @(Merchant.Name) - Shop Online
+                     </a>
+                  </li>
+               </ol>
+            </nav>
+            <div class="kind-restaurant"><span> Shop Online</span></div>
+            <h1 class="name-restaurant">@Merchant.Name - Shop Online</h1>
+            <div class="address-restaurant">@Merchant.AddressString</div>
+            <div class="status-restaurant">
+               <div class="opentime-status"><span class="stt offline" title="Đã đóng"></span></div>
+            </div>
+            <div class="cost-restaurant"><i class="fas fa-dollar-sign"></i>25,000 - 55,000</div>
+         </div>
+      </div>
+   </div>
 
-	<div class="then-detail-body">
-		<div class="then-detail-body-menu">
-			<h3>Thực đơn</h3>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 menu-list pl-0">
-					<div class="list-group">
-						@if (MenuItemList is null)
-						{
-							<p>Loading...</p>
-						}
-						else
-						{
-							foreach (var menuItem in MenuItemList)
-							{
-								<button type="button"
-										  class="list-group-item list-group-item-action@(menuItem.Id == SelectedMenu.Id ? " active" : "")"
-										  @onclick="() => HandleOnChangeMenu(menuItem)">
-									@menuItem.Name
-								</button>
-							}
-						}
-					</div>
-				</div>
-				<div class="col-md-6 bg-white">
-					<div class="product-container">
-						<div class="input-group mb-3">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="basic-addon1">
-									<i class="fas fa-search"></i>
-								</span>
-							</div>
-							<input type="text" class="form-control" placeholder="Username" aria-label="Search..." aria-describedby="basic-addon1">
-						</div>
-					</div>
-					<div>
-						<h2>Menu name</h2>
-					</div>
-					<div class="product-list">
-						<ul class="list-group">
-							@if (ProductListMenu is null)
-							{
-								<li>Loading...</li>
-							}
-							else
-							{
-								foreach (var productItem in ProductListMenu)
-								{
-									<li class="list-group-item">
-										<ProductItem Product="productItem"
-														 OnOrderProduct="HandleOrderProduct" />
-									</li>
-								}
-							}
-						</ul>
-					</div>
-				</div>
-				<div class="col-md-3 pr-0">
-					<OrderedItemList Order="Order"
-										  OnOrderConfirm="HandleConfirmOrder"/>
-				</div>
-			</div>
-		</div>
-	</div>
+   <div class="then-detail-body">
+      <div class="then-detail-body-menu">
+         <h3>Thực đơn</h3>
+      </div>
+      <div class="container">
+         <div class="row">
+            <div class="col-md-3 menu-list pl-0">
+               <div class="list-group">
+                  @if (MenuItemList is null)
+                  {
+                     <p>Loading...</p>
+                  }
+                  else
+                  {
+                     foreach (var menuItem in MenuItemList)
+                     {
+                        <button type="button"
+                                class="list-group-item list-group-item-action@(menuItem.Id == SelectedMenu.Id ? " active" : "")"
+                                @onclick="() => HandleOnChangeMenu(menuItem)">
+                           @menuItem.Name
+                        </button>
+                     }
+                  }
+               </div>
+            </div>
+            <div class="col-md-6 bg-white">
+               <div class="product-container">
+                  <div class="input-group mb-3">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                           <i class="fas fa-search"></i>
+                        </span>
+                     </div>
+                     <input type="text" class="form-control" placeholder="Username" aria-label="Search..." aria-describedby="basic-addon1">
+                  </div>
+               </div>
+               <div>
+                  <h2>Menu name</h2>
+               </div>
+               <div class="product-list">
+                  <ul class="list-group">
+                     @if (ProductListMenu is null)
+                     {
+                        <li>Loading...</li>
+                     }
+                     else
+                     {
+                        foreach (var productItem in ProductListMenu)
+                        {
+                           <li class="list-group-item">
+                              <ProductItem Product="productItem"
+                                           OnOrderProduct="HandleOrderProduct" />
+                           </li>
+                        }
+                     }
+                  </ul>
+               </div>
+            </div>
+            <div class="col-md-3 pr-0">
+               <OrderedItemList Order="Order"
+                                OnOrderConfirm="HandleConfirmOrder" />
+            </div>
+         </div>
+      </div>
+   </div>
 }

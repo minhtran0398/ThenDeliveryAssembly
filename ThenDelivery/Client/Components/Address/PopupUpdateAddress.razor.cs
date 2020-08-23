@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Helper;
 
 namespace ThenDelivery.Client.Components.Address
 {
@@ -24,10 +25,12 @@ namespace ThenDelivery.Client.Components.Address
 		[Parameter] public EventCallback OnConfirm { get; set; }
 
 		public PopupAddressMode AddressMode { get; set; }
+      public CustomTime DeliveryTime { get; set; }
 
-		protected override void OnInitialized()
+      protected override void OnInitialized()
 		{
 			base.OnInitialized();
+			DeliveryTime = new CustomTime(Order.DeliveryDateTime);
 			AddressMode = PopupAddressMode.Select;
 		}
 
@@ -37,6 +40,12 @@ namespace ThenDelivery.Client.Components.Address
 			// set value => not set directly to another object
 			Order.ShippingAddress = address;
 			await InvokeAsync(StateHasChanged);
+		}
+
+		protected void HandleDeliveryTimeChanged(CustomTime newValue)
+      {
+			DeliveryTime.Hour = newValue.Hour;
+			DeliveryTime.Minute = newValue.Minute;
 		}
 
 		protected string GetStringMode()

@@ -54,12 +54,8 @@ namespace ThenDelivery.Client.ExtensionMethods
 			var stringContent = new StringContent(jsonInString, Encoding.UTF8, "application/json");
 
 			HttpResponseMessage response = await httpClient.PostAsync(baseUrl, stringContent);
-			if (response.IsSuccessStatusCode)
-			{
-				string content = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<TResult>(content);
-			}
-			return null;
+			string content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<TResult>(content);
 		}
 
 		public static async Task<TResult> CustomPutAsync<TValue, TResult>(

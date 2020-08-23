@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Client.Components.Order
 {
@@ -22,10 +23,11 @@ namespace ThenDelivery.Client.Components.Order
 		[Parameter] public OrderDto Order { get; set; }
 		[Parameter] public EditContext FormContext { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
+		[Parameter] public EventCallback<CustomResponse> OnAfterConfirm { get; set; }
 		public List<ShippingAddressDto> ShippingAddressList { get; set; }
 		public DisplayPopup SelectedPopup { get; set; }
+      public CustomResponse ResponseModel { get; set; }
 
-		public decimal TotalPrice { get; set; }
 		public int TotalProduct { get; set; }
 		/// <summary>
 		/// Temporary shipping fee
@@ -46,10 +48,6 @@ namespace ThenDelivery.Client.Components.Order
 			base.OnInitialized();
 			SelectedPopup = DisplayPopup.OrderConfirm;
 			DeleveryDateTime = DateTime.Now;
-
-			UpdateTotalPrice();
-			UpdateFinalPrice();
-			UpdateTotalProduct();
 		}
 
 		protected override async Task OnInitializedAsync()
@@ -62,23 +60,24 @@ namespace ThenDelivery.Client.Components.Order
 			}
 		}
 
-		private void UpdateTotalProduct()
+		protected int GetTotalProduct()
 		{
-			TotalProduct = Order.OrderItemList.Sum(e => e.Quantity);
+			return Order.OrderItemList.Sum(e => e.Quantity);
 		}
 
-		private void UpdateTotalPrice()
+		protected decimal GetTotalPrice()
 		{
-			TotalPrice = 0;
+			decimal totalPrice = 0;
 			Order.OrderItemList.ForEach(order =>
 			{
-				TotalPrice += order.OrderItemPrice;
+				totalPrice += order.OrderItemPrice;
 			});
+			return totalPrice;
 		}
 
-		private void UpdateFinalPrice()
+		protected decimal GetFinalPrice()
 		{
-			FinalPrice = TotalPrice + ShippingFee;
+			return GetTotalPrice() + ShippingFee;
 		}
 
 		protected async Task HandleCloseConfirm()
@@ -88,9 +87,9 @@ namespace ThenDelivery.Client.Components.Order
 
 		protected async Task HandleSubmitConfirm()
 		{
-			Logger.LogInformation(JsonConvert.SerializeObject(Order));
-			Logger.LogInformation(await HttpClientServer.CustomPostAsync("api/Order", Order));
-			await OnClose.InvokeAsync(null);
+			ResponseModel =
+				await HttpClientServer.CustomPostAsync<OrderDto, CustomResponse>("api/Order", Order);
+			await OnAfterConfirm.InvokeAsync(ResponseModel);
 		}
 
 		protected void HandleChangeShippingAddress()

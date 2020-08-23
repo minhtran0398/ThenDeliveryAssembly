@@ -10,12 +10,19 @@
 	<link href="css/app.css" rel="stylesheet" />
 	<link href="css/common.css" rel="stylesheet" />
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+		integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+		crossorigin="anonymous"></script>
 
 	<link href="_content/DevExpress.Blazor/dx-blazor.css" rel="stylesheet" />
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+		integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 </head>
 
 <body>
@@ -29,6 +36,34 @@
 	<script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
 	<script src="_framework/blazor.webassembly.js"></script>
 	<script src="js/inputfile.js"></script>
+	<script src="js/script.js"></script>
+	<script
+		src="https://www.paypal.com/sdk/js?client-id=AeapNk1TGW1kGPsG5VtXer0MnwnJv8a4gMGeaj8yjYTsO7hD9OvpImGPeaZSIkpRedGvudQhYQgAIOvL">
+		</script>
+
+	<!--<div id="paypal-button-container"></div>-->
+
+	<script>
+		paypal.Buttons({
+			createOrder: function (data, actions) {
+				// This function sets up the details of the transaction, including the amount and line item details.
+				return actions.order.create({
+					purchase_units: [{
+						amount: {
+							value: '0.01'
+						}
+					}]
+				});
+			},
+			onApprove: function (data, actions) {
+				// This function captures the funds from the transaction.
+				return actions.order.capture().then(function (details) {
+					// This function shows a transaction success message to your buyer.
+					alert('Transaction completed by ' + details.payer.name.given_name);
+				});
+			}
+		}).render('#paypal-button-container');
+	</script>
 </body>
 
 </html>

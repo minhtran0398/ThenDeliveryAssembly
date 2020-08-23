@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using ThenDelivery.Shared.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Application.Common.Interfaces;
@@ -8,7 +9,6 @@ using ThenDelivery.Server.Application.OrderController.Commands;
 using ThenDelivery.Server.Application.OrderController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
-using ThenDelivery.Shared.Exceptions;
 using ThenDelivery.Shared.Enums;
 
 namespace ThenDelivery.Server.Controllers
@@ -56,11 +56,11 @@ namespace ThenDelivery.Server.Controllers
 				orderDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
 				await Mediator.Send(new InsertOrderCommand(orderDto));
 
-				return Ok();
+				return Ok(new CustomResponse(200, "Đặt hàng thành công"));
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return BadRequest(new CustomResponse(400, ex.Message));
 			}
 		}
 

@@ -6,11 +6,13 @@ namespace ThenDelivery.Shared.Exceptions
 		{
 			StatusCode = statusCode;
 			Message = message;
+			IsShowPopup = false;
 		}
 
 		public int StatusCode { get; set; }
 		public string Message { get; set; }
-		public bool IsSuccess
+      public bool IsShowPopup { get; set; }
+      public bool IsSuccess
 		{
 			get
 			{

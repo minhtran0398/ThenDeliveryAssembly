@@ -50,7 +50,7 @@ namespace ThenDelivery.Shared.Dtos
 				var result = OrderProduct.UnitPrice * Quantity;
 				foreach (var toppingItem in SelectedToppingList)
 				{
-					result += toppingItem.UnitPrice;
+					result += toppingItem.UnitPrice * Quantity;
 				}
 				return result;
 			}

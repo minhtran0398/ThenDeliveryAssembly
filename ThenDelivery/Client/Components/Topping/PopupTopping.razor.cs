@@ -14,6 +14,7 @@ namespace ThenDelivery.Client.Components.Topping
 
 		protected IEnumerable<ToppingDto> SelectedToppingList { get; set; }
 		protected short Quantity { get; set; }
+		protected decimal ToppingPrice { get; set; }
 
 		protected override void OnParametersSet()
 		{
@@ -39,6 +40,17 @@ namespace ThenDelivery.Client.Components.Topping
 			await OnCancel.InvokeAsync(null);
 		}
 
+		protected void HandleSelectedToppingChaged(IEnumerable<ToppingDto> newValue)
+      {
+			SelectedToppingList = newValue;
+			ToppingPrice = 0;
+         foreach (var topping in newValue)
+         {
+				ToppingPrice += topping.UnitPrice;
+         }
+			StateHasChanged();
+		}
+
 		protected async Task HandleAddOrder()
 		{
 			var orderitem = new OrderItem()
@@ -54,6 +66,7 @@ namespace ThenDelivery.Client.Components.Topping
 
 		private void SetInitState()
 		{
+			ToppingPrice = 0;
 			Quantity = 1;
 			SelectedToppingList = new List<ToppingDto>();
 			StateHasChanged();

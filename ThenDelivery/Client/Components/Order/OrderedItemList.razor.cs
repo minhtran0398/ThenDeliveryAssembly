@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using System.Linq;
 using System.Threading.Tasks;
+using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Client.Components.Order
@@ -34,6 +35,10 @@ namespace ThenDelivery.Client.Components.Order
          if (orderItem.Quantity > 1)
          {
             orderItem.Quantity -= 1;
+         }
+         else
+         {
+            Order.OrderItemList.RemoveFirst(e => e.Id == orderId);
          }
          UpdateTotalPrice();
          StateHasChanged();

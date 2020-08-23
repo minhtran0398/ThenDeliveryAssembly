@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,17 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 						await _dbContext.ShippingAddresses.AddAsync(shippingAddressToInsert);
 						await _dbContext.SaveChangesAsync();
 						shippingAddress.Id = shippingAddressToInsert.Id;
+					}
+               else
+               {
+						var shippingAddressToUpdate = await _dbContext.ShippingAddresses
+																.SingleOrDefaultAsync(e => e.Id == shippingAddress.Id);
+						shippingAddressToUpdate.CityCode = shippingAddress.City.CityCode;
+						shippingAddressToUpdate.DistrictCode = shippingAddress.District.DistrictCode;
+						shippingAddressToUpdate.WardCode = shippingAddress.Ward.WardCode;
+						shippingAddressToUpdate.FullName = shippingAddress.FullName;
+						shippingAddressToUpdate.HouseNumber = shippingAddress.HouseNumber;
+						shippingAddressToUpdate.PhoneNumber = shippingAddress.PhoneNumber;
 					}
 
 					Order orderToInsert = GetOrderData(request._orderDto, shippingAddress.Id);

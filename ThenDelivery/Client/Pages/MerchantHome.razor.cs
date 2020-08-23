@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Client.Components;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Client.Pages
 {
@@ -22,8 +23,9 @@ namespace ThenDelivery.Client.Pages
 		protected bool IsShowPopupTopping { get; set; }
 		protected bool IsShowPopupOrderConfirm { get; set; }
 		protected ProductDto SelectedProduct { get; set; }
+      public CustomResponse OrderResponse { get; set; }
 
-		protected override void OnInitialized()
+      protected override void OnInitialized()
 		{
 			base.OnInitialized();
 			Order = new OrderDto();
@@ -105,6 +107,13 @@ namespace ThenDelivery.Client.Pages
 		protected void HandleCloseConfirmPopup()
 		{
 			IsShowPopupOrderConfirm = false;
+		}
+
+		protected void HandleOnAfterConfirmOrder(CustomResponse response)
+      {
+			IsShowPopupOrderConfirm = false;
+			OrderResponse = response;
+			OrderResponse.IsShowPopup = true;
 		}
 
 		protected void HandleConfirmOrder()
