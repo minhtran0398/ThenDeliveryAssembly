@@ -1,54 +1,65 @@
 @page "/order-list"
 @inherits OrderListBase
 
-@if(SelectedOrder != null)
+@if (SelectedOrder != null)
 {
-	<DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm">
-		<Content>
-			<p>Bạn chắc chắn muốn giao đơn hàng này?</p>
-		</Content>
-		<FooterTemplate>
-			<button class="btn btn-success"
-					@onclick="async () => await HandleConfirm()">Confirm</button>
-			<button class="btn btn-dark"
-					@onclick="HandleClose">Close</button>
-		</FooterTemplate>
-	</DxPopup>
+   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm">
+      <Content>
+         <p>Bạn chắc chắn muốn giao đơn hàng này?</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-success"
+                 @onclick="async () => await HandleConfirm()">
+            Confirm
+         </button>
+         <button class="btn btn-dark"
+                 @onclick="HandleClose">
+            Close
+         </button>
+      </FooterTemplate>
+   </DxPopup>
 }
-@if(ResponseModel != null)
+@if (ResponseModel != null)
 {
-	<DxPopup HeaderText="@(ResponseModel.IsSuccess ? "Success" : "Fail")" @bind-Visible="@IsShowPopupResult">
-		<Content>
-		  <p>@(ResponseModel.Message)</p>
-		</Content>
-		<FooterTemplate>
-			<button class="btn btn-success"
-					@onclick="@(() => IsShowPopupResult = false)">Confirm</button>
-		</FooterTemplate>
-	</DxPopup>
+   <DxPopup HeaderText="@(ResponseModel.IsSuccess ? "Success" : "Fail")" @bind-Visible="@IsShowPopupResult">
+      <Content>
+         <p>@(ResponseModel.Message)</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-success"
+                 @onclick="@(() => IsShowPopupResult = false)">
+            Confirm
+         </button>
+      </FooterTemplate>
+   </DxPopup>
 }
 
-@if(OrderList is null)
+@if (OrderList is null)
 {
-	<p>Loading...</p>
+   <p>Loading...</p>
 }
 else
 {
-	<div class="list-group">
-		@foreach (var order in OrderList)
-		{
-			<a href="javascript:void(0)"
-				@onclick="async () => await HandleShowChooseOrder(order)"
-				class="mb-2 list-group-item list-group-item-action active">
-			   <div class="d-flex w-100 justify-content-between">
-			      <h5 class="mb-1">@order.OrderItemList[0].OrderProduct.Merchant.Name</h5>
-			      <small>@TimeRange.GetDurationStringToNow(order.OrderDateTime)</small>
-			   </div>
-			   <p class="mb-1">@(order.OrderItemList[0].OrderProduct.Merchant.OpenTime.TimeString) - 
-					@(order.OrderItemList[0].OrderProduct.Merchant.CloseTime.TimeString)</p>
-			   <small>@(order.OrderItemList[0].OrderProduct.Merchant.AddressString)</small>
-			</a>
-		}
-	</div>
+   <div class="list-group">
+      @foreach (var order in OrderList)
+      {
+      <a href="javascript:void(0)"
+         @onclick="async () => await HandleShowChooseOrder(order)"
+         class="mb-2 list-group-item list-group-item-action">
+         <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">@order.OrderItemList[0].OrderProduct.Merchant.Name</h5>
+            <small>@TimeRange.GetDurationStringToNow(order.OrderDateTime)</small>
+         </div>
+         <p class="mb-1">
+            Mở cửa: 
+            @(order.OrderItemList[0].OrderProduct.Merchant.OpenTime.TimeString) -
+            @(order.OrderItemList[0].OrderProduct.Merchant.CloseTime.TimeString)
+         </p>
+         <small>Địa chỉ quán: @(order.OrderItemList[0].OrderProduct.Merchant.AddressString)</small> <br />
+         <small>Địa chỉ khách hàng: @(order.ShippingAddress.AddressString)</small> <br />
+         <small>Thời gian giao: @(order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy"))</small>
+      </a>
+      }
+   </div>
 }
 

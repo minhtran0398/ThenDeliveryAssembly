@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThenDelivery.Server.Application.MenuItemController.Commands;
 using ThenDelivery.Server.Application.MerchantMenuController.Commands;
 using ThenDelivery.Server.Application.MerchantMenuController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Server.Controllers
 {
@@ -33,6 +35,25 @@ namespace ThenDelivery.Server.Controllers
 			}
 		}
 
+		[HttpPut]
+		[Authorize(Roles = Const.Role.MerchantRole)]
+		public async Task<IActionResult> UpdateRangeMenuItem(IEnumerable<MenuItemDto> menuList)
+		{
+			try
+			{
+				await Mediator.Send(new UpdateRangeMenuCommand(menuList));
+				return Ok(new CustomResponse(200, "Update merchant menu success"));
+			}
+			catch (ArgumentNullException)
+			{
+				return BadRequest(new CustomResponse(400, "MenuItemList is null"));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> GetMenuItemsByMerchantId(int merchantId)
 		{
@@ -41,7 +62,7 @@ namespace ThenDelivery.Server.Controllers
 				IEnumerable<MenuItemDto> merchantMenues =
 						await Mediator.Send(new GetMenuItemsByMerchantIdQuery(merchantId));
 
-				return Ok(merchantMenues.ToList());
+				return Ok(merchantMenues);
 			}
 			catch (Exception ex)
 			{

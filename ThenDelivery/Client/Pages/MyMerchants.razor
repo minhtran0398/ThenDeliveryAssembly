@@ -1,3 +1,40 @@
-﻿@inherits MyMerchantsBase
+﻿@page "/my-merchant"
+@inherits MyMerchantsBase
 
-
+@if(MyMerchantList is null)
+{
+   <p>Loading...</p>
+}
+else
+{
+   <div class="list-group">
+      @foreach (var merchant in MyMerchantList)
+      {
+         <div class="list-group-item list-group-item-action d-flex">
+            <img src="@merchant.Avatar" class="my-merchant-img" />
+            <div class="w-100">
+               <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1 my-merchant-name">@merchant.Name</h5>
+                  @if (merchant.Status != MerchantStatus.Closed)
+                  {
+                     <button class="btn btn-sm btn-outline-primary mr-1">Chỉnh sửa</button>
+                     <button class="btn btn-sm btn-outline-danger">Đóng cửa</button>
+                  }
+                  else
+                  {
+                     <button class="btn btn-sm btn-outline-primary">Mở quán</button>
+                  }
+               </div>
+               <p class="mb-1">@merchant.AddressString</p>
+               <small class="@merchant.Status.GetCssClass()">
+                  @merchant.Status.GetStringValue()
+                  @if (merchant.LastModify != null)
+                  {
+                     <span class="badge-light badge-pill">@merchant.LastModify?.ToString("dd/MM/yyyy")</span>
+                  }
+               </small>
+            </div>
+         </div>
+      }
+   </div>
+}

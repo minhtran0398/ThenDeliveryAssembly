@@ -26,26 +26,32 @@ namespace ThenDelivery.Client.Components.Product
 		public ObservableCollection<ProductDto> ProductList { get; set; }
 		public bool IsShowPopupAddProduct { get; set; }
 		public bool IsEnableSaveButton { get; set; }
-		#endregion
+      public bool IsInsertMode { get; set; }
+      #endregion
 
-		#region Variables
+      #region Variables
 
-		#endregion
+      #endregion
 
-		#region Life Cycle
-		protected override void OnInitialized()
-		{
-			// do not remove this line
-			base.OnInitialized();
-
-			ProductList = new ObservableCollection<ProductDto>();
-			ProductList.CollectionChanged += HandleProductListChanged;
-		}
-
-		protected override async Task OnInitializedAsync()
+      #region Life Cycle
+      protected override async Task OnInitializedAsync()
 		{
 			MenuList = await HttpClientServer
 				.CustomGetAsync<List<MenuItemDto>>($"api/menuitem?merchantId={TargetMerchantId}");
+			var products =
+				await HttpClientServer.CustomGetAsync<List<ProductDto>>($"api/product?merchantId={TargetMerchantId}");
+			if (products is null || products.Count == 0)
+			{
+				IsInsertMode = true;
+				ProductList = new ObservableCollection<ProductDto>();
+			}
+			else
+			{
+				IsInsertMode = false;
+				IsEnableSaveButton = true;
+				ProductList = new ObservableCollection<ProductDto>(products);
+			}
+			ProductList.CollectionChanged += HandleProductListChanged;
 		}
 		#endregion
 
@@ -90,7 +96,8 @@ namespace ThenDelivery.Client.Components.Product
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
-			await HttpClientServer.CustomPostAsync($"{BaseUrl}api/product", ProductList.AsEnumerable());
+			if (IsInsertMode) await HttpClientServer.CustomPostAsync($"api/product", ProductList.AsEnumerable());
+			else await HttpClientServer.CustomPutAsync($"api/product", ProductList.AsEnumerable());
 			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion

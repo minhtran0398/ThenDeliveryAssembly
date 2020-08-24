@@ -15,11 +15,11 @@ namespace ThenDelivery.Shared.Helper
 			TimeSpan duration = largeTime - smallTime;
 			if(duration.TotalSeconds < 60)
          {
-				return string.Format("{0:s} giây trước", duration);
+				return string.Format("{0:ss} giây trước", duration);
          }
 			if(duration.TotalMinutes < 60)
          {
-				return string.Format("{0:m} phút trước", duration);
+				return string.Format("{0:mm} phút trước", duration);
          }
 			return string.Format("{0} giờ trước", Math.Truncate(duration.TotalHours));
 		}

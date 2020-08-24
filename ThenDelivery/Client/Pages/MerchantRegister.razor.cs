@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using ThenDelivery.Client.Components;
 using ThenDelivery.Client.Components.Enums;
 using ThenDelivery.Shared.Dtos;
@@ -9,8 +11,8 @@ namespace ThenDelivery.Client.Pages
 	public class MerchantRegisterBase : CustomComponentBase<MerchantRegisterBase>
 	{
 		public MerchantDto MerchantModel { get; set; }
-		public int MerchantModelId { get; set; }
-		public int ActiveTabIndex { get; set; }
+      public int MerchantModelId { get; set; }
+      public int ActiveTabIndex { get; set; }
 
 		protected override void OnInitialized()
 		{
@@ -21,15 +23,9 @@ namespace ThenDelivery.Client.Pages
 
 		protected void HandleAfterSubmitMerchant(int merchantId)
 		{
-			if (merchantId > 0)
-			{
-				ActiveTabIndex += 1;
-				MerchantModelId = merchantId;
-			}
-			else
-			{
-
-			}
+			MerchantModelId = merchantId;
+			MerchantModel.Id = merchantId;
+			ActiveTabIndex += 1;
 		}
 
 		/// <summary>
@@ -59,7 +55,8 @@ namespace ThenDelivery.Client.Pages
 			// done
 			if (moveState == PageAction.Next)
 			{
-				NavigationManager.NavigateTo("/");
+				// show popup
+				NavigationManager.NavigateTo("/my-merchant");
 			}
 			else
 			{

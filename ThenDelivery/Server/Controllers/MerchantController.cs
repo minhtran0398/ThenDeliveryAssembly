@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using ThenDelivery.Server.Application.MerchantController.Commands;
 using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Server.Controllers
 {
@@ -44,35 +46,68 @@ namespace ThenDelivery.Server.Controllers
 			return Ok(createdMerchantId);
 		}
 
+		[HttpPut]
+		[Authorize(Roles = Const.Role.UserRole)]
+		public async Task<IActionResult> EditMerchant([FromBody] MerchantDto merchantDto)
+      {
+         try
+         {
+            string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
+            string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
+            merchantDto.Avatar = pathAvatar;
+            merchantDto.CoverPicture = pathCoverPicture;
+            merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
+            await Mediator.Send(new UpdateMerchantCommand(merchantDto));
+				return Ok(new CustomResponse(200, "Update success"));
+         }
+         catch (Exception ex)
+         {
+				return BadRequest(new CustomResponse(400, ex.Message));
+         }
+		}
+
+		[HttpGet("my")]
+		[Authorize(Roles = Const.Role.MerchantRole)]
+		public async Task<IActionResult> GetMerchantCurrentUserId()
+      {
+         try
+         {
+				string userId = _currentUserService.GetLoggedInUserId();
+				IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetMerchantsByUserId(userId));
+				return Ok(merchantList.ToList());
+			}
+         catch (Exception ex)
+         {
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+      }
+
 		[HttpGet]
 		public async Task<IActionResult> GetMerchant(int merchantId = -1)
 		{
 			if (merchantId == -1)
 			{
-				IEnumerable<MerchantDto> merchantList =
-					await Mediator.Send(new GetAllMerchantQuery());
-
-				// valid if data returned null
-				if (merchantList == null)
-				{
-					Logger.LogError("Merchant list returned null");
-					return BadRequest();
+            try
+            {
+               IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
+					return Ok(merchantList.ToList());
 				}
-
-				return Ok(merchantList.ToList());
+            catch (Exception ex)
+            {
+					return BadRequest(new CustomResponse(400, ex.Message));
+            }
 			}
 			else
 			{
-				MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
-
-				// valid if data returned null
-				if (merchant == null)
-				{
-					Logger.LogError("Merchant returned null");
-					return BadRequest();
-				}
-
-				return Ok(merchant);
+            try
+            {
+               MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
+               return Ok(merchant);
+            }
+            catch (Exception ex)
+            {
+					return BadRequest(new CustomResponse(400, ex.Message));
+            }
 			}
 		}
 	}

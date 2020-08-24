@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Helper;
 
 namespace ThenDelivery.Server.Application.MerchantController.Queries
@@ -111,6 +112,8 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 											 PhoneNumber = merchant.PhoneNumber,
 											 SearchKey = merchant.SearchKey,
 											 TaxCode = merchant.TaxCode,
+											 LastModify = merchant.LastModified,
+											 Status = (MerchantStatus)merchant.Status,
 											 User = new UserDto()
 											 {
 												 Id = user.Id,

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThenDelivery.Shared.Dtos;
@@ -15,26 +16,31 @@ namespace ThenDelivery.Client.Components.Product
 		[Parameter] public List<MenuItemDto> MenuList { get; set; }
 		[Parameter] public EventCallback<ProductDto> OnSaveProduct { get; set; }
 		[Parameter] public EventCallback<bool> OnCancel { get; set; }
+		[Parameter] public ProductDto ProductModel { get; set; }
 		#endregion
 
 		#region Properties
-		protected ProductDto ProductModel { get; set; }
-		public bool IsShowFormTopping { get; set; }
+      public EditContext FormContext { get; set; }
+      public bool IsShowFormTopping { get; set; }
 		#endregion
 
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			ProductModel = new ProductDto();
+			if(ProductModel is null) ProductModel = new ProductDto();
+			FormContext = new EditContext(ProductModel);
 		}
 		#endregion
 
 		#region Events
 		protected async Task HandleOnSubmit()
 		{
-			await OnSaveProduct.InvokeAsync(ProductModel);
-			ProductModel = new ProductDto();
+			if(FormContext.Validate())
+         {
+				await OnSaveProduct.InvokeAsync(ProductModel);
+				ProductModel = new ProductDto();
+			}
 		}
 
 		protected async Task HandleOnCancel()

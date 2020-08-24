@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -28,24 +29,36 @@ namespace ThenDelivery.Client.Components.Merchant
 		protected bool IsEnableAddButton { get; set; }
 		protected bool IsEnableSaveButton { get; set; }
 		protected string NewMenuItemName { get; set; }
-		#endregion
+		public bool IsInsertMode { get; set; }
+      #endregion
 
-		#region Variables
-		private int _merchantMenuIdToEdit = -1;
+      #region Variables
+      private int _merchantMenuIdToEdit = -1;
 		#endregion
 
 		#region Life Cycle
-		protected override void OnInitialized()
-		{
-			// do not remove this line
-			base.OnInitialized();
-			MenuList = new ObservableCollection<MenuItemDto>();
+		protected override async Task OnInitializedAsync()
+      {
+         await base.OnInitializedAsync();
+			var menuList =
+				await HttpClientServer.CustomGetAsync<List<MenuItemDto>>($"api/menuItem?merchantId={TargetMerchantId}");
+			if(menuList is null || menuList.Count == 0)
+         {
+				IsInsertMode = true;
+				MenuList = new ObservableCollection<MenuItemDto>();
+			}
+         else
+         {
+				IsInsertMode = false;
+				IsEnableSaveButton = true;
+				MenuList = new ObservableCollection<MenuItemDto>(menuList);
+         }
 			MenuList.CollectionChanged += HandleMenuListChanged;
 		}
-		#endregion
+      #endregion
 
-		#region Events
-		private void HandleMenuListChanged(object sender, NotifyCollectionChangedEventArgs e)
+      #region Events
+      private void HandleMenuListChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
@@ -114,7 +127,8 @@ namespace ThenDelivery.Client.Components.Merchant
 		/// </summary>
 		protected async Task HandleSaveAndContinue()
 		{
-			await HttpClientServer.CustomPostAsync($"{BaseUrl}api/menuitem", MenuList.AsEnumerable());
+			if(IsInsertMode) await HttpClientServer.CustomPostAsync($"api/menuitem", MenuList.AsEnumerable());
+			else await HttpClientServer.CustomPutAsync($"api/menuitem", MenuList.AsEnumerable());
 			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
 		#endregion

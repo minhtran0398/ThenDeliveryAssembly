@@ -114,6 +114,8 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 										 PhoneNumber = merchant.PhoneNumber,
 										 SearchKey = merchant.SearchKey,
 										 TaxCode = merchant.TaxCode,
+										 LastModify = merchant.LastModified,
+										 Status = (MerchantStatus)merchant.Status,
 										 User = new UserDto()
 										 {
 											 Id = user.Id,
@@ -137,7 +139,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 				catch (Exception ex)
 				{
 					_logger.LogError(ex.Message);
-					return null;
+					throw;
 				}
 				return result;
 			}

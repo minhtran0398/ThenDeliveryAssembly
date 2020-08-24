@@ -1,13 +1,13 @@
-@inherits OrderListCpnBase
+﻿@inherits OrderListCpnBase
 
 <table class="table">
 	<thead>
 		<tr>
-			<th scope="col">#</th>
-			<th scope="col">Time</th>
-			<th scope="col">Place</th>
-			<th scope="col">Total amount</th>
-			<th scope="col">Status</th>
+			<th scope="col">STT</th>
+			<th scope="col">Thời gian</th>
+			<th scope="col">Địa chỉ</th>
+			<th scope="col">Tổng tiền</th>
+			<th scope="col">Trạng thái</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,16 +16,16 @@
 			<tr>
 				<th scope="row">1</th>
 				<td>
-					@orderItem.OrderDateTime.ToString("dd/MM/yyyy HH:mm") <br/>
-					@orderItem.DeliveryDateTime.ToString("dd/MM/yyyy HH:mm")
+					Thời gian đặt: @orderItem.OrderDateTime.ToString("HH:mm dd/MM/yyyy") <br/>
+					Thời gian giao hàng: @orderItem.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")
 				</td>
 				<td>
 					@(orderItem.OrderItemList[0].OrderProduct.Merchant.Name) <br/>
 					@(orderItem.OrderItemList[0].OrderProduct.Merchant.AddressString)
 				</td>
 				<td>
-					@(orderItem.TotalAmount) <br/>
-					@(orderItem.OrderItemList.Count)
+					Thành tiền: @(orderItem.TotalAmount.ToString("N0")) <br/>
+					Tổng cộng @(orderItem.OrderItemList.Count) món
 				</td>
 				<td>@(orderItem.Status.GetStringValue())</td>
 			</tr>

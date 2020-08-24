@@ -1,70 +1,71 @@
 ﻿@inherits AddProductFormBase
 
-<EditForm Model="ProductModel"
-			 OnValidSubmit="async () => await HandleOnSubmit()">
-	<div class="row">
-		<div class="col-md-12 row-item">
-			<label>Image: </label>
-			<CustomImageEdit Base64String="@ProductModel.Image"
-								  Width="200"
-								  OnChangeImage="HandleImageChanged" />
-		</div>
-		<div class="col-md-12 row-item">
-			<label>Name: </label>
-			<DxTextBox Text="@ProductModel.Name"
-						  TextChanged="HandleProductNameChanged"
-						  TextExpression="() => ProductModel.Name" />
-		</div>
-		<div class="col-md-12 row-item">
-			<label>Price: </label>
-			<CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
-									  ValueChanged="HandleUnitPriceChanged" />
-		</div>
-		<div class="col-md-12 row-item">
-			<label>Menu: </label>
-			<DxComboBox NullText="Select menu ..."
-							TextFieldName="DisplayText"
-							Data="MenuList"
-							SelectedItem="@ProductModel.MenuItem"
-							SelectedItemChanged="HandleSelectedMenuChanged"
-							SelectedItemExpression="() => ProductModel.MenuItem" />
-		</div>
-		<div class="col-md-12 row-item">
-			<label>Set topping: </label>
-			@if (IsShowFormTopping == false)
-			{
-				<p>@ProductModel.ToppingListString</p>
-				<a href="javascript:void(0)"
-					@onclick="HandleCreateTopping"
-					style="text-decoration:none">
-					<i class="fas fa-plus"></i>
-					Tạo Set Topping
-				</a>
-			}
-			else
-			{
-				<AddTopping ToppingList="ProductModel.ToppingList"
-								OnCancel="HandleCancelCreateTopping"
-								OnSubmit="HandleSubmitCreateTopping" />
-			}
-		</div>
-		<div class="col-md-12 row-item">
-			<label>Description: </label>
-			<DxTextBox Text="@ProductModel.Description"
-						  TextChanged="HandleDescriptionChanged"
-						  TextExpression="() => ProductModel.Description" />
-		</div>
-		<div class="col-md-12 add-product__form-footer">
-			<DxButton SubmitFormOnClick="false"
-						 Text="Hủy"
-						 @onclick="HandleOnCancel"
-						 RenderStyle="@ButtonRenderStyle.Secondary"
-						 CssClass="add-product__form-footer-button" />
-			<DxButton SubmitFormOnClick="false"
-						 @onclick="HandleOnSubmit"
-						 Text="Lưu"
-						 RenderStyle="@ButtonRenderStyle.Secondary"
-						 CssClass="add-product__form-footer-button" />
-		</div>
-	</div>
+<EditForm EditContext="FormContext">
+   <FluentValidator Validator="new ProductValidator()" />
+   <ValidationSummary />
+   <div class="row">
+      <div class="col-md-12 row-item">
+         <label>Image: </label>
+         <CustomImageEdit Base64String="@ProductModel.Image"
+                          Width="200"
+                          OnChangeImage="HandleImageChanged" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Name: </label>
+         <DxTextBox Text="@ProductModel.Name"
+                    TextChanged="HandleProductNameChanged"
+                    TextExpression="() => ProductModel.Name" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Price: </label>
+         <CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
+                             ValueChanged="HandleUnitPriceChanged" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Menu: </label>
+         <DxComboBox NullText="Select menu ..."
+                     TextFieldName="DisplayText"
+                     Data="MenuList"
+                     SelectedItem="@ProductModel.MenuItem"
+                     SelectedItemChanged="HandleSelectedMenuChanged"
+                     SelectedItemExpression="() => ProductModel.MenuItem" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Set topping: </label>
+         @if (IsShowFormTopping == false)
+         {
+            <p>@ProductModel.ToppingListString</p>
+            <a href="javascript:void(0)"
+               @onclick="HandleCreateTopping"
+               style="text-decoration:none">
+               <i class="fas fa-plus"></i>
+               Tạo Set Topping
+            </a>
+         }
+         else
+         {
+            <AddTopping ToppingList="ProductModel.ToppingList"
+                        OnCancel="HandleCancelCreateTopping"
+                        OnSubmit="HandleSubmitCreateTopping" />
+         }
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Description: </label>
+         <DxTextBox Text="@ProductModel.Description"
+                    TextChanged="HandleDescriptionChanged"
+                    TextExpression="() => ProductModel.Description" />
+      </div>
+      <div class="col-md-12 add-product__form-footer">
+         <DxButton SubmitFormOnClick="false"
+                   Text="Hủy"
+                   @onclick="HandleOnCancel"
+                   RenderStyle="@ButtonRenderStyle.Secondary"
+                   CssClass="add-product__form-footer-button" />
+         <DxButton SubmitFormOnClick="false"
+                   @onclick="HandleOnSubmit"
+                   Text="Lưu"
+                   RenderStyle="@ButtonRenderStyle.Secondary"
+                   CssClass="add-product__form-footer-button" />
+      </div>
+   </div>
 </EditForm>

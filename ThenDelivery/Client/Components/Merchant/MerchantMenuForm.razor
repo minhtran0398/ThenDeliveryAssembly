@@ -6,22 +6,25 @@
 <div class="register-shop__form-body menu-create-group">
 	<div class="menu-create-group__container">
 		<p class="menu-create-group__title">Tên nhóm món</p>
-		<ul class="menu-create-group__list">
-			@foreach (var menuItem in MenuList)
-			{
-				<li>
-					<span>@menuItem.Name</span>
-					<DxButton CssClass="menu-create-group__item-button"
-								 RenderStyle="@ButtonRenderStyle.Secondary"
-								 Text="Sửa tên"
-								 @onclick="() => HandleEditMenuItem(menuItem.Id)" />
-					<DxButton CssClass="menu-create-group__item-button"
-								 RenderStyle="@ButtonRenderStyle.Secondary"
-								 Text="Xóa nhóm món"
-								 @onclick="() => HandleRemoveMenuItem(menuItem.Id)" />
-				</li>
+      <ul class="menu-create-group__list">
+         @if (MenuList != null)
+         {
+				@foreach (var menuItem in MenuList)
+            {
+               <li>
+                  <span>@menuItem.Name</span>
+                  <DxButton CssClass="menu-create-group__item-button"
+                            RenderStyle="@ButtonRenderStyle.Secondary"
+                            Text="Sửa tên"
+                            @onclick="() => HandleEditMenuItem(menuItem.Id)" />
+                  <DxButton CssClass="menu-create-group__item-button"
+                            RenderStyle="@ButtonRenderStyle.Secondary"
+                            Text="Xóa nhóm món"
+                            @onclick="() => HandleRemoveMenuItem(menuItem.Id)" />
+               </li>
+            }
 			}
-		</ul>
+      </ul>
 		<div class="menu-create-group__input">
 			<div class="menu-create-group__input--form">
 				<div class="input input--full-width">

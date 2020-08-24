@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Client.ExtensionMethods
 {
@@ -69,6 +70,18 @@ namespace ThenDelivery.Client.ExtensionMethods
 			HttpResponseMessage response = await httpClient.PutAsync(baseUrl, stringContent);
 			string content = await response.Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<TResult>(content);
+		}
+
+		public static async Task<CustomResponse> CustomPutAsync<TValue>(
+			this HttpClient httpClient, string baseUrl, TValue objectToPut)
+			where TValue : class
+		{
+			string jsonInString = JsonConvert.SerializeObject(objectToPut);
+			var stringContent = new StringContent(jsonInString, Encoding.UTF8, "application/json");
+
+			HttpResponseMessage response = await httpClient.PutAsync(baseUrl, stringContent);
+			string content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<CustomResponse>(content);
 		}
 	}
 }

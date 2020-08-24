@@ -34,6 +34,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			base.OnInitialized();
 			EditContext = new EditContext(MerchantModel);
+			StateHasChanged();
 		}
 		#endregion
 
@@ -42,14 +43,18 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			if(EditContext.Validate())
          {
-				var returnedId = await HttpClientServer.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
-				if (returnedId == null)
-				{
-					await OnSubmitMerchant.InvokeAsync(-1);
+				if(MerchantModel.Id == 0)
+            {
+					var returnedIdString = await HttpClientServer.CustomPostAsync($"api/merchant", MerchantModel);
+					if (int.TryParse(returnedIdString, out int returnId) && returnId != -1)
+					{
+						await OnSubmitMerchant.InvokeAsync(returnId);
+					}
 				}
-				else
-				{
-					await OnSubmitMerchant.InvokeAsync(int.Parse(returnedId.ToString()));
+            else
+            {
+					var response = await HttpClientServer.CustomPutAsync($"api/merchant", MerchantModel);
+					await OnSubmitMerchant.InvokeAsync(MerchantModel.Id);
 				}
 			}
 		}
@@ -116,7 +121,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		protected void HandleSelectedMerTypeChanged(IEnumerable<MerTypeDto> newValue)
 		{
 			Logger.LogInformation("HandleSelectedMerTypeChanged" + newValue.Count());
-			if(newValue.Count() > Const.MaxMerTypePerMerchant)
+			if(MerchantModel.MerTypeList.Count() > Const.MaxMerTypePerMerchant)
          {
 				StateHasChanged();
          }
@@ -128,7 +133,7 @@ namespace ThenDelivery.Client.Components.Merchant
 
 		protected void HandleSelectedFeaturedDishChanged(IEnumerable<FeaturedDishDto> newValue)
 		{
-			if (newValue.Count() > Const.MaxFeaturedDishPerMerchant)
+			if (MerchantModel.FeaturedDishList.Count() > Const.MaxFeaturedDishPerMerchant)
 			{
 				StateHasChanged();
 			}
@@ -158,12 +163,30 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Methods
 		protected async Task<IEnumerable<MerTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<IEnumerable<MerTypeDto>>("api/mertype");
+			var result = await HttpClientServer.CustomGetAsync<IEnumerable<MerTypeDto>>("api/mertype");
+			if(MerchantModel.MerTypeList.Count > 0)
+         {
+            for (int index = 0; index < MerchantModel.MerTypeList.Count; index++)
+            {
+					MerchantModel.MerTypeList[index] =
+						result.SingleOrDefault(e => e.Id == MerchantModel.MerTypeList[index].Id);
+				}
+         }
+			return result;
 		}
 
 		protected async Task<IEnumerable<FeaturedDishDto>> HandleLoadFeaturedDishCategoryAsync(CancellationToken _ = default)
 		{
-			return await HttpClientServer.CustomGetAsync<IEnumerable<FeaturedDishDto>>("api/featureddish");
+			var result = await HttpClientServer.CustomGetAsync<IEnumerable<FeaturedDishDto>>("api/featureddish");
+			if (MerchantModel.FeaturedDishList.Count > 0)
+			{
+				for (int index = 0; index < MerchantModel.FeaturedDishList.Count; index++)
+				{
+					MerchantModel.FeaturedDishList[index] =
+						result.SingleOrDefault(e => e.Id == MerchantModel.FeaturedDishList[index].Id);
+				}
+			}
+			return result;
 		}
 
 		protected async Task<IEnumerable<CityDto>> HandleLoadCitiesAsync(CancellationToken _ = default)

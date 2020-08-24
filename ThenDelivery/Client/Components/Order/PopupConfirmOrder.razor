@@ -10,11 +10,7 @@
          <div class="row">
             <div class="col-5">
                <div class="row mr-0 ml-0">
-                  @if (Order.ShippingAddress is null)
-                  {
-                     <span>Loading...</span>
-                  }
-                  else
+                  @if (Order.ShippingAddress != null)
                   {
                      <span class="d-block font-weight-bold font-small">@Order.ShippingAddress.FullName - @Order.ShippingAddress.PhoneNumber</span>
                      <span class="font-small">@Order.ShippingAddress.AddressString</span>

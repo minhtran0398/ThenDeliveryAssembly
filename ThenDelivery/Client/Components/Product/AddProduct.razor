@@ -16,7 +16,7 @@
 				 RenderStyle="@ButtonRenderStyle.Primary" />
 </div>
 
-@if (ProductList?.Count == 0)
+@if (ProductList is null || ProductList.Count == 0)
 {
 	<div class="register-shop__no-result">
 		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAYFBMVEUAAADY4OrZ4OvY4OvX3+nX3+vY4Ora4e3q8f/b4+zY4OrY4OnY4OrY4OrY4OrY4OrY4OrZ4erZ3+rY4OvY4OvZ4enZ4uzh6/X////X4OrZ4erX4OnY4Oza4urd4+rX3+nJgAo3AAAAH3RSTlMAy3KWgED8LAca79646OPGrZF5bmRdNAwCzJ+NQj4l4Yd0RwAAARVJREFUaN7t1d1qg0AQhuFpm6yrbqIx/uX3u/+7LFKwmkhxxggt/Z6zcQ9ecFhWiIiIiIjoV2iCQ8+FRtZwxMhR1rDByKb7xsiE6NJOR9pL9KpEDlTTkQrIX5FpCwcg9VMRnwJwRSsLxRnQKaciJdDJYlkk2uPL3j9HfH8YyQJ18n33niKD25nUYhbv0Ns1j5FmeGr+Y/6EgeIxUmDg5MXmgKFkPOKQjEfj0h3GlR9HZ1t+BpVMDK5QuopeDqVc1GIHJReLVgm1UrTOUDuLVgq1VJQ8DLx27zDQbj6CQSQ6NxjcRGcLgy0jjMxx/zC4C62lDm9Goda/JWu+KVjgH0YczJzMFWAWZC5fvRtVXoiIiIiI/oZPgsbG12D59+kAAAAASUVORK5CYII=" height="100">
@@ -57,15 +57,15 @@ else
 			</tbody>
 		</table>
 	</div>
-	<div class="register-shop__form-footer">
-		<DxButton CssClass="register-shop__form-footer-button"
-					 RenderStyle="@ButtonRenderStyle.Primary"
-					 @onclick="async () => await HandleTurnBack()"
-					 Text="Quay lại" />
-		<DxButton CssClass="register-shop__form-footer-button"
-					 Enabled="@IsEnableSaveButton"
-					 RenderStyle="@ButtonRenderStyle.Success"
-					 @onclick="async () => await HandleSaveAndContinue()"
-					 Text="Lưu và tiếp tục" />
-	</div>
 }
+<div class="register-shop__form-footer">
+   <DxButton CssClass="register-shop__form-footer-button"
+             RenderStyle="@ButtonRenderStyle.Primary"
+             @onclick="async () => await HandleTurnBack()"
+             Text="Quay lại" />
+   <DxButton CssClass="register-shop__form-footer-button"
+             Enabled="@IsEnableSaveButton"
+             RenderStyle="@ButtonRenderStyle.Success"
+             @onclick="async () => await HandleSaveAndContinue()"
+             Text="Lưu và tiếp tục" />
+</div>

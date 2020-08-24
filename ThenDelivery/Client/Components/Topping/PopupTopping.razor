@@ -2,12 +2,12 @@
 
 <DxPopup HeaderCssClass="modal-header">
    <HeaderTemplate>
-      <div class="text-white w-100">
+      <div class="w-100">
          <div class="row mr-0">
             <div class="col-sm-4">
                <img src="@Product.Image" style="width:120px;height:120px" />
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-8 pl-0">
                <h3>@Product.Name</h3>
                <p>@Product.UnitPrice.ToString("N0")</p>
             </div>
@@ -20,6 +20,7 @@
    <Content>
       @if (Product.ToppingList is null || Product.ToppingList.Count == 0)
       {
+         <h3>Không có topping</h3>
       }
       else
       {

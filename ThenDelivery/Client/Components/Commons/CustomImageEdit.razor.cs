@@ -16,7 +16,13 @@ namespace ThenDelivery.Client.Components.Commons
 
 		protected string imageData;
 
-		protected async Task HandleFileSelected(IFileListEntry[] files)
+      protected override void OnInitialized()
+      {
+			var format = "image/jpeg";
+			imageData = Base64String == null ? string.Empty : string.Format("data:{0};base64,{1}", format, Base64String);
+		}
+
+      protected async Task HandleFileSelected(IFileListEntry[] files)
 		{
 			var rawFile = files.FirstOrDefault();
 			if (rawFile != null)

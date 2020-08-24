@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Helper;
 
 namespace ThenDelivery.Shared.Dtos
@@ -31,7 +32,9 @@ namespace ThenDelivery.Shared.Dtos
 		public List<FeaturedDishDto> FeaturedDishList { get; set; }
 		public List<MerTypeDto> MerTypeList { get; set; }
 		public string HouseNumber { get; set; }
-		public string AddressString
+      public DateTime? LastModify { get; set; }
+      public MerchantStatus Status { get; set; }
+      public string AddressString
 		{
 			get
 			{

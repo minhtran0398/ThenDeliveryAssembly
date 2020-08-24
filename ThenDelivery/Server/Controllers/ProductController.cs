@@ -9,6 +9,7 @@ using ThenDelivery.Server.Application.ProductController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
 using ThenDelivery.Server.Application.Common.Interfaces;
+using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Server.Controllers
 {
@@ -45,6 +46,30 @@ namespace ThenDelivery.Server.Controllers
 			{
 				Logger.LogError(ex, ex.Message);
 				return BadRequest(ex.Message);
+			}
+		}
+
+		[HttpPut]
+		[Authorize(Roles = Const.Role.MerchantRole)]
+		public async Task<IActionResult> UpdateRangeProduct(IEnumerable<ProductDto> productList)
+		{
+			try
+			{
+				foreach (var product in productList)
+				{
+					product.Image = _imageService.SaveImage(product.Image, "Product");
+				}
+
+				await Mediator.Send(new InsertRangeProductCommand(productList));
+				return Ok(new CustomResponse(200, "Insert products success"));
+			}
+			catch (ArgumentNullException)
+			{
+				return BadRequest(new CustomResponse(400, "MenuItemList is null"));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
 			}
 		}
 

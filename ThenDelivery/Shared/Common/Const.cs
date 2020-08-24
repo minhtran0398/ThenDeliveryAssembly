@@ -4,6 +4,7 @@
 	{
 		public const int MaxMerTypePerMerchant = 2;
 		public const int MaxFeaturedDishPerMerchant = 3;
+		public const decimal MinProductUnitPrice = 1000;
 
 		public class Role
 		{
