@@ -5,9 +5,9 @@
 <div class="item-restaurant-row">
 	<div class="row">
 		<div class="col-auto item-restaurant-img">
-			<button class="inline">
-				<img src="@Product.Image" alt="Cà phê sữa" width="60" height="60">
-			</button>
+			<div class="inline">
+				<img src="@Product.Image" alt="Cà phê sữa" class="merchant-home-product-image">
+			</div>
 		</div>
 		<div class="col item-restaurant-info">
 			<h2 class="item-restaurant-name">@Product.Name</h2>
@@ -17,9 +17,6 @@
 		<div class="col-auto item-restaurant-more">
 			<div class="row ">
 				<div class="col-auto product-price">
-					@*<div class="old-price">
-							29,000<span style="font-weight: 400;position: relative;top: -9px;font-size: 10px;right: 0;">đ</span>
-						</div>*@
 					<div class="current-price">
 						@Product.UnitPrice.ToString("N0")<span style="font-weight: 400;position: relative;top: -9px;font-size: 10px;right: 0;">đ</span>
 					</div>

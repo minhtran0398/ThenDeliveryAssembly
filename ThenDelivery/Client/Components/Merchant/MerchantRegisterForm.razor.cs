@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
+using ThenDelivery.Shared;
+using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
 using ThenDelivery.Shared.Helper;
 
@@ -36,14 +40,17 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Events
 		protected async Task HandleOnSubmit()
 		{
-			var returnedId = await HttpClientServer.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
-			if (returnedId == null)
-			{
-				await OnSubmitMerchant.InvokeAsync(-1);
-			}
-			else
-			{
-				await OnSubmitMerchant.InvokeAsync(int.Parse(returnedId.ToString()));
+			if(EditContext.Validate())
+         {
+				var returnedId = await HttpClientServer.CustomPostAsync($"{BaseUrl}api/merchant", MerchantModel);
+				if (returnedId == null)
+				{
+					await OnSubmitMerchant.InvokeAsync(-1);
+				}
+				else
+				{
+					await OnSubmitMerchant.InvokeAsync(int.Parse(returnedId.ToString()));
+				}
 			}
 		}
 
@@ -72,16 +79,23 @@ namespace ThenDelivery.Client.Components.Merchant
 			MerchantModel.Description = newValue;
 		}
 
-		protected void HandleOpenTimeChanged(CustomTime newTime)
+		protected async Task HandleOpenTimeChanged(string newTimeString)
 		{
-			MerchantModel.OpenTime.Hour = newTime.Hour;
-			MerchantModel.OpenTime.Minute = newTime.Minute;
+			if (string.IsNullOrWhiteSpace(newTimeString) == false)
+			{
+				
+				MerchantModel.OpenTime.TimeString = newTimeString;
+			}
+			await InvokeAsync(StateHasChanged);
 		}
 
-		protected void HandleCloseTimeChanged(CustomTime newTime)
+		protected async Task HandleCloseTimeChanged(string newTimeString)
 		{
-			MerchantModel.CloseTime.Hour = newTime.Hour;
-			MerchantModel.CloseTime.Minute = newTime.Minute;
+			if (string.IsNullOrWhiteSpace(newTimeString) == false)
+			{
+				MerchantModel.CloseTime.TimeString = newTimeString;
+			}
+			await InvokeAsync(StateHasChanged);
 		}
 
 		protected void HandleSelectedCityChanged(CityDto newValue)
@@ -101,12 +115,27 @@ namespace ThenDelivery.Client.Components.Merchant
 
 		protected void HandleSelectedMerTypeChanged(IEnumerable<MerTypeDto> newValue)
 		{
-			MerchantModel.MerTypeList = newValue.ToList();
+			Logger.LogInformation("HandleSelectedMerTypeChanged" + newValue.Count());
+			if(newValue.Count() > Const.MaxMerTypePerMerchant)
+         {
+				StateHasChanged();
+         }
+         else
+         {
+				MerchantModel.MerTypeList = newValue.ToList();
+         }
 		}
 
 		protected void HandleSelectedFeaturedDishChanged(IEnumerable<FeaturedDishDto> newValue)
 		{
-			MerchantModel.FeaturedDishList = newValue.ToList();
+			if (newValue.Count() > Const.MaxFeaturedDishPerMerchant)
+			{
+				StateHasChanged();
+			}
+         else
+         {
+				MerchantModel.FeaturedDishList = newValue.ToList();
+         }
 		}
 
 		protected void HandleHouseNumberChanged(string newValue)

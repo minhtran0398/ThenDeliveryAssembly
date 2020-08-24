@@ -12,14 +12,16 @@ namespace ThenDelivery.Client.Components.Commons
 
 		protected async Task HandleTimeChanged(string newTimeString)
 		{
-			//string newTimeString = args.Value.ToString();
-			try
-			{
-				InputTime.TimeString = newTimeString;
-			}
-			catch (InvalidCastException)
-			{
+			if(string.IsNullOrWhiteSpace(newTimeString) == false)
+         {
+				try
+				{
+					InputTime.TimeString = newTimeString;
+				}
+				catch (InvalidCastException)
+				{
 
+				}
 			}
 			await TimeChanged.InvokeAsync(InputTime);
 			await InvokeAsync(StateHasChanged);

@@ -2,6 +2,9 @@
 {
 	public class Const
 	{
+		public const int MaxMerTypePerMerchant = 2;
+		public const int MaxFeaturedDishPerMerchant = 3;
+
 		public class Role
 		{
 			public const string UserRole = "User";

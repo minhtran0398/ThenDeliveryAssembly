@@ -19,5 +19,6 @@ namespace ThenDelivery.Shared.Entities
 		public string DistrictCode { get; set; }
 		public string WardCode { get; set; }
 		public string HouseNumber { get; set; }
-	}
+      public byte Status { get; set; }
+   }
 }

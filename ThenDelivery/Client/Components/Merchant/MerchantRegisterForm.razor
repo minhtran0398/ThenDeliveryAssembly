@@ -1,131 +1,134 @@
 ﻿@inherits MerchantRegisterFormBase
 
-<EditForm Model="MerchantModel"
-			 OnSubmit="async () => await HandleOnSubmit()">
-	<DataAnnotationsValidator />
+<EditForm EditContext="EditContext"
+          OnSubmit="async () => await HandleOnSubmit()">
+   <FluentValidator Validator="new MerchantValidator()"/>
+   <ValidationSummary />
 
-	<div class="row">
-		<div class="col-md-6 row-item">
-			<label>Avatar: </label>
-			<CustomImageEdit Base64String="@MerchantModel.Avatar"
-								  Width="100"
-								  Height="100"
-								  OnChangeImage="HandleAvatarChanged"/>
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Cover picture: </label>
-			<CustomImageEdit Base64String="@MerchantModel.CoverPicture"
-								  Width="100"
-								  Height="100"
-								  OnChangeImage="HandleCoverPictureChanged" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Name: </label>
-			<DxTextBox Text="@MerchantModel.Name"
-						  TextChanged="HandleMerchantNameChanged"
-						  TextExpression="() => MerchantModel.Name" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Tax Code: </label>
-			<DxTextBox Text="@MerchantModel.TaxCode"
-						  TextChanged="HandleTaxCodeChanged"
-						  TextExpression="() => MerchantModel.TaxCode" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Phone Number: </label>
-			<DxTextBox Text="@MerchantModel.PhoneNumber"
-						  TextChanged="HandlePhoneNumberChanged"
-						  TextExpression="() => MerchantModel.PhoneNumber" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Search Key: </label>
-			<DxTextBox Text="@MerchantModel.SearchKey"
-						  TextChanged="HandleSearchKeyChanged"
-						  TextExpression="() => MerchantModel.SearchKey" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Open time: </label>
-			<CustomTimeEdit InputTime="@MerchantModel.OpenTime"
-								 TimeChanged="HandleOpenTimeChanged" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Close time: </label>
-			<CustomTimeEdit InputTime="@MerchantModel.CloseTime"
-								 TimeChanged="HandleCloseTimeChanged" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Description: </label>
-			<DxTextBox Text="@MerchantModel.Description"
-						  TextChanged="HandleDescriptionChanged"
-						  TextExpression="() => MerchantModel.Description" />
-		</div>
-		<div class="col-md-6 row-item">
-			<label>Store number: </label>
-			<DxTextBox Text="@MerchantModel.HouseNumber"
-						  TextChanged="HandleHouseNumberChanged"
-						  TextExpression="() => MerchantModel.HouseNumber" />
-		</div>
-		<div class="col-md-4 row-item">
-			<label>City: </label>
-			<DxComboBox NullText="Select city ..."
-							AllowUserInput="true"
-							FilteringMode="DataGridFilteringMode.Contains"
-							TextFieldName="DisplayText"
-							DataAsync="HandleLoadCitiesAsync"
-							SelectedItem="@MerchantModel.City"
-							SelectedItemChanged="HandleSelectedCityChanged"
-							SelectedItemExpression="() => MerchantModel.City" />
-		</div>
-		<div class="col-md-4 row-item">
-			<label>District: </label>
-			<DxComboBox NullText="Select district ..."
-							AllowUserInput="true"
-							FilteringMode="DataGridFilteringMode.Contains"
-							TextFieldName="DisplayText"
-							DataAsync="HandleLoadDistrictsAsync"
-							SelectedItem="@MerchantModel.District"
-							SelectedItemChanged="HandleSelectedDistrictChanged"
-							SelectedItemExpression="() => MerchantModel.District" />
-		</div>
-		<div class="col-md-4 row-item">
-			<label>Ward: </label>
-			<DxComboBox NullText="Select ward ..."
-							AllowUserInput="true"
-							FilteringMode="DataGridFilteringMode.Contains"
-							TextFieldName="DisplayText"
-							DataAsync="HandleLoadWardsAsync"
-							SelectedItem="@MerchantModel.Ward"
-							SelectedItemChanged="HandleSelectedWardChanged"
-							SelectedItemExpression="() => MerchantModel.Ward" />
-		</div>
-		<div class="col-md-4 row-item">
-			<label>Merchant type (max 2): </label>
-			<DxListBox DataAsync="HandleLoadMerchantTypeAsync"
-						  TextFieldName="DisplayText"
-						  SelectionMode="ListBoxSelectionMode.Multiple"
-						  ShowCheckboxes="true"
-						  SelectedItems="@MerchantModel.MerTypeList"
-						  SelectedItemsChanged="HandleSelectedMerTypeChanged"
-						  SelectedItemsExpression="() => MerchantModel.MerTypeList"
-						  style="height: 232px;">
-			</DxListBox>
-		</div>
-		<div class="col-md-4 row-item">
-			<label>Featured Dish Category (max 3): </label>
-			<DxListBox DataAsync="HandleLoadFeaturedDishCategoryAsync"
-						  TextFieldName="DisplayText"
-						  SelectionMode="ListBoxSelectionMode.Multiple"
-						  ShowCheckboxes="true"
-						  SelectedItems="@MerchantModel.FeaturedDishList"
-						  SelectedItemsChanged="HandleSelectedFeaturedDishChanged"
-						  SelectedItemsExpression="() => MerchantModel.FeaturedDishList"
-						  style="height: 232px;">
-			</DxListBox>
-		</div>
+   <div class="row">
+      <div class="col-md-6 row-item form-group">
+         <label>Avatar: </label>
+         <CustomImageEdit Base64String="@MerchantModel.Avatar"
+                          Width="100"
+                          Height="100"
+                          OnChangeImage="HandleAvatarChanged" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Cover picture: </label>
+         <CustomImageEdit Base64String="@MerchantModel.CoverPicture"
+                          Width="100"
+                          Height="100"
+                          OnChangeImage="HandleCoverPictureChanged" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Name: </label>
+         <DxTextBox Text="@MerchantModel.Name"
+                    TextChanged="HandleMerchantNameChanged"
+                    TextExpression="() => MerchantModel.Name" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Tax Code: </label>
+         <DxTextBox Text="@MerchantModel.TaxCode"
+                    TextChanged="HandleTaxCodeChanged"
+                    TextExpression="() => MerchantModel.TaxCode" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Phone Number: </label>
+         <DxTextBox Text="@MerchantModel.PhoneNumber"
+                    TextChanged="HandlePhoneNumberChanged"
+                    TextExpression="() => MerchantModel.PhoneNumber" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Search Key: </label>
+         <DxTextBox Text="@MerchantModel.SearchKey"
+                    TextChanged="HandleSearchKeyChanged"
+                    TextExpression="() => MerchantModel.SearchKey" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Open time: </label>
+         <DxTextBox Text="@MerchantModel.OpenTime.TimeString"
+                    TextExpression="() => MerchantModel.OpenTime.TimeString"
+                    TextChanged="async (newValue) => await HandleOpenTimeChanged(newValue)" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Close time: </label>
+         <DxTextBox Text="@MerchantModel.CloseTime.TimeString"
+                    TextExpression="() => MerchantModel.CloseTime.TimeString"
+                    TextChanged="async (newValue) => await HandleCloseTimeChanged(newValue)" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Description: </label>
+         <DxTextBox Text="@MerchantModel.Description"
+                    TextChanged="HandleDescriptionChanged"
+                    TextExpression="() => MerchantModel.Description" />
+      </div>
+      <div class="col-md-6 row-item">
+         <label>Store number: </label>
+         <DxTextBox Text="@MerchantModel.HouseNumber"
+                    TextChanged="HandleHouseNumberChanged"
+                    TextExpression="() => MerchantModel.HouseNumber" />
+      </div>
+      <div class="col-md-4 row-item">
+         <label>City: </label>
+         <DxComboBox NullText="Select city ..."
+                     AllowUserInput="true"
+                     FilteringMode="DataGridFilteringMode.Contains"
+                     TextFieldName="DisplayText"
+                     DataAsync="HandleLoadCitiesAsync"
+                     SelectedItem="@MerchantModel.City"
+                     SelectedItemChanged="HandleSelectedCityChanged"
+                     SelectedItemExpression="() => MerchantModel.City" />
+      </div>
+      <div class="col-md-4 row-item">
+         <label>District: </label>
+         <DxComboBox NullText="Select district ..."
+                     AllowUserInput="true"
+                     FilteringMode="DataGridFilteringMode.Contains"
+                     TextFieldName="DisplayText"
+                     DataAsync="HandleLoadDistrictsAsync"
+                     SelectedItem="@MerchantModel.District"
+                     SelectedItemChanged="HandleSelectedDistrictChanged"
+                     SelectedItemExpression="() => MerchantModel.District" />
+      </div>
+      <div class="col-md-4 row-item">
+         <label>Ward: </label>
+         <DxComboBox NullText="Select ward ..."
+                     AllowUserInput="true"
+                     FilteringMode="DataGridFilteringMode.Contains"
+                     TextFieldName="DisplayText"
+                     DataAsync="HandleLoadWardsAsync"
+                     SelectedItem="@MerchantModel.Ward"
+                     SelectedItemChanged="HandleSelectedWardChanged"
+                     SelectedItemExpression="() => MerchantModel.Ward" />
+      </div>
+      <div class="col-md-4 row-item">
+         <label>Merchant type (max @Const.MaxMerTypePerMerchant): </label>
+         <DxListBox DataAsync="HandleLoadMerchantTypeAsync"
+                    TextFieldName="DisplayText"
+                    SelectionMode="ListBoxSelectionMode.Multiple"
+                    ShowCheckboxes="true"
+                    SelectedItems="@MerchantModel.MerTypeList"
+                    SelectedItemsChanged="HandleSelectedMerTypeChanged"
+                    SelectedItemsExpression="() => MerchantModel.MerTypeList"
+                    style="height: 232px;">
+         </DxListBox>
+      </div>
+      <div class="col-md-4 row-item">
+         <label>Featured Dish Category (max @Const.MaxFeaturedDishPerMerchant): </label>
+         <DxListBox DataAsync="HandleLoadFeaturedDishCategoryAsync"
+                    TextFieldName="DisplayText"
+                    SelectionMode="ListBoxSelectionMode.Multiple"
+                    ShowCheckboxes="true"
+                    SelectedItems="@MerchantModel.FeaturedDishList"
+                    SelectedItemsChanged="HandleSelectedFeaturedDishChanged"
+                    SelectedItemsExpression="() => MerchantModel.FeaturedDishList"
+                    style="height: 232px;">
+         </DxListBox>
+      </div>
 
-		<div class="col-md-12">
-			<DxButton SubmitFormOnClick="true" Text="Submit" RenderStyle="@ButtonRenderStyle.Secondary" />
-		</div>
-	</div>
+      <div class="col-md-12">
+         <DxButton SubmitFormOnClick="true" Text="Submit" RenderStyle="@ButtonRenderStyle.Secondary" />
+      </div>
+   </div>
 
 </EditForm>

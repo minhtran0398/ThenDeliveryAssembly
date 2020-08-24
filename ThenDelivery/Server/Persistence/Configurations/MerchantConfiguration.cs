@@ -34,7 +34,7 @@ namespace ThenDelivery.Server.Persistence.Configurations
 					.IsRequired(true);
 
 			builder.Property(e => e.PhoneNumber)
-					.HasMaxLength(16)
+					.HasMaxLength(10)
 					.IsFixedLength()
 					.IsRequired(true);
 
@@ -74,6 +74,11 @@ namespace ThenDelivery.Server.Persistence.Configurations
 			builder.Property(e => e.HouseNumber)
 					.HasMaxLength(256)
 					.IsRequired(true);
+
+			builder.Property(e => e.Status)
+					.HasColumnType("tinyint")
+					.IsRequired(true)
+					.HasDefaultValue(1);
 		}
 	}
 }

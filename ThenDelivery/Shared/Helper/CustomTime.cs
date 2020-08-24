@@ -59,19 +59,19 @@ namespace ThenDelivery.Shared.Helper
 		{
 			get
 			{
-				return String.Format("{0:D2}:{1:D2}", _hour, _minute);
+				return string.Format("{0:D2}:{1:D2}", _hour, _minute);
 			}
 			set
 			{
-				if (value.Length <= 4 && Int16.TryParse(value, out _))
+				if (value.Length <= 4 && short.TryParse(value, out _))
 				{
 					switch (value.Length)
 					{
 						case 1:
-							value = String.Format("0{0}:00", value);
+							value = string.Format("0{0}:00", value);
 							break;
 						case 2:
-							value = String.Format("0{0}:0{1}", value[0], value[1]);
+							value = string.Format("0{0}:0{1}", value[0], value[1]);
 							break;
 						case 3:
 							value = value.Insert(0, "0").Insert(2, ":");
@@ -81,8 +81,22 @@ namespace ThenDelivery.Shared.Helper
 							break;
 					}
 					string[] splitedTimeString = value.Split(':');
-					Hour = Int16.Parse(splitedTimeString[0]);
-					Minute = Int16.Parse(splitedTimeString[1]);
+					var hour = short.Parse(splitedTimeString[0]);
+					var minute = short.Parse(splitedTimeString[1]);
+					if (hour > 23)
+					{
+						hour = 23;
+						minute = 59;
+					}
+					if (hour < 0)
+					{
+						hour = 0;
+						minute = 0;
+					}
+					if (minute > 59) minute = 59;
+					if (minute < 0) minute = 0;
+					_hour = hour;
+					_minute = minute;
 				}
 				else
 				{

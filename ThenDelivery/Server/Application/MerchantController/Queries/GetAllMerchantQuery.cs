@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Helper;
 
 namespace ThenDelivery.Server.Application.MerchantController.Queries
@@ -39,184 +40,98 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 				var result = new List<MerchantDto>();
 				try
 				{
+					var query = (from merchant in _dbContext.Merchants
+									 where merchant.Status == (byte)MerchantStatus.Approved
+									 join user in _dbContext.Users on merchant.UserId equals user.Id
+									 let queryType = (from mtype in _dbContext.MTMerchants
+															where mtype.MerchantId == merchant.Id
+															join type in _dbContext.MerTypes
+																  on mtype.MerchantTypeId equals type.Id
+															select new MerTypeDto
+															{
+																Id = type.Id,
+																Name = type.Name
+															})
+									 let queryDish = (from mdish in _dbContext.FDMerchants
+															where mdish.MerchantId == merchant.Id
+															join dish in _dbContext.FeaturedDishes
+																  on mdish.FeaturedDishId equals dish.Id
+															select new FeaturedDishDto
+															{
+																Id = dish.Id,
+																Name = dish.Name
+															})
+									 let queryCity = (from city in _dbContext.Cities
+															where city.CityCode == merchant.CityCode
+															join lv in _dbContext.CityLevels
+																 on city.CityLevelId equals lv.Id
+															select new CityDto()
+															{
+																CityCode = city.CityCode,
+																Name = city.Name,
+																CityLevelId = lv.Id,
+																CityLevelName = lv.Name
+															})
+									 let queryDistrict = (from district in _dbContext.Districts
+																 where district.DistrictCode == merchant.DistrictCode
+																 join lv in _dbContext.DistrictLevels
+																	  on district.DistrictLevelId equals lv.Id
+																 select new DistrictDto()
+																 {
+																	 CityCode = district.CityCode,
+																	 DistrictCode = district.DistrictCode,
+																	 Name = district.Name,
+																	 DistrictLevelId = lv.Id,
+																	 DistrictLevelName = lv.Name
+																 })
+									 let queryWard = (from ward in _dbContext.Wards
+															where ward.WardCode == merchant.WardCode
+															join lv in _dbContext.WardLevels
+																 on ward.WardLevelId equals lv.Id
+															select new WardDto()
+															{
+																WardCode = ward.WardCode,
+																DistrictCode = ward.DistrictCode,
+																Name = ward.Name,
+																WardLevelId = lv.Id,
+																WardLevelName = lv.Name
+															})
+									 select new MerchantDto()
+									 {
+										 Id = merchant.Id,
+										 Name = merchant.Name,
+										 Avatar = merchant.Avatar,
+										 City = queryCity.SingleOrDefault(),
+										 District = queryDistrict.SingleOrDefault(),
+										 Ward = queryWard.SingleOrDefault(),
+										 OpenTime = CustomTime.GetTime(merchant.OpenTime),
+										 CloseTime = CustomTime.GetTime(merchant.CloseTime),
+										 CoverPicture = merchant.CoverPicture,
+										 Description = merchant.Description,
+										 MerTypeList = queryType.ToList(),
+										 FeaturedDishList = queryDish.ToList(),
+										 HouseNumber = merchant.HouseNumber,
+										 PhoneNumber = merchant.PhoneNumber,
+										 SearchKey = merchant.SearchKey,
+										 TaxCode = merchant.TaxCode,
+										 User = new UserDto()
+										 {
+											 Id = user.Id,
+											 BirthDate = user.BirthDate,
+											 Email = user.Email,
+											 IsEmailConfirmed = user.EmailConfirmed,
+											 IsPhoneNumberConfirmed = user.PhoneNumberConfirmed,
+											 PhoneNumber = user.PhoneNumber,
+											 UserName = user.UserName,
+										 }
+									 });
 					if (request._take > 0)
 					{
-						result = await (from merchant in _dbContext.Merchants
-											 join user in _dbContext.Users on merchant.UserId equals user.Id
-											 let queryType = (from mtype in _dbContext.MTMerchants
-																	where mtype.MerchantId == merchant.Id
-																	join type in _dbContext.MerTypes
-																		  on mtype.MerchantTypeId equals type.Id
-																	select new MerTypeDto
-																	{
-																		Id = type.Id,
-																		Name = type.Name
-																	})
-											 let queryDish = (from mdish in _dbContext.FDMerchants
-																	where mdish.MerchantId == merchant.Id
-																	join dish in _dbContext.FeaturedDishes
-																		  on mdish.FeaturedDishId equals dish.Id
-																	select new FeaturedDishDto
-																	{
-																		Id = dish.Id,
-																		Name = dish.Name
-																	})
-											 let queryCity = (from city in _dbContext.Cities
-																	where city.CityCode == merchant.CityCode
-																	join lv in _dbContext.CityLevels
-																		 on city.CityLevelId equals lv.Id
-																	select new CityDto()
-																	{
-																		CityCode = city.CityCode,
-																		Name = city.Name,
-																		CityLevelId = lv.Id,
-																		CityLevelName = lv.Name
-																	})
-											 let queryDistrict = (from district in _dbContext.Districts
-																		 where district.DistrictCode == merchant.DistrictCode
-																		 join lv in _dbContext.DistrictLevels
-																			  on district.DistrictLevelId equals lv.Id
-																		 select new DistrictDto()
-																		 {
-																			 CityCode = district.CityCode,
-																			 DistrictCode = district.DistrictCode,
-																			 Name = district.Name,
-																			 DistrictLevelId = lv.Id,
-																			 DistrictLevelName = lv.Name
-																		 })
-											 let queryWard = (from ward in _dbContext.Wards
-																	where ward.WardCode == merchant.WardCode
-																	join lv in _dbContext.WardLevels
-																		 on ward.WardLevelId equals lv.Id
-																	select new WardDto()
-																	{
-																		WardCode = ward.WardCode,
-																		DistrictCode = ward.DistrictCode,
-																		Name = ward.Name,
-																		WardLevelId = lv.Id,
-																		WardLevelName = lv.Name
-																	})
-											 select new MerchantDto()
-											 {
-												 Id = merchant.Id,
-												 Name = merchant.Name,
-												 Avatar = merchant.Avatar,
-												 City = queryCity.SingleOrDefault(),
-												 District = queryDistrict.SingleOrDefault(),
-												 Ward = queryWard.SingleOrDefault(),
-												 OpenTime = CustomTime.GetTime(merchant.OpenTime),
-												 CloseTime = CustomTime.GetTime(merchant.CloseTime),
-												 CoverPicture = merchant.CoverPicture,
-												 Description = merchant.Description,
-												 MerTypeList = queryType.ToList(),
-												 FeaturedDishList = queryDish.ToList(),
-												 HouseNumber = merchant.HouseNumber,
-												 PhoneNumber = merchant.PhoneNumber,
-												 SearchKey = merchant.SearchKey,
-												 TaxCode = merchant.TaxCode,
-												 User = new UserDto()
-												 {
-													 Id = user.Id,
-													 BirthDate = user.BirthDate,
-													 Email = user.Email,
-													 IsEmailConfirmed = user.EmailConfirmed,
-													 IsPhoneNumberConfirmed = user.PhoneNumberConfirmed,
-													 PhoneNumber = user.PhoneNumber,
-													 UserName = user.UserName,
-												 }
-											 })
-											.Skip(request._skip)
-											.Take(request._take)
-											.ToListAsync();
+						result = await query.Take(request._take).Skip(request._skip).ToListAsync();
 					}
 					else
 					{
-						result = await (from merchant in _dbContext.Merchants
-											 join user in _dbContext.Users on merchant.UserId equals user.Id
-											 let queryType = (from mtype in _dbContext.MTMerchants
-																	where mtype.MerchantId == merchant.Id
-																	join type in _dbContext.MerTypes
-																		  on mtype.MerchantTypeId equals type.Id
-																	select new MerTypeDto
-																	{
-																		Id = type.Id,
-																		Name = type.Name
-																	})
-											 let queryDish = (from mdish in _dbContext.FDMerchants
-																	where mdish.MerchantId == merchant.Id
-																	join dish in _dbContext.FeaturedDishes
-																		  on mdish.FeaturedDishId equals dish.Id
-																	select new FeaturedDishDto
-																	{
-																		Id = dish.Id,
-																		Name = dish.Name
-																	})
-											 let queryCity = (from city in _dbContext.Cities
-																	where city.CityCode == merchant.CityCode
-																	join lv in _dbContext.CityLevels
-																		 on city.CityLevelId equals lv.Id
-																	select new CityDto()
-																	{
-																		CityCode = city.CityCode,
-																		Name = city.Name,
-																		CityLevelId = lv.Id,
-																		CityLevelName = lv.Name
-																	})
-											 let queryDistrict = (from district in _dbContext.Districts
-																		 where district.DistrictCode == merchant.DistrictCode
-																		 join lv in _dbContext.DistrictLevels
-																			  on district.DistrictLevelId equals lv.Id
-																		 select new DistrictDto()
-																		 {
-																			 CityCode = district.CityCode,
-																			 DistrictCode = district.DistrictCode,
-																			 Name = district.Name,
-																			 DistrictLevelId = lv.Id,
-																			 DistrictLevelName = lv.Name
-																		 })
-											 let queryWard = (from ward in _dbContext.Wards
-																	where ward.WardCode == merchant.WardCode
-																	join lv in _dbContext.WardLevels
-																		 on ward.WardLevelId equals lv.Id
-																	select new WardDto()
-																	{
-																		WardCode = ward.WardCode,
-																		DistrictCode = ward.DistrictCode,
-																		Name = ward.Name,
-																		WardLevelId = lv.Id,
-																		WardLevelName = lv.Name
-																	})
-											 select new MerchantDto()
-											 {
-												 Id = merchant.Id,
-												 Name = merchant.Name,
-												 Avatar = merchant.Avatar,
-												 City = queryCity.SingleOrDefault(),
-												 District = queryDistrict.SingleOrDefault(),
-												 Ward = queryWard.SingleOrDefault(),
-												 OpenTime = CustomTime.GetTime(merchant.OpenTime),
-												 CloseTime = CustomTime.GetTime(merchant.CloseTime),
-												 CoverPicture = merchant.CoverPicture,
-												 Description = merchant.Description,
-												 MerTypeList = queryType.ToList(),
-												 FeaturedDishList = queryDish.ToList(),
-												 HouseNumber = merchant.HouseNumber,
-												 PhoneNumber = merchant.PhoneNumber,
-												 SearchKey = merchant.SearchKey,
-												 TaxCode = merchant.TaxCode,
-												 User = new UserDto()
-												 {
-													 Id = user.Id,
-													 BirthDate = user.BirthDate,
-													 Email = user.Email,
-													 IsEmailConfirmed = user.EmailConfirmed,
-													 IsPhoneNumberConfirmed = user.PhoneNumberConfirmed,
-													 PhoneNumber = user.PhoneNumber,
-													 UserName = user.UserName,
-												 }
-											 })
-											.Skip(request._skip)
-											.ToListAsync();
+						result = await query.Skip(request._skip).ToListAsync();
 					}
 				}
 				catch (Exception ex)

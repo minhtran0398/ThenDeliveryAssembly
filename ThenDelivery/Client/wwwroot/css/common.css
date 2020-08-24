@@ -209,7 +209,7 @@ img {
 	position: relative;
 	border-radius: 6px 6px 0 0;
 	overflow: hidden;
-	height: 137px;
+	/*height: 137px;*/
 	background: #eaeaea;
 }
 
@@ -225,7 +225,7 @@ img {
 }
 
 .now-list-restaurant .info-restaurant .name-res {
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 700;
 	color: #252525;
 	white-space: nowrap;
@@ -236,7 +236,7 @@ img {
 }
 
 .now-list-restaurant .info-restaurant .address-res {
-	font-size: 12px;
+	font-size: 13px;
 	color: #959595;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -342,7 +342,6 @@ img {
 }
 
 .now-detail-restaurant .breadcrumb {
-	padding-left: 0;
 	margin-bottom: 18px;
 	list-style: none;
 	overflow: hidden;
@@ -574,3 +573,14 @@ img {
 }
 
 /* end popup class */
+
+.img-restaurant-image {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.merchant-home-product-image {
+	max-width: 100%;
+	max-height: 100%;
+	height: 80px;
+}

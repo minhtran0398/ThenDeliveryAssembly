@@ -10,4 +10,10 @@ namespace ThenDelivery.Shared.Enums
 		Cancel = 5
 	}
 
+	public enum MerchantStatus
+   {
+		NotApproved = 1,
+		Approved = 2,
+		Closed = 3
+	}
 }

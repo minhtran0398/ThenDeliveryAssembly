@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using ThenDelivery.Server.Application.Common.Interfaces;
 using ThenDelivery.Server.Infrastructure;
 using ThenDelivery.Server.Services;
+using ThenDelivery.Shared.Validation;
 
 namespace ThenDelivery.Server
 {

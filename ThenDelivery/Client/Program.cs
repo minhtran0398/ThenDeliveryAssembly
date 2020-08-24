@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
+using ThenDelivery.Shared.Validation;
+using FluentValidation;
 
 namespace ThenDelivery.Client
 {
@@ -35,6 +36,7 @@ namespace ThenDelivery.Client
 			// 	.CreateClient("ThenDelivery.AnonymousAPI"));
 
 			builder.Services.AddDevExpressBlazor();
+			builder.Services.AddValidatorsFromAssemblyContaining<MerchantValidator>();
 
 			builder.Services
 				.AddApiAuthorization()
