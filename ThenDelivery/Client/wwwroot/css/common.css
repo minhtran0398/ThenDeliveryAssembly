@@ -8,6 +8,7 @@
 
 .main-content{
 	padding-bottom: 32px;
+	float: left;
 }
 /*================================================================*/
 /* Create menu */
@@ -158,6 +159,7 @@ img {
 	border-radius: 6px;
 	margin-bottom: 20px;
 	position: relative;
+	float: left;
 }
 
 	.now-list-restaurant .title-wrapper {
@@ -286,6 +288,7 @@ img {
 		float: right;
 		width: 645px;
 		padding-bottom: 15px;
+		margin-left: 20px;
 	}
 
 	.now-detail-restaurant .detail-restaurant-img img {
@@ -345,7 +348,7 @@ img {
 	margin-bottom: 18px;
 	list-style: none;
 	overflow: hidden;
-	margin-top: -2px;
+	/*margin-top: -2px;*/
 }
 
 	.now-detail-restaurant .breadcrumb .breadcrumb-item {
