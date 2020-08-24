@@ -29,28 +29,11 @@ else
             <div class="w-100">
                <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1 my-merchant-name">@merchant.Name</h5>
-                  @if (merchant.Status != MerchantStatus.Closed)
-                  {
-                     <button class="btn btn-sm btn-outline-primary mr-1"
-                             @onclick="() => HandleMoveToOrderPage(merchant.Id)">
-                        Quản lý đơn hàng
-                     </button>
-                     <button class="btn btn-sm btn-outline-secondary mr-1">Chỉnh sửa</button>
-                     @if (merchant.Status == MerchantStatus.Approved)
-                     {
-                        <button class="btn btn-sm btn-outline-danger"
-                                @onclick="async () => await HandleCloseMerchant(merchant)">
-                           Đóng cửa
-                        </button>
-                     }
-                  }
-                  else
-                  {
-                     <button class="btn btn-sm btn-outline-primary"
-                             @onclick="async () => await HandleOpenMerchant(merchant)">
-                        Mở quán
-                     </button>
-                  }
+                  <button class="btn btn-sm btn-outline-primary mr-1"
+                           @onclick="() => HandleMoveToOrderPage(merchant.Id)">
+                     Quản lý đơn hàng
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary mr-1">Chỉnh sửa</button>
                </div>
                <p class="mb-1">@merchant.AddressString</p>
                <small class="@merchant.Status.GetCssClass()">

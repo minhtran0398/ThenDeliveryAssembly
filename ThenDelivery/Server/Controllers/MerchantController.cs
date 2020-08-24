@@ -97,6 +97,21 @@ namespace ThenDelivery.Server.Controllers
 			}
 		}
 
+		[HttpPut("approve")]
+		[Authorize(Roles = Const.Role.AdministrationRole)]
+		public async Task<IActionResult> ApproveMerchant([FromBody] MerchantDto merchantDto)
+		{
+			try
+			{
+				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
+				return Ok(new CustomResponse(200, "Update success"));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+		}
+
 		[HttpGet("my")]
 		[Authorize(Roles = Const.Role.MerchantRole)]
 		public async Task<IActionResult> GetMerchantCurrentUserId()
@@ -139,6 +154,22 @@ namespace ThenDelivery.Server.Controllers
             {
 					return BadRequest(new CustomResponse(400, ex.Message));
             }
+			}
+		}
+
+		[HttpGet("all")]
+		[Authorize(Roles = Const.Role.AdministrationRole)]
+		public async Task<IActionResult> GetAllMerchant()
+		{
+			try
+			{
+				IEnumerable<MerchantDto> merchantList =
+					await Mediator.Send(new GetAllMerchantQuery(MerchantStatus.None));
+				return Ok(merchantList);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
 			}
 		}
 	}

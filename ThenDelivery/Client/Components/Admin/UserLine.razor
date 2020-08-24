@@ -4,11 +4,11 @@
 {
 	<tr>
 		<td>@UserItem.UserName</td>
-		<td>@UserItem.Email</td>
-		<td>@UserItem.IsEmailConfirmed</td>
+		<td>
+			@UserItem.Email - @(UserItem.IsEmailConfirmed ? "Đã xác thực" : "Chưa xác thực")
+		</td>
+      <td>@UserItem.PhoneNumber - @(UserItem.IsPhoneNumberConfirmed ? "Đã xác thực" : "Chưa xác thực")</td>
 		<td>@UserItem.BirthDate.ToString("dd/MM/yyyy")</td>
-		<td>@UserItem.PhoneNumber</td>
-		<td>@UserItem.IsPhoneNumberConfirmed</td>
 		<td>
 			@if (UserItem.RoleList != null)
 			{
@@ -32,7 +32,19 @@
 				}
 			}
 		</td>
-		<td><button class="btn btn-primary" @onclick="HandleOnEdit" @onclick:stopPropagation>Edit</button></td>
-		<td><button class="btn btn-danger" @onclick="HandleOnDelete" @onclick:stopPropagation>Delete</button></td>
+		@*<td class="pl-0 pr-0">
+			<button class="btn btn-sm btn-primary"
+					  @onclick="HandleOnEdit"
+					  @onclick:stopPropagation>
+				Edit
+			</button>
+		</td>
+		<td class="pl-0 pr-0">
+			<button class="btn btn-sm btn-danger"
+					  @onclick="HandleOnDelete"
+					  @onclick:stopPropagation>
+				Delete
+			</button>
+		</td>*@
 	</tr>
 }

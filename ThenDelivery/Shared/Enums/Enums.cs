@@ -12,6 +12,7 @@ namespace ThenDelivery.Shared.Enums
 
 	public enum MerchantStatus
    {
+		None = 0,
 		NotApproved = 1,
 		Approved = 2,
 		Closed = 3

@@ -113,6 +113,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
                                   SearchKey = merchant.SearchKey,
                                   TaxCode = merchant.TaxCode,
                                   LastModify = merchant.LastModified,
+                                  CreateTime = merchant.Created,
                                   Status = (MerchantStatus)merchant.Status,
                                   User = new UserDto()
                                   {

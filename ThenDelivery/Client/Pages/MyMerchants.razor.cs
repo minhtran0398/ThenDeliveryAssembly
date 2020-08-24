@@ -24,25 +24,5 @@ namespace ThenDelivery.Client.Pages
       {
          NavigationManager.NavigateTo($"/order-of-merchant/{merchantId}");
       }
-
-      protected async Task HandleCloseMerchant(MerchantDto merchant)
-      {
-         ResponseModel = await HttpClientServer.CustomPutAsync($"api/merchant/close", merchant);
-         if(ResponseModel.IsSuccess)
-         {
-            merchant.Status = MerchantStatus.Closed;
-         }
-         ResponseModel.IsShowPopup = true;
-      }
-
-      protected async Task HandleOpenMerchant(MerchantDto merchant)
-      {
-         ResponseModel = await HttpClientServer.CustomPutAsync($"api/merchant/open", merchant);
-         if (ResponseModel.IsSuccess)
-         {
-            merchant.Status = MerchantStatus.Approved;
-         }
-         ResponseModel.IsShowPopup = true;
-      }
    }
 }

@@ -17,11 +17,13 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 	{
 		private readonly ushort _skip;
 		private readonly ushort _take;
+		private readonly MerchantStatus _status;
 
-		public GetAllMerchantQuery(ushort skip = 0, ushort take = 0)
+		public GetAllMerchantQuery(MerchantStatus status = MerchantStatus.Approved, ushort skip = 0, ushort take = 0)
 		{
 			_skip = skip;
 			_take = take;
+			_status = status;
 		}
 
 		public class Handler : IRequestHandler<GetAllMerchantQuery, IEnumerable<MerchantDto>>
@@ -41,7 +43,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 				try
 				{
 					var query = (from merchant in _dbContext.Merchants
-									 where merchant.Status == (byte)MerchantStatus.Approved
+									 //where merchant.Status == (byte)request._status
 									 join user in _dbContext.Users on merchant.UserId equals user.Id
 									 let queryType = (from mtype in _dbContext.MTMerchants
 															where mtype.MerchantId == merchant.Id
@@ -115,6 +117,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 										 SearchKey = merchant.SearchKey,
 										 TaxCode = merchant.TaxCode,
 										 LastModify = merchant.LastModified,
+										 CreateTime = merchant.Created,
 										 Status = (MerchantStatus)merchant.Status,
 										 User = new UserDto()
 										 {
@@ -129,12 +132,19 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 									 });
 					if (request._take > 0)
 					{
-						result = await query.Take(request._take).Skip(request._skip).ToListAsync();
+						query = query.Take(request._take).Skip(request._skip);
 					}
 					else
 					{
-						result = await query.Skip(request._skip).ToListAsync();
+						query = query.Skip(request._skip);
 					}
+
+					if(request._status != MerchantStatus.None)
+               {
+						query = query.Where(e => e.Status == request._status);
+               }
+
+					result = await query.ToListAsync();
 				}
 				catch (Exception ex)
 				{

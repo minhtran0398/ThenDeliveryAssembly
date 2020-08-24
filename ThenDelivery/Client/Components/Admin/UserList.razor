@@ -1,19 +1,21 @@
 ﻿@inherits UserListBase
 
-@if (UserList != null)
+@if(UserList is null)
+{
+	<p>Loading...</p>
+}
+else
 {
 	<table class="table">
 		<thead>
 			<tr>
-				<th>UserName</th>
-				<th>Email</th>
-				<th>IsEmailConfirmed</th>
-				<th>BirthDate</th>
-				<th>PhoneNumber</th>
-				<th>IsPhoneNumberConfirmed</th>
-				<th>Roles</th>
-				<th></th>
-				<th></th>
+				<th>Họ tên</th>
+				<th>Đại chỉ email</th>
+				<th>Số điện thoại</th>
+				<th>Sinh nhật</th>
+				<th>Quyền</th>
+				@*<th></th>
+				<th></th>*@
 			</tr>
 		</thead>
 		<tbody>

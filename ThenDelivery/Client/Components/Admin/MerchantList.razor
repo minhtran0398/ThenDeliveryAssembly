@@ -1,0 +1,84 @@
+﻿@page "/merchants"
+@inherits MerchantListBase
+
+@if (ResponseModel != null)
+{
+   <DxPopup HeaderText="Thông tin" @bind-Visible="@ResponseModel.IsShowPopup">
+      <Content>
+         <p>@ResponseModel.Message</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-dark" @onclick="() => ResponseModel.IsShowPopup = false">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
+}
+@if (SelectedMerchant != null)
+{
+   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm">
+      <Content>
+         <p>Bạn chắc chắn muốn cấp quyền hoạt động cho quán?</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-success"
+                 @onclick="async () => await HandleConfirmApprove()">
+            Xác nhận
+         </button>
+         <button class="btn btn-dark"
+                 @onclick="HandleCancelApprove">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
+}
+@if (MerchantList is null)
+{
+   <p>Loading...</p>
+}
+else
+{
+   <table class="table">
+      <thead>
+         <tr>
+            <th>Ảnh đại diện</th>
+            <th>Tên quán</th>
+            <th>Giờ hoạt động</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
+            <th>Mã số thuế</th>
+            <th>Ngày giờ đăng ký</th>
+            <th>Trạng thái</th>
+         </tr>
+      </thead>
+      <tbody>
+         @foreach (var merchant in MerchantList.OrderBy(e => e.Status).ThenByDescending(e => e.CreateTime))
+         {
+            <tr>
+               <td>
+                  <img src="@merchant.Avatar" class="merchant-home-product-image">
+               </td>
+               <td>@merchant.Name</td>
+               <td>@merchant.OpenTime.TimeString - @merchant.CloseTime.TimeString</td>
+               <td>@merchant.PhoneNumber</td>
+               <td>@merchant.AddressString</td>
+               <td>@merchant.TaxCode</td>
+               <td>@merchant.CreateTime.ToString("HH:mm dd/MM/yyyy")</td>
+               <td>
+                  @if (merchant.Status == MerchantStatus.NotApproved)
+                  {
+                     <button class="btn btn-sm btn-success"
+                             @onclick="() => HandleApproveMerchant(merchant)">
+                        Cấp quyền hoạt động
+                     </button>
+                  }
+                  else
+                  {
+                     <span class="@merchant.Status.GetCssClass()">@merchant.Status.GetStringValue()</span>
+                  }
+               </td>
+            </tr>
+         }
+      </tbody>
+   </table>
+}

@@ -33,6 +33,7 @@ namespace ThenDelivery.Shared.Dtos
 		public List<MerTypeDto> MerTypeList { get; set; }
 		public string HouseNumber { get; set; }
       public DateTime? LastModify { get; set; }
+      public DateTime CreateTime { get; set; }
       public MerchantStatus Status { get; set; }
       public string AddressString
 		{

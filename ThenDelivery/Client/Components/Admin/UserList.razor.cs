@@ -33,7 +33,6 @@ namespace ThenDelivery.Client.Components.Admin
 		{
 			if (userToEdit is null)
 			{
-				throw new System.ArgumentNullException(nameof(userToEdit));
 			}
 		}
 
@@ -41,7 +40,6 @@ namespace ThenDelivery.Client.Components.Admin
 		{
 			if (userToDelete is null)
 			{
-				throw new System.ArgumentNullException(nameof(userToDelete));
 			}
 		}
 		#endregion
