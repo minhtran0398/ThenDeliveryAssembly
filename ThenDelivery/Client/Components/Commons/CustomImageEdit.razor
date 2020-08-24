@@ -1,7 +1,8 @@
 ﻿@inherits CustomImageEditBase
 
 <InputFile OnChange="HandleFileSelected" />
+<br/>
 @if (!string.IsNullOrEmpty(imageData))
 {
-	<img src="@imageData" width="@Width" height="@Height" />
+	<img class="img-custom-edit" src="@imageData" width="@Width" height="@Height" />
 }

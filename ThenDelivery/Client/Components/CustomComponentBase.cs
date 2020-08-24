@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Net.Http;
 using System.Security.Claims;
@@ -17,7 +18,7 @@ namespace ThenDelivery.Client.Components
 		[Inject] public NavigationManager NavigationManager { get; set; }
 		[Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
-		public string BaseUrl { get; set; }
+      public string BaseUrl { get; set; }
 		public ClaimsPrincipal User { get; set; }
 
 		protected override void OnInitialized()

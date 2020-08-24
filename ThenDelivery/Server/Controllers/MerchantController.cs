@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,6 +11,7 @@ using ThenDelivery.Server.Application.MerchantController.Commands;
 using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Entities;
 using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Exceptions;
 
@@ -20,6 +22,7 @@ namespace ThenDelivery.Server.Controllers
 	{
 		private readonly ICurrentUserService _currentUserService;
 		private readonly IImageService _imageService;
+		
 
 		public MerchantController(ICurrentUserService currentUserService,
 			IImageService imageService)

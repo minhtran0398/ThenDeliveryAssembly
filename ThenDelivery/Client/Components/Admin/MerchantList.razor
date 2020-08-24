@@ -52,7 +52,7 @@ else
          </tr>
       </thead>
       <tbody>
-         @foreach (var merchant in MerchantList.OrderBy(e => e.Status).ThenByDescending(e => e.CreateTime))
+         @foreach (var merchant in MerchantList.OrderBy(e => e.Status).ThenBy(e => e.CreateTime))
          {
             <tr>
                <td>

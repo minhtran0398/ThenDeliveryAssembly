@@ -2,23 +2,27 @@
 
 <EditForm EditContext="EditContext"
           OnSubmit="async () => await HandleOnSubmit()">
-   <FluentValidator Validator="new MerchantValidator()"/>
+   <FluentValidator Validator="new MerchantValidator()" />
    <ValidationSummary />
 
    <div class="row">
-      <div class="col-md-6 row-item form-group">
+      <div class="col-md-6 row-item pt-2">
          <label>Avatar: </label>
-         <CustomImageEdit Base64String="@MerchantModel.Avatar"
-                          Width="100"
-                          Height="100"
-                          OnChangeImage="HandleAvatarChanged" />
+         <div class="">
+            <CustomImageEdit Base64String="@MerchantModel.Avatar"
+                             Width="100"
+                             Height="100"
+                             OnChangeImage="HandleAvatarChanged" />
+         </div>
       </div>
-      <div class="col-md-6 row-item">
+      <div class="col-md-6 row-item pt-2">
          <label>Cover picture: </label>
-         <CustomImageEdit Base64String="@MerchantModel.CoverPicture"
-                          Width="100"
-                          Height="100"
-                          OnChangeImage="HandleCoverPictureChanged" />
+         <div class="">
+            <CustomImageEdit Base64String="@MerchantModel.CoverPicture"
+                             Width="100"
+                             Height="100"
+                             OnChangeImage="HandleCoverPictureChanged" />
+         </div>
       </div>
       <div class="col-md-6 row-item">
          <label>Name: </label>

@@ -3,5 +3,14 @@
 <RemoteAuthenticatorView Action="@Action" />
 
 @code{
-    [Parameter] public string Action { get; set; }
+   [Parameter] public string Action { get; set; }
+   [Inject] public NavigationManager NavigationManager { get; set; }
+
+   protected override void OnInitialized()
+   {
+      if(Action == "logged-out")
+      {
+         NavigationManager.NavigateTo("/");
+      }
+   }
 }

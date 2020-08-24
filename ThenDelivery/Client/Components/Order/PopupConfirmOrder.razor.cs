@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
@@ -22,6 +24,7 @@ namespace ThenDelivery.Client.Components.Order
       [Parameter] public EditContext FormContext { get; set; }
       [Parameter] public EventCallback OnClose { get; set; }
       [Parameter] public EventCallback<CustomResponse> OnAfterConfirm { get; set; }
+      [Inject] public IJSRuntime JSRuntime { get; set; }
       public List<ShippingAddressDto> ShippingAddressList { get; set; }
       public DisplayPopup SelectedPopup { get; set; }
       public CustomResponse ResponseModel { get; set; }
@@ -84,9 +87,15 @@ namespace ThenDelivery.Client.Components.Order
 
       protected async Task HandleSubmitConfirm()
       {
+         //await JSRuntime.InvokeVoidAsync("renderPaymentButton", 10);
          ResponseModel =
             await HttpClientServer.CustomPostAsync<OrderDto, CustomResponse>("api/Order", Order);
          await OnAfterConfirm.InvokeAsync(ResponseModel);
+      }
+
+      [JSInvokable]
+      public static void SendOrder()
+      {
       }
 
       protected void HandleChangeShippingAddress()

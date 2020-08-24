@@ -22,26 +22,25 @@
 else
 {
    <div class="list-group">
-      @foreach (var merchant in MyMerchantList)
+      @foreach (var merchant in MyMerchantList.OrderBy(e => e.Status).ThenByDescending(e => e.CreateTime))
       {
          <div class="list-group-item list-group-item-action d-flex">
             <img src="@merchant.Avatar" class="my-merchant-img" />
             <div class="w-100">
                <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1 my-merchant-name">@merchant.Name</h5>
-                  <button class="btn btn-sm btn-outline-primary mr-1"
-                           @onclick="() => HandleMoveToOrderPage(merchant.Id)">
-                     Quản lý đơn hàng
-                  </button>
-                  <button class="btn btn-sm btn-outline-secondary mr-1">Chỉnh sửa</button>
+                  @if (merchant.Status != MerchantStatus.NotApproved)
+                  {
+                     <button class="btn btn-sm btn-outline-primary mr-1"
+                             @onclick="() => HandleMoveToOrderPage(merchant.Id)">
+                        Quản lý đơn hàng
+                     </button>
+                  }
+                  @*<button class="btn btn-sm btn-outline-secondary mr-1">Chỉnh sửa</button>*@
                </div>
                <p class="mb-1">@merchant.AddressString</p>
                <small class="@merchant.Status.GetCssClass()">
                   @merchant.Status.GetStringValue()
-                  @if (merchant.LastModify != null)
-                  {
-                     <span class="badge-light badge-pill">@merchant.LastModify?.ToString("dd/MM/yyyy")</span>
-                  }
                </small>
             </div>
          </div>
