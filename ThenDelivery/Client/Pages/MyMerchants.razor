@@ -1,7 +1,21 @@
 ﻿@page "/my-merchant"
 @inherits MyMerchantsBase
 
-@if(MyMerchantList is null)
+@if (ResponseModel != null)
+{
+   <DxPopup HeaderText="Thông tin" @bind-Visible="@ResponseModel.IsShowPopup">
+      <Content>
+         <p>@ResponseModel.Message</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-dark" @onclick="() => ResponseModel.IsShowPopup = false">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
+}
+
+@if (MyMerchantList is null)
 {
    <p>Loading...</p>
 }
@@ -17,12 +31,25 @@ else
                   <h5 class="mb-1 my-merchant-name">@merchant.Name</h5>
                   @if (merchant.Status != MerchantStatus.Closed)
                   {
-                     <button class="btn btn-sm btn-outline-primary mr-1">Chỉnh sửa</button>
-                     <button class="btn btn-sm btn-outline-danger">Đóng cửa</button>
+                     <button class="btn btn-sm btn-outline-primary mr-1"
+                             @onclick="() => HandleMoveToOrderPage(merchant.Id)">
+                        Quản lý đơn hàng
+                     </button>
+                     <button class="btn btn-sm btn-outline-secondary mr-1">Chỉnh sửa</button>
+                     @if (merchant.Status == MerchantStatus.Approved)
+                     {
+                        <button class="btn btn-sm btn-outline-danger"
+                                @onclick="async () => await HandleCloseMerchant(merchant)">
+                           Đóng cửa
+                        </button>
+                     }
                   }
                   else
                   {
-                     <button class="btn btn-sm btn-outline-primary">Mở quán</button>
+                     <button class="btn btn-sm btn-outline-primary"
+                             @onclick="async () => await HandleOpenMerchant(merchant)">
+                        Mở quán
+                     </button>
                   }
                </div>
                <p class="mb-1">@merchant.AddressString</p>

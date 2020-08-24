@@ -10,6 +10,7 @@ using ThenDelivery.Server.Application.MerchantController.Commands;
 using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Shared.Common;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Server.Controllers
@@ -64,6 +65,36 @@ namespace ThenDelivery.Server.Controllers
          {
 				return BadRequest(new CustomResponse(400, ex.Message));
          }
+		}
+
+		[HttpPut("close")]
+		[Authorize(Roles = Const.Role.MerchantRole)]
+		public async Task<IActionResult> CloseMerchant([FromBody] MerchantDto merchantDto)
+      {
+			try
+			{
+				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Closed));
+				return Ok(new CustomResponse(200, "Update success"));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+		}
+
+		[HttpPut("open")]
+		[Authorize(Roles = Const.Role.MerchantRole)]
+		public async Task<IActionResult> OpenMerchant([FromBody] MerchantDto merchantDto)
+		{
+			try
+			{
+				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
+				return Ok(new CustomResponse(200, "Update success"));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
 		}
 
 		[HttpGet("my")]

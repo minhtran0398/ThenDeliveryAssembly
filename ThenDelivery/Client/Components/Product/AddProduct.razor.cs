@@ -24,7 +24,8 @@ namespace ThenDelivery.Client.Components.Product
 		#region Properties
 		public List<MenuItemDto> MenuList { get; set; }
 		public ObservableCollection<ProductDto> ProductList { get; set; }
-		public bool IsShowPopupAddProduct { get; set; }
+      public ProductDto SelectedProduct { get; set; }
+      public bool IsShowPopupAddProduct { get; set; }
 		public bool IsEnableSaveButton { get; set; }
       public bool IsInsertMode { get; set; }
       #endregion
@@ -79,6 +80,7 @@ namespace ThenDelivery.Client.Components.Product
 			product.Merchant = new MerchantDto() { Id = TargetMerchantId };
 			AddProduct(product);
 			IsShowPopupAddProduct = false;
+			StateHasChanged();
 		}
 
 		protected void HandleCancelAddProduct(bool isShowForm)
@@ -100,6 +102,19 @@ namespace ThenDelivery.Client.Components.Product
 			else await HttpClientServer.CustomPutAsync($"api/product", ProductList.AsEnumerable());
 			await OnChangeTab.InvokeAsync(PageAction.Next);
 		}
+
+		protected async Task HandleEditProduct(ProductDto product)
+      {
+			SelectedProduct = product;
+			IsShowPopupAddProduct = true;
+			await InvokeAsync(StateHasChanged);
+		}
+
+		protected async Task HandleDeleteProduct(int productId)
+      {
+			ProductList.RemoveFirst(e => e.Id == productId);
+			await InvokeAsync(StateHasChanged);
+      }
 		#endregion
 
 		#region Methods
@@ -107,7 +122,17 @@ namespace ThenDelivery.Client.Components.Product
 		{
 			if (product != null)
 			{
-				ProductList.Add(product);
+				if(product.Id == 0)
+            {
+					if (ProductList.Count == 0) product.Id = 1;
+					else product.Id = ProductList.Max(e => e.Id) + 1;
+					ProductList.Add(product);
+            }
+            else
+            {
+					var productToUpdate = ProductList.SingleOrDefault(e => e.Id == product.Id);
+					productToUpdate = product;
+            }
 				StateHasChanged();
 			}
 		}

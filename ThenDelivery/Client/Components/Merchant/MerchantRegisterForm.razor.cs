@@ -51,7 +51,7 @@ namespace ThenDelivery.Client.Components.Merchant
 						await OnSubmitMerchant.InvokeAsync(returnId);
 					}
 				}
-            else
+            else if (EditContext.IsModified())
             {
 					var response = await HttpClientServer.CustomPutAsync($"api/merchant", MerchantModel);
 					await OnSubmitMerchant.InvokeAsync(MerchantModel.Id);

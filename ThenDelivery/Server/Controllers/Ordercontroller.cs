@@ -113,5 +113,21 @@ namespace ThenDelivery.Server.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+
+		[HttpGet("order-of-merchant")]
+		[Authorize(Roles = Const.Role.UserRole)]
+		public async Task<IActionResult> GetOrderedListBymerchantId(int merchantId)
+		{
+			try
+			{
+				IEnumerable<OrderDto> orderList =
+					await Mediator.Send(new GetOrderByMerchantId(merchantId));
+				return Ok(orderList);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
 	}
 }

@@ -1,7 +1,8 @@
 ﻿@inherits AddProductBase
 
 <DxPopup HeaderText="Tạo món" Visible="@IsShowPopupAddProduct">
-	<AddProductForm OnSaveProduct="HandleAddProduct"
+	<AddProductForm ProductModel="SelectedProduct"
+						 OnSaveProduct="HandleAddProduct"
 						 OnCancel="HandleCancelAddProduct"
 						 MenuList="MenuList"/>
 </DxPopup>
@@ -50,8 +51,14 @@ else
 						<td class="" style="width: 100px;">@product.UnitPrice.ToString("N0")</td>
 						<td class="table-container__action-td" style="width: 200px;">@product.MenuItem.Name</td>
 						<td class="table-container__action-td" style="width: 200px;"><span>@product.ToppingListString</span></td>
-						<td class="table-container__action-td" style="width: 30px;">Sửa</td>
-						<td class="table-container__action-td" style="width: 30px; color: red">Xoá</td>
+						<td class="table-container__action-td" style="width: 30px;">
+                     <a href="javascript:void(0)"
+								@onclick="async () => await HandleEditProduct(product)">Sửa</a>
+						</td>
+						<td class="table-container__action-td" style="width: 30px; color: red">
+                     <a href="javascript:void(0)"
+								@onclick="async () => await HandleDeleteProduct(product.Id)">Xoá</a>
+						</td>
 					</tr>
 				}
 			</tbody>
