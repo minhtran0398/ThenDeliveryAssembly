@@ -23,9 +23,9 @@ namespace ThenDelivery.Client.Pages
 		protected bool IsShowPopupTopping { get; set; }
 		protected bool IsShowPopupOrderConfirm { get; set; }
 		protected ProductDto SelectedProduct { get; set; }
-      public CustomResponse OrderResponse { get; set; }
+		public CustomResponse OrderResponse { get; set; }
 
-      protected override void OnInitialized()
+		protected override void OnInitialized()
 		{
 			base.OnInitialized();
 			Order = new OrderDto();
@@ -77,6 +77,33 @@ namespace ThenDelivery.Client.Pages
 			}
 		}
 
+		protected async Task HandleSearchProduct(ChangeEventArgs args)
+		{
+			string keyValue = args.Value.ToString();
+			if (string.IsNullOrWhiteSpace(keyValue))
+			{
+				ChangeProductListMenu(SelectedMenu);
+			}
+			else
+			{
+				ProductListMenu = ProductListMenu.Where(e => e.Name.ToLower().Contains(keyValue.ToLower())).ToList();
+			}
+			await InvokeAsync(StateHasChanged);
+		}
+
+		protected async Task HandleSearchProduct1(string keyValue)
+		{
+			if (string.IsNullOrWhiteSpace(keyValue))
+			{
+				ChangeProductListMenu(SelectedMenu);
+			}
+			else
+			{
+				ProductListMenu = ProductListMenu.Where(e => e.Name.ToLower().Contains(keyValue.ToLower())).ToList();
+			}
+			await InvokeAsync(StateHasChanged);
+		}
+
 		protected void HandleCancelOrder()
 		{
 			IsShowPopupTopping = false;
@@ -110,14 +137,14 @@ namespace ThenDelivery.Client.Pages
 		}
 
 		protected void HandleOnAfterConfirmOrder(CustomResponse response)
-      {
+		{
 			IsShowPopupOrderConfirm = false;
 			OrderResponse = response;
 			OrderResponse.IsShowPopup = true;
-			if(response.IsSuccess)
-         {
+			if (response.IsSuccess)
+			{
 				Order = new OrderDto();
-         }
+			}
 		}
 
 		protected void HandleConfirmOrder()

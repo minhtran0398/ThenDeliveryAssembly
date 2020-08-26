@@ -42,27 +42,25 @@ else
       <div class="container">
          <div class="detail-restaurant-img">
             <img src="@Merchant.CoverPicture"
-                 alt=" &amp; - Shop Online" class="">
+                class="">
          </div>
          <div class="detail-restaurant-info">
             <nav aria-label="breadcrumb">
                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="/">Home</a></li>
+                  <li class="breadcrumb-item"><a class="breadcrumb-link" rel="nofollow" href="/">Trang chủ</a></li>
                   <li class="breadcrumb-item">
                      <a class="breadcrumb-link" rel="nofollow"
                         href="/merchant/@(Merchant.Id)">
-                        @(Merchant.Name) - Shop Online
+                        @(Merchant.Name)
                      </a>
                   </li>
                </ol>
             </nav>
-            <div class="kind-restaurant"><span> Shop Online</span></div>
-            <h1 class="name-restaurant">@Merchant.Name - Shop Online</h1>
+            <h1 class="name-restaurant">@Merchant.Name</h1>
             <div class="address-restaurant">@Merchant.AddressString</div>
             <div class="status-restaurant">
                <div class="opentime-status"><span class="stt offline" title="Đã đóng"></span></div>
             </div>
-            <div class="cost-restaurant"><i class="fas fa-dollar-sign"></i>25,000 - 55,000</div>
          </div>
       </div>
    </div>
@@ -100,7 +98,10 @@ else
                            <i class="fas fa-search"></i>
                         </span>
                      </div>
-                     <input type="text" class="form-control" placeholder="Tên món cần tìm" aria-label="Search..." aria-describedby="basic-addon1">
+                     
+                     <input type="text" class="form-control"
+                           placeholder="Tên món cần tìm" aria-label="Search..." aria-describedby="basic-addon1"
+                           @onchange="async (e) => await HandleSearchProduct(e)">
                   </div>
                </div>
                <div>

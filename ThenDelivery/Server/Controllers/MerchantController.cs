@@ -71,7 +71,7 @@ namespace ThenDelivery.Server.Controllers
 		}
 
 		[HttpPut("close")]
-		[Authorize(Roles = Const.Role.MerchantRole)]
+		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> CloseMerchant([FromBody] MerchantDto merchantDto)
 		{
 			try

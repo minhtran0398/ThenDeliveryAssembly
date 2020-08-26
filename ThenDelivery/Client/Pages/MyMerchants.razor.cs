@@ -8,21 +8,31 @@ using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Client.Pages
 {
-   public class MyMerchantsBase : CustomComponentBase<MyMerchantsBase>
-   {
-      public List<MerchantDto> MyMerchantList { get; set; }
-      public CustomResponse ResponseModel { get; set; }
+	public class MyMerchantsBase : CustomComponentBase<MyMerchantsBase>
+	{
+		public List<MerchantDto> MyMerchantList { get; set; }
+		public CustomResponse ResponseModel { get; set; }
 
-      protected override async Task OnInitializedAsync()
-      {
-         await base.OnInitializedAsync();
-         MyMerchantList =
-            await HttpClientServer.CustomGetAsync<List<MerchantDto>>("api/Merchant/my");
-      }
+		protected override async Task OnInitializedAsync()
+		{
+			await base.OnInitializedAsync();
+			MyMerchantList =
+				await HttpClientServer.CustomGetAsync<List<MerchantDto>>("api/Merchant/my");
+		}
 
-      protected void HandleMoveToOrderPage(int merchantId)
-      {
-         NavigationManager.NavigateTo($"/order-of-merchant/{merchantId}");
-      }
-   }
+		protected void HandleMoveToOrderPage(int merchantId)
+		{
+			NavigationManager.NavigateTo($"/order-of-merchant/{merchantId}");
+		}
+
+		protected async Task HandleCloseMerchant(MerchantDto merchant)
+		{
+			ResponseModel = await HttpClientServer.CustomPutAsync("api/merchant/close", merchant);
+			if (ResponseModel.IsSuccess)
+			{
+				merchant.Status = MerchantStatus.Closed;
+			}
+			ResponseModel.IsShowPopup = true;
+		}
+	}
 }
