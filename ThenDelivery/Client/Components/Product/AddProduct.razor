@@ -32,12 +32,12 @@
 else
 {
 	<div class="menu-add-item__body">
-		<table class="table-container">
-			<thead class="table-container__head">
+		<table class="table-container table-bordered">
+			<thead class="table-container__head thead-dark">
 				<tr>
 					<th class="" style="width: 100px;">Tên món</th>
 					<th class="" style="width: 100px;">Giá</th>
-					<th class="table-container__action-td" style="width: 200px;">Nhóm món</th>
+					<th class="table-container__action-td" style="width: 200px;">Thực đơn</th>
 					<th class="table-container__action-td" style="width: 200px;">Set topping</th>
 					<th class="table-container__action-td" style="width: 30px;"></th>
 					<th class="table-container__action-td" style="width: 30px;"></th>
@@ -48,7 +48,7 @@ else
 				{
 					<tr class="table-container__row">
 						<td class="" style="width: 100px;">@product.Name</td>
-						<td class="" style="width: 100px;">@product.UnitPrice.ToString("N0")</td>
+						<td class="" style="width: 100px;">@product.UnitPrice.ToString("N0") đ</td>
 						<td class="table-container__action-td" style="width: 200px;">@product.MenuItem.Name</td>
 						<td class="table-container__action-td" style="width: 200px;"><span>@product.ToppingListString</span></td>
 						<td class="table-container__action-td" style="width: 30px;">

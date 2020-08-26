@@ -5,23 +5,23 @@
    <ValidationSummary />
    <div class="row">
       <div class="col-md-12 row-item">
-         <label>Image: </label><br/>
+         <label>Hình đại diện: </label><br/>
          <CustomImageEdit Base64String="@ProductModel.Image"
                           OnChangeImage="HandleImageChanged" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Name: </label>
+         <label>Tên món: </label>
          <DxTextBox Text="@ProductModel.Name"
                     TextChanged="HandleProductNameChanged"
                     TextExpression="() => ProductModel.Name" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Price: </label>
+         <label>Đơn giá: </label>
          <CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
                              ValueChanged="HandleUnitPriceChanged" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Menu: </label>
+         <label>Thực đơn: </label>
          <DxComboBox NullText="Select menu ..."
                      TextFieldName="DisplayText"
                      Data="MenuList"
@@ -49,7 +49,7 @@
          }
       </div>
       <div class="col-md-12 row-item">
-         <label>Description: </label>
+         <label>Mô tả: </label>
          <DxTextBox Text="@ProductModel.Description"
                     TextChanged="HandleDescriptionChanged"
                     TextExpression="() => ProductModel.Description" />

@@ -2,7 +2,7 @@
 
 @if (SelectedPopup == DisplayPopup.OrderConfirm)
 {
-   <DxPopup HeaderText="Confirm Order"
+   <DxPopup HeaderText="Xác nhận thông tin"
             ShowCloseButton="true"
             CloseButtonClick="async () => await HandleCloseConfirm()"
             CssClass="confirm-order-popup">
@@ -21,7 +21,7 @@
                </div>
                <div class="row mr-0 ml-0 mt-2">
                   <a class="text-decoration-none" href="javascript:void(0)"
-                     @onclick="HandleChangeShippingAddress">Change shipping info</a>
+                     @onclick="HandleChangeShippingAddress">Thay đổi thông tin đặt hàng</a>
                </div>
             </div>
             <div class="col-7">
@@ -32,18 +32,18 @@
                         <li class="list-group-item confirm-order-item">
                            <span class="badge badge-primary badge-pill">@orderItem.Quantity</span>
                            @orderItem.OrderProductToppingName
-                           <span class="float-right">@orderItem.OrderItemPrice.ToString("N0")</span>
+                           <span class="float-right">@orderItem.OrderItemPrice.ToString("N0") đ</span>
                         </li>
                      }
                   </ul>
                </div>
                <div class="row mt-3">
                   <div class="col">Total @GetTotalProduct() món</div>
-                  <div class="col-auto">@GetTotalPrice().ToString("N0")</div>
+                  <div class="col-auto">@GetTotalPrice().ToString("N0") đ</div>
                </div>
                <div class="row">
                   <div class="col">Total</div>
-                  <div class="col-auto">@GetFinalPrice().ToString("N0")</div>
+                  <div class="col-auto">@GetFinalPrice().ToString("N0") đ</div>
                </div>
             </div>
          </div>
@@ -52,7 +52,7 @@
       <FooterTemplate>
          <button class="btn btn-primary btn-submit-confirm-order" type="button"
                  @onclick="async () => await HandleSubmitConfirm()">
-            Submit Order ->
+            Xác nhận đặt hàng
          </button>
       </FooterTemplate>
    </DxPopup>

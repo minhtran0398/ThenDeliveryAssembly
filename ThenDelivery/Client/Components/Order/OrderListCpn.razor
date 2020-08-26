@@ -1,7 +1,7 @@
 ﻿@inherits OrderListCpnBase
 
-<table class="table">
-	<thead>
+<table class="table font-small table-bordered">
+	<thead class="thead-dark">
 		<tr>
 			<th scope="col">STT</th>
 			<th scope="col">Thời gian</th>
@@ -14,7 +14,7 @@
 		@foreach (var orderItem in OrderList.OrderBy(e => e.Status).ThenBy(e => e.OrderDateTime))
 		{
 			<tr>
-				<th scope="row">1</th>
+            <th scope="row">@(++Count)</th>
 				<td>
 					Thời gian đặt: @orderItem.OrderDateTime.ToString("HH:mm dd/MM/yyyy") <br/>
 					Thời gian giao hàng: @orderItem.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")
@@ -24,7 +24,7 @@
 					@(orderItem.OrderItemList[0].OrderProduct.Merchant.AddressString)
 				</td>
 				<td>
-					Thành tiền: @(orderItem.TotalAmount.ToString("N0")) <br/>
+					Thành tiền: @(orderItem.TotalAmount.ToString("N0"))đ <br/>
 					Tổng cộng @(orderItem.OrderItemList.Count) món
 				</td>
 				<td>@(orderItem.Status.GetStringValue())</td>
