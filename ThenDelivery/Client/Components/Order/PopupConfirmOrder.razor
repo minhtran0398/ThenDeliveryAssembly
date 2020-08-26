@@ -50,10 +50,12 @@
          <div id="paypal-button-container"></div>
       </Content>
       <FooterTemplate>
-         <button class="btn btn-primary btn-submit-confirm-order" type="button"
+         <DxButton CssClass="btn-submit-confirm-order"
+                   RenderStyle="ButtonRenderStyle.Primary"
+                   Enabled="(IsEnableSubmit())"
                  @onclick="async () => await HandleSubmitConfirm()">
             Xác nhận đặt hàng
-         </button>
+         </DxButton>
       </FooterTemplate>
    </DxPopup>
 }

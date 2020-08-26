@@ -11,6 +11,17 @@
 		public string FullName { get; set; }
 		public string PhoneNumber { get; set; }
 
+		public void SetData(ShippingAddressDto shippingAddress)
+		{
+			foreach (var item in this.GetType().GetProperties())
+			{
+				if (item.CanRead && item.CanWrite)
+				{
+					item.SetValue(this, shippingAddress.GetType().GetProperty(item.Name).GetValue(shippingAddress));
+				}
+			}
+		}
+
 		public string AddressString
 		{
 			get

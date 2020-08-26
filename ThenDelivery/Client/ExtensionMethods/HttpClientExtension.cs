@@ -17,16 +17,7 @@ namespace ThenDelivery.Client.ExtensionMethods
 			HttpResponseMessage response = await httpClient.GetAsync(baseUrl);
 			if (response.IsSuccessStatusCode)
 			{
-				//Todo
-				//Need try catch here
-				try
-				{
-					return await response.Content.ReadFromJsonAsync<T>();
-				}
-				catch (Exception ex)
-				{
-					throw new Exception(await response.Content.ReadAsStringAsync(), ex);
-				}
+				return await response.Content.ReadFromJsonAsync<T>();
 			}
 			return null;
 		}

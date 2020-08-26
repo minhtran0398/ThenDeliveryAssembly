@@ -8,8 +8,10 @@
 			Thời gian giao hàng <br/>
 			<div class="row">
 				<div class="col">
-					<DxDateEdit @bind-Date="@Order.DeliveryDateTime"
+					<DxDateEdit Date="@DeliveryDate"
                            DisplayFormat="dd/MM/yyyy"
+                           DateChanged="HandleDeliveryDateChanged"
+                           DateExpression="() => DeliveryDate"
 									SizeMode="SizeMode.Small" />
 				</div>
 				<div class="col">
@@ -49,7 +51,7 @@
                }
             }
          </div>
-         @if (Order.ShippingAddress != null && AddressMode != PopupAddressMode.Select)
+         @if (ShippingAddress != null && AddressMode != PopupAddressMode.Select)
          {
             <div class="shipping-info-create-address">
                <EditForm EditContext="FormContext" OnValidSubmit="async () => await HandleConfirm()">
@@ -58,54 +60,54 @@
                   <div class="row">
                      <div class="col-md-6">
                         <label>Họ tên:</label>
-                        <DxTextBox Text="@Order.ShippingAddress.FullName"
-                                   TextExpression="() => Order.ShippingAddress.FullName"
+                        <DxTextBox Text="@ShippingAddress.FullName"
+                                   TextExpression="() => ShippingAddress.FullName"
                                    TextChanged="async (newValue) => await HandleChangeFullName(newValue)" />
                      </div>
                      <div class="col-md-6">
                         <label>Số điện thoại:</label>
-                        <DxTextBox Text="@Order.ShippingAddress.PhoneNumber"
-                                   TextExpression="() => Order.ShippingAddress.PhoneNumber"
+                        <DxTextBox Text="@ShippingAddress.PhoneNumber"
+                                   TextExpression="() => ShippingAddress.PhoneNumber"
                                    TextChanged="async (newValue) => await HandleChangePhoneNumber(newValue)" />
                      </div>
                      <div class="col-md-6 row-item">
                         <label>Thành phố: </label>
-                        <DxComboBox NullText="Select city ..."
+                        <DxComboBox NullText="Chọn tỉnh, thành phố ..."
                                     AllowUserInput="true"
                                     FilteringMode="DataGridFilteringMode.Contains"
                                     TextFieldName="DisplayText"
                                     DataAsync="HandleLoadCitiesAsync"
-                                    SelectedItem="@Order.ShippingAddress.City"
+                                    SelectedItem="@ShippingAddress.City"
                                     SelectedItemChanged="HandleSelectedCityChanged"
-                                    SelectedItemExpression="() => Order.ShippingAddress.City" />
+                                    SelectedItemExpression="() => ShippingAddress.City" />
                      </div>
                      <div class="col-md-6 row-item">
                         <label>Quận huyện: </label>
-                        <DxComboBox NullText="Select district ..."
+                        <DxComboBox NullText="Chọn quận, huyện ..."
                                     AllowUserInput="true"
                                     FilteringMode="DataGridFilteringMode.Contains"
                                     TextFieldName="DisplayText"
                                     DataAsync="HandleLoadDistrictsAsync"
-                                    SelectedItem="@Order.ShippingAddress.District"
+                                    SelectedItem="@ShippingAddress.District"
                                     SelectedItemChanged="HandleSelectedDistrictChanged"
-                                    SelectedItemExpression="() => Order.ShippingAddress.District" />
+                                    SelectedItemExpression="() => ShippingAddress.District" />
                      </div>
                      <div class="col-md-6 row-item">
                         <label>Phường, thị xã: </label>
-                        <DxComboBox NullText="Select ward ..."
+                        <DxComboBox NullText="Chọn xã, phường, thị trấn ..."
                                     AllowUserInput="true"
                                     FilteringMode="DataGridFilteringMode.Contains"
                                     TextFieldName="DisplayText"
                                     DataAsync="HandleLoadWardsAsync"
-                                    SelectedItem="@Order.ShippingAddress.Ward"
+                                    SelectedItem="@ShippingAddress.Ward"
                                     SelectedItemChanged="HandleSelectedWardChanged"
-                                    SelectedItemExpression="() => Order.ShippingAddress.Ward" />
+                                    SelectedItemExpression="() => ShippingAddress.Ward" />
                      </div>
                      <div class="col-md-6 row-item">
                         <label>Địa chỉ nhà: </label>
-                        <DxTextBox Text="@Order.ShippingAddress.HouseNumber"
+                        <DxTextBox Text="@ShippingAddress.HouseNumber"
                                    TextChanged="HandleHouseNumberChanged"
-                                   TextExpression="() => Order.ShippingAddress.HouseNumber" />
+                                   TextExpression="() => ShippingAddress.HouseNumber" />
                      </div>
                   </div>
                </EditForm>
@@ -114,9 +116,12 @@
       </div>
 	</Content>
 	<FooterTemplate>
-		<button class="btn btn-dark w-100"
-					@onclick="async () => await HandleClose()">Quay lại</button>
-		<button class="btn btn-success w-100"
-					@onclick="async () => await HandleConfirm()">Hoàn thành</button>
+		<DxButton CssClass="w-100" RenderStyle="ButtonRenderStyle.Dark"
+                Text="Quay lại" SubmitFormOnClick="false"
+					@onclick="async () => await HandleClose()"></DxButton>
+		<DxButton CssClass="w-100" RenderStyle="ButtonRenderStyle.Success"
+                Text="Hoàn thành"
+                Enabled="@(IsEnableSubmit())"
+					@onclick="async () => await HandleConfirm()"></DxButton>
 	</FooterTemplate>
 </DxPopup>

@@ -22,7 +22,7 @@ namespace ThenDelivery.Server.Controllers
 	{
 		private readonly ICurrentUserService _currentUserService;
 		private readonly IImageService _imageService;
-		
+
 
 		public MerchantController(ICurrentUserService currentUserService,
 			IImageService imageService)
@@ -32,7 +32,7 @@ namespace ThenDelivery.Server.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Const.Role.UserRole)]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
 		public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
 		{
 			string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
@@ -51,29 +51,29 @@ namespace ThenDelivery.Server.Controllers
 		}
 
 		[HttpPut]
-		[Authorize(Roles = Const.Role.UserRole)]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
 		public async Task<IActionResult> EditMerchant([FromBody] MerchantDto merchantDto)
-      {
-         try
-         {
-            string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
-            string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
-            merchantDto.Avatar = pathAvatar;
-            merchantDto.CoverPicture = pathCoverPicture;
-            merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
-            await Mediator.Send(new UpdateMerchantCommand(merchantDto));
+		{
+			try
+			{
+				string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
+				string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
+				merchantDto.Avatar = pathAvatar;
+				merchantDto.CoverPicture = pathCoverPicture;
+				merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
+				await Mediator.Send(new UpdateMerchantCommand(merchantDto));
 				return Ok(new CustomResponse(200, "Update success"));
-         }
-         catch (Exception ex)
-         {
+			}
+			catch (Exception ex)
+			{
 				return BadRequest(new CustomResponse(400, ex.Message));
-         }
+			}
 		}
 
 		[HttpPut("close")]
 		[Authorize(Roles = Const.Role.MerchantRole)]
 		public async Task<IActionResult> CloseMerchant([FromBody] MerchantDto merchantDto)
-      {
+		{
 			try
 			{
 				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Closed));
@@ -118,45 +118,45 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet("my")]
 		[Authorize(Roles = Const.Role.MerchantRole)]
 		public async Task<IActionResult> GetMerchantCurrentUserId()
-      {
-         try
-         {
+		{
+			try
+			{
 				string userId = _currentUserService.GetLoggedInUserId();
 				IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetMerchantsByUserId(userId));
 				return Ok(merchantList.ToList());
 			}
-         catch (Exception ex)
-         {
+			catch (Exception ex)
+			{
 				return BadRequest(new CustomResponse(400, ex.Message));
 			}
-      }
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetMerchant(int merchantId = -1)
 		{
 			if (merchantId == -1)
 			{
-            try
-            {
-               IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
+				try
+				{
+					IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
 					return Ok(merchantList.ToList());
 				}
-            catch (Exception ex)
-            {
+				catch (Exception ex)
+				{
 					return BadRequest(new CustomResponse(400, ex.Message));
-            }
+				}
 			}
 			else
 			{
-            try
-            {
-               MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
-               return Ok(merchant);
-            }
-            catch (Exception ex)
-            {
+				try
+				{
+					MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
+					return Ok(merchant);
+				}
+				catch (Exception ex)
+				{
 					return BadRequest(new CustomResponse(400, ex.Message));
-            }
+				}
 			}
 		}
 

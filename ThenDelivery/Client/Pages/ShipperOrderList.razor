@@ -14,25 +14,26 @@ else
    <ul class="list-group">
       @foreach (var order in OrderList.OrderBy(e => e.Status).ThenByDescending(e => e.OrderDateTime))
       {
-         <li class="list-group-item d-flex justify-content-between align-items-center">
-            @(order.ShippingAddress.FullName) - @(order.ShippingAddress.PhoneNumber) <br />
-            @(order.User.UserName) - @(order.User.PhoneNumber) <br />
-            @(order.ShippingAddress.AddressString)
-            @if (order.Status == OrderStatus.ShipperAccept || order.Status == OrderStatus.Delivery)
-            {
-               <button class="btn btn-sm btn-pill
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+         Quán: @(order.OrderItemList[0].OrderProduct.Merchant.Name) - @(order.OrderItemList[0].OrderProduct.Merchant.PhoneNumber) <br />
+         Địa chỉ: @(order.OrderItemList[0].OrderProduct.Merchant.AddressString) <br />
+         Người nhận: @(order.ShippingAddress.FullName) - @(order.ShippingAddress.PhoneNumber) <br />
+         Địa chỉ: @(order.ShippingAddress.AddressString)
+         @if (order.Status == OrderStatus.ShipperAccept || order.Status == OrderStatus.Delivery)
+         {
+            <button class="btn btn-sm btn-pill
 										@(order.Status == OrderStatus.ShipperAccept ? "btn-primary" : "btn-danger")"
-                       @onclick="async () => await HandleChangeOrderStatus(order)">
-                  @order.Status.GetStringNextAction()
-               </button>
-            }
-            else if (order.Status == OrderStatus.DeliverySuccess)
-            {
-               <span class="badge badge-success badge-pill">
-                  @order.Status.GetStringValue()
-               </span>
-            }
-         </li>
+                    @onclick="async () => await HandleChangeOrderStatus(order)">
+               @order.Status.GetStringNextAction()
+            </button>
+         }
+         else if (order.Status == OrderStatus.DeliverySuccess)
+         {
+            <span class="badge badge-success badge-pill">
+               @order.Status.GetStringValue()
+            </span>
+         }
+      </li>
       }
    </ul>
 }

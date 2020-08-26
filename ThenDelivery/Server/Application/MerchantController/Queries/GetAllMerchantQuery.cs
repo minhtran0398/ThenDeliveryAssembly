@@ -42,6 +42,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 				var result = new List<MerchantDto>();
 				try
 				{
+					
 					if(request._status == MerchantStatus.None)
                {
 						var query = (from merchant in _dbContext.Merchants

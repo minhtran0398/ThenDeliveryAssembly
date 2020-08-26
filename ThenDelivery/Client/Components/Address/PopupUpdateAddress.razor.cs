@@ -23,29 +23,40 @@ namespace ThenDelivery.Client.Components.Address
 		[Parameter] public List<ShippingAddressDto> ShippingAddressList { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
 		[Parameter] public EventCallback OnConfirm { get; set; }
+      public ShippingAddressDto ShippingAddress { get; set; }
       public EditContext FormContext { get; set; }
+      public DateTime DeliveryDate { get; set; }
 
       public PopupAddressMode AddressMode { get; set; }
-      public CustomTime DeliveryTime { get; set; }
+		public CustomTime DeliveryTime { get; set; }
 
       protected override void OnInitialized()
 		{
 			base.OnInitialized();
 			DeliveryTime = new CustomTime(Order.DeliveryDateTime);
+			DeliveryDate = Order.DeliveryDateTime.Date;
 			AddressMode = PopupAddressMode.Select;
-			FormContext = new EditContext(Order.ShippingAddress);
+			if (Order.ShippingAddress == null)
+			{
+				ShippingAddress = new ShippingAddressDto();
+			}
+         else
+         {
+				ShippingAddress = Order.ShippingAddress;
+			}
+			FormContext = new EditContext(ShippingAddress);
 		}
 
 		protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
 		{
 			AddressMode = PopupAddressMode.SelectEdit;
 			// set value => not set directly to another object
-			Order.ShippingAddress = address;
+			ShippingAddress.SetData(address);
 			await InvokeAsync(StateHasChanged);
 		}
 
 		protected void HandleDeliveryTimeChanged(CustomTime newValue)
-      {
+		{
 			DeliveryTime.Hour = newValue.Hour;
 			DeliveryTime.Minute = newValue.Minute;
 		}
@@ -63,7 +74,7 @@ namespace ThenDelivery.Client.Components.Address
 
 		protected async Task HandleChangeShippingAddress(ShippingAddressDto shippingAddress)
 		{
-			Order.ShippingAddress = shippingAddress;
+			ShippingAddress.SetData(shippingAddress);
 			await InvokeAsync(StateHasChanged);
 		}
 
@@ -74,11 +85,11 @@ namespace ThenDelivery.Client.Components.Address
 				case PopupAddressMode.Select:
 				case PopupAddressMode.SelectEdit:
 					// not new model of form context => set default value
-					Order.ShippingAddress = new ShippingAddressDto();
+					ShippingAddress.SetData(new ShippingAddressDto());
 					AddressMode = PopupAddressMode.CreateNew;
 					break;
 				case PopupAddressMode.CreateNew:
-					Order.ShippingAddress = null;
+					ShippingAddress = null;
 					AddressMode = PopupAddressMode.SelectEdit;
 					break;
 				default:
@@ -89,13 +100,13 @@ namespace ThenDelivery.Client.Components.Address
 
 		protected async Task HandleChangeFullName(string newValue)
 		{
-			Order.ShippingAddress.FullName = newValue;
+			ShippingAddress.FullName = newValue;
 			await InvokeAsync(StateHasChanged);
 		}
 
 		protected async Task HandleChangePhoneNumber(string newValue)
 		{
-			Order.ShippingAddress.PhoneNumber = newValue;
+			ShippingAddress.PhoneNumber = newValue;
 			await InvokeAsync(StateHasChanged);
 		}
 
@@ -104,34 +115,52 @@ namespace ThenDelivery.Client.Components.Address
 			await OnClose.InvokeAsync(null);
 		}
 
+		protected bool IsEnableSubmit()
+      {
+			TimeSpan time = DeliveryTime.ToTimeSpan();
+			var datetime = DeliveryDate.Date + time;
+			if (datetime < DateTime.Now)
+         {
+				return false;
+         }
+			return FormContext.Validate();
+      }
+
+		protected void HandleDeliveryDateChanged(DateTime dateTime)
+      {
+			DeliveryDate = dateTime.Date;
+			StateHasChanged();
+      }
+
 		protected async Task HandleConfirm()
 		{
-			if(FormContext.Validate())
-         {
+			if (FormContext.Validate())
+			{
 				TimeSpan time = DeliveryTime.ToTimeSpan();
-				Order.DeliveryDateTime = Order.DeliveryDateTime.Date + time;
+				Order.DeliveryDateTime = DeliveryDate.Date + time;
+				Order.ShippingAddress = ShippingAddress;
 				await OnConfirm.InvokeAsync(null);
 			}
 		}
 
 		protected void HandleSelectedCityChanged(CityDto newValue)
 		{
-			Order.ShippingAddress.City = newValue;
+			ShippingAddress.City = newValue;
 		}
 
 		protected void HandleSelectedDistrictChanged(DistrictDto newValue)
 		{
-			Order.ShippingAddress.District = newValue;
+			ShippingAddress.District = newValue;
 		}
 
 		protected void HandleSelectedWardChanged(WardDto newValue)
 		{
-			Order.ShippingAddress.Ward = newValue;
+			ShippingAddress.Ward = newValue;
 		}
 
 		protected void HandleHouseNumberChanged(string newValue)
 		{
-			Order.ShippingAddress.HouseNumber = newValue;
+			ShippingAddress.HouseNumber = newValue;
 		}
 
 		#region Methods

@@ -87,7 +87,6 @@ namespace ThenDelivery.Client.Components.Order
 
 		protected async Task HandleSubmitConfirm()
 		{
-			//await JSRuntime.InvokeVoidAsync("renderPaymentButton", 10);
 			if (Order.ShippingAddress != null)
 			{
 				ResponseModel =
@@ -95,6 +94,15 @@ namespace ThenDelivery.Client.Components.Order
 				await OnAfterConfirm.InvokeAsync(ResponseModel);
 			}
 		}
+
+		protected bool IsEnableSubmit()
+      {
+			if(Order.ShippingAddress == null)
+         {
+				return false;
+         }
+			return true;
+      }
 
 		[JSInvokable]
 		public static void SendOrder()

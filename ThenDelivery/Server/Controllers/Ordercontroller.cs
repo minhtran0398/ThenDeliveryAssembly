@@ -48,7 +48,7 @@ namespace ThenDelivery.Server.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Const.Role.UserRole)]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
 		public async Task<IActionResult> AddOrder(OrderDto orderDto)
 		{
 			try
@@ -98,7 +98,7 @@ namespace ThenDelivery.Server.Controllers
 		/// <param name="orderStatus">Enum OrderStatus value [default is OrderSuccess]</param>
 		/// <returns>IEnumerable of OrderDto</returns>
 		[HttpGet("user-order-history/{orderStatus}")]
-		[Authorize(Roles = Const.Role.UserRole)]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
 		public async Task<IActionResult> GetOrderedListByUserId(byte orderStatus = (byte)OrderStatus.OrderSuccess)
 		{
 			try
@@ -115,7 +115,7 @@ namespace ThenDelivery.Server.Controllers
 		}
 
 		[HttpGet("order-of-merchant")]
-		[Authorize(Roles = Const.Role.UserRole)]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
 		public async Task<IActionResult> GetOrderedListBymerchantId(int merchantId)
 		{
 			try

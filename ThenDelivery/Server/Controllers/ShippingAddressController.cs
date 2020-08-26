@@ -10,7 +10,7 @@ using ThenDelivery.Shared.Dtos;
 
 namespace ThenDelivery.Server.Controllers
 {
-	[Authorize(Roles = Const.Role.UserRole)]
+	[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
 	public class ShippingAddressController : CustomControllerBase<ShippingAddressDto>
 	{
 		private readonly ICurrentUserService _currentUserService;
