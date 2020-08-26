@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Shared.Dtos;
 
@@ -29,6 +30,7 @@ namespace ThenDelivery.Client.Components.Product
 		{
 			base.OnInitialized();
 			if(ProductModel is null) ProductModel = new ProductDto();
+			ProductModel.MenuItem = MenuList.FirstOrDefault();
 			FormContext = new EditContext(ProductModel);
 		}
 		#endregion

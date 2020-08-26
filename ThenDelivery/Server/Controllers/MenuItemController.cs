@@ -17,7 +17,7 @@ namespace ThenDelivery.Server.Controllers
 	public class MenuItemController : CustomControllerBase<MenuItemController>
 	{
 		[HttpPost]
-		[Authorize(Roles = Const.Role.MerchantRole)]
+		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> AddRangeMenuItem(IEnumerable<MenuItemDto> menuList)
 		{
 			try
@@ -36,7 +36,7 @@ namespace ThenDelivery.Server.Controllers
 		}
 
 		[HttpPut]
-		[Authorize(Roles = Const.Role.MerchantRole)]
+		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> UpdateRangeMenuItem(IEnumerable<MenuItemDto> menuList)
 		{
 			try

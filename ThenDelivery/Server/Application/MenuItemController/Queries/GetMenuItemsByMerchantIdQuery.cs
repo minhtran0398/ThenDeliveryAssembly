@@ -46,7 +46,7 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 										  Id = menu.Id,
 										  Name = menu.Name,
 										  Description = menu.Description,
-										  MerchantId = menu.MerchantId
+										  MerchantId = menu.MerchantId,
 									  }).ToListAsync();
 				}
 				catch (Exception ex)
