@@ -31,7 +31,7 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 		public class InputModel
 		{
 			[Phone]
-			[Display(Name = "Phone number")]
+			[Display(Name = "Số điện thoại")]
 			public string PhoneNumber { get; set; }
 		}
 
@@ -86,7 +86,7 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 			}
 
 			await _signInManager.RefreshSignInAsync(user);
-			StatusMessage = "Your profile has been updated";
+			StatusMessage = "Thông tin tài khoản của bạn đạ được cập nhật";
 			return RedirectToPage();
 		}
 	}

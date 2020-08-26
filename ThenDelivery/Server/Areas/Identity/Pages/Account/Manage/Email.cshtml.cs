@@ -40,7 +40,7 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 		{
 			[Required]
 			[EmailAddress]
-			[Display(Name = "New email")]
+			[Display(Name = "Email mới")]
 			public string NewEmail { get; set; }
 		}
 
@@ -95,10 +95,10 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 					 protocol: Request.Scheme);
 				await _emailSender.SendEmailAsync(
 					 Input.NewEmail,
-					 "Confirm your email",
-					 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+					 "Xác nhận email của bạn",
+					 $"Vui lòng xác nhận tài khoản của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
 
-				StatusMessage = "Confirmation link to change email sent. Please check your email.";
+				StatusMessage = "Đường link xác nhận đã được gửi. Vui lòng kiểm tra email của bạn.";
 				return RedirectToPage();
 			}
 
@@ -131,10 +131,10 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 				 protocol: Request.Scheme);
 			await _emailSender.SendEmailAsync(
 				 email,
-				 "Confirm your email",
-				 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+				 "Xác nhận email của bạn",
+				 $"Vui lòng xác nhận tài khoản của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-			StatusMessage = "Verification email sent. Please check your email.";
+			StatusMessage = "Đường link xác nhận đã được gửi. Vui lòng kiểm tra email của bạn.";
 			return RedirectToPage();
 		}
 	}

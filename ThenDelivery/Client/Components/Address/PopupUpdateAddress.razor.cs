@@ -23,8 +23,9 @@ namespace ThenDelivery.Client.Components.Address
 		[Parameter] public List<ShippingAddressDto> ShippingAddressList { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
 		[Parameter] public EventCallback OnConfirm { get; set; }
+      public EditContext FormContext { get; set; }
 
-		public PopupAddressMode AddressMode { get; set; }
+      public PopupAddressMode AddressMode { get; set; }
       public CustomTime DeliveryTime { get; set; }
 
       protected override void OnInitialized()
@@ -32,6 +33,7 @@ namespace ThenDelivery.Client.Components.Address
 			base.OnInitialized();
 			DeliveryTime = new CustomTime(Order.DeliveryDateTime);
 			AddressMode = PopupAddressMode.Select;
+			FormContext = new EditContext(Order.ShippingAddress);
 		}
 
 		protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
@@ -52,9 +54,9 @@ namespace ThenDelivery.Client.Components.Address
 		{
 			return AddressMode switch
 			{
-				PopupAddressMode.Select => "Create new",
-				PopupAddressMode.SelectEdit => "Create new",
-				PopupAddressMode.CreateNew => "Choose your address",
+				PopupAddressMode.Select => "Tạo mới",
+				PopupAddressMode.SelectEdit => "Tạo mới",
+				PopupAddressMode.CreateNew => "Chọn địa chỉ",
 				_ => "Unspecified mode",
 			};
 		}
@@ -76,6 +78,7 @@ namespace ThenDelivery.Client.Components.Address
 					AddressMode = PopupAddressMode.CreateNew;
 					break;
 				case PopupAddressMode.CreateNew:
+					Order.ShippingAddress = null;
 					AddressMode = PopupAddressMode.SelectEdit;
 					break;
 				default:
@@ -103,9 +106,12 @@ namespace ThenDelivery.Client.Components.Address
 
 		protected async Task HandleConfirm()
 		{
-			TimeSpan time = DeliveryTime.ToTimeSpan();
-			Order.DeliveryDateTime = Order.DeliveryDateTime.Date + time;
-			await OnConfirm.InvokeAsync(null);
+			if(FormContext.Validate())
+         {
+				TimeSpan time = DeliveryTime.ToTimeSpan();
+				Order.DeliveryDateTime = Order.DeliveryDateTime.Date + time;
+				await OnConfirm.InvokeAsync(null);
+			}
 		}
 
 		protected void HandleSelectedCityChanged(CityDto newValue)

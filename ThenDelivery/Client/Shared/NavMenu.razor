@@ -1,7 +1,7 @@
 ﻿@inherits NavMenuBase
 
 <div class="top-row pl-4 navbar navbar-dark">
-	<a class="navbar-brand" href="">ThenDelivery</a>
+	<a class="navbar-brand" href="">Then Delivery</a>
 	<button class="navbar-toggler" @onclick="ToggleNavMenu">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -17,41 +17,41 @@
       <AuthorizeView Roles="@Const.Role.AdministrationRole">
          <li class="nav-item px-3">
             <NavLink class="nav-link" href="users">
-               <span class="oi oi-plus" aria-hidden="true"></span> Danh sách người dùng
+               <span class="oi fas fa-users" aria-hidden="true"></span> Danh sách người dùng
             </NavLink>
          </li>
          <li class="nav-item px-3">
             <NavLink class="nav-link" href="merchants">
-               <span class="oi oi-plus" aria-hidden="true"></span> Danh sách quán
+               <span class="oi fas fa-store" aria-hidden="true"></span> Danh sách quán
             </NavLink>
          </li>
       </AuthorizeView>
       <AuthorizeView Roles=@($"{Const.Role.MerchantRole}, {Const.Role.UserRole}")>
          <li class="nav-item px-3">
             <NavLink class="nav-link" href="merchant-register">
-               <span class="oi oi-plus" aria-hidden="true"></span> Đăng ký quán
+               <span class="oi fas fa-store" aria-hidden="true"></span> Đăng ký quán
             </NavLink>
          </li>
          <li class="nav-item px-3">
             <NavLink class="nav-link" href="order-history">
-               <span class="oi oi-plus" aria-hidden="true"></span> Lịch sử đơn hàng
+               <span class="oi fas fa-shopping-basket" aria-hidden="true"></span> Lịch sử đơn hàng
             </NavLink>
          </li>
          <li class="nav-item px-3">
             <NavLink class="nav-link" href="my-merchant">
-               <span class="oi oi-plus" aria-hidden="true"></span> Quán của tôi
+               <span class="oi fas fa-store-alt" aria-hidden="true"></span> Quán của tôi
             </NavLink>
          </li>
       </AuthorizeView>
 		<AuthorizeView Roles="@Const.Role.ShipperRole">
 			<li class="nav-item px-3">
 				<NavLink class="nav-link" href="order-list">
-					<span class="oi oi-plus" aria-hidden="true"></span> Danh sách đơn hàng
+					<span class="oi fas fa-shopping-cart" aria-hidden="true"></span> Danh sách đơn hàng
 				</NavLink>
 			</li>
 			<li class="nav-item px-3">
 				<NavLink class="nav-link" href="my-order-list">
-					<span class="oi oi-plus" aria-hidden="true"></span> Đơn hàng của bạn
+					<span class="oi fas fa-shopping-cart" aria-hidden="true"></span> Đơn hàng của bạn
 				</NavLink>
 			</li>
 		</AuthorizeView>

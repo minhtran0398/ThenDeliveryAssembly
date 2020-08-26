@@ -1,11 +1,11 @@
 ﻿@inherits PopupUpdateAddressBase
 
-<DxPopup HeaderText="Edit Shipping Info"
+<DxPopup HeaderText="Thay đổi thông tin giao hàng"
 			ShowCloseButton="true"
 			CssClass="shipping-info-edit-popup">
 	<Content>
 		<div class="shipping-info-delivery-time">
-			Delivery time <br/>
+			Thời gian giao hàng <br/>
 			<div class="row">
 				<div class="col">
 					<DxDateEdit @bind-Date="@Order.DeliveryDateTime"
@@ -20,7 +20,7 @@
 		</div>
       <div class="shipping-info-address">
          <div class="shipping-info-title">
-            Choose your shipping info
+            Chọn địa chỉ giao hàng
             <div class="float-right">
                <a href="javascript:void(0)" class="text-decoration-none"
                      @onclick="async () => await HandleChangeMode()">@GetStringMode()</a>
@@ -43,7 +43,7 @@
                         <span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>
                         <span>@addressItem.AddressString</span>
                         <a class="float-right text-decoration-none" href="javascript:void(0)"
-                           @onclick="async () => await HanldeEditShippingAddress(addressItem)">Edit</a>
+                           @onclick="async () => await HanldeEditShippingAddress(addressItem)">Sửa</a>
                      </div>
                   </div>
                }
@@ -52,22 +52,24 @@
          @if (Order.ShippingAddress != null && AddressMode != PopupAddressMode.Select)
          {
             <div class="shipping-info-create-address">
-               <EditForm Model="Order">
+               <EditForm EditContext="FormContext" OnValidSubmit="async () => await HandleConfirm()">
+                  <FluentValidator Validator="new ShippingAddressValidator()" />
+                  <ValidationSummary />
                   <div class="row">
                      <div class="col-md-6">
-                        <label>Full name:</label>
+                        <label>Họ tên:</label>
                         <DxTextBox Text="@Order.ShippingAddress.FullName"
                                    TextExpression="() => Order.ShippingAddress.FullName"
                                    TextChanged="async (newValue) => await HandleChangeFullName(newValue)" />
                      </div>
                      <div class="col-md-6">
-                        <label>Phone number:</label>
+                        <label>Số điện thoại:</label>
                         <DxTextBox Text="@Order.ShippingAddress.PhoneNumber"
                                    TextExpression="() => Order.ShippingAddress.PhoneNumber"
                                    TextChanged="async (newValue) => await HandleChangePhoneNumber(newValue)" />
                      </div>
                      <div class="col-md-6 row-item">
-                        <label>City: </label>
+                        <label>Thành phố: </label>
                         <DxComboBox NullText="Select city ..."
                                     AllowUserInput="true"
                                     FilteringMode="DataGridFilteringMode.Contains"
@@ -78,7 +80,7 @@
                                     SelectedItemExpression="() => Order.ShippingAddress.City" />
                      </div>
                      <div class="col-md-6 row-item">
-                        <label>District: </label>
+                        <label>Quận huyện: </label>
                         <DxComboBox NullText="Select district ..."
                                     AllowUserInput="true"
                                     FilteringMode="DataGridFilteringMode.Contains"
@@ -89,7 +91,7 @@
                                     SelectedItemExpression="() => Order.ShippingAddress.District" />
                      </div>
                      <div class="col-md-6 row-item">
-                        <label>Ward: </label>
+                        <label>Phường, thị xã: </label>
                         <DxComboBox NullText="Select ward ..."
                                     AllowUserInput="true"
                                     FilteringMode="DataGridFilteringMode.Contains"
@@ -100,7 +102,7 @@
                                     SelectedItemExpression="() => Order.ShippingAddress.Ward" />
                      </div>
                      <div class="col-md-6 row-item">
-                        <label>Store number: </label>
+                        <label>Địa chỉ nhà: </label>
                         <DxTextBox Text="@Order.ShippingAddress.HouseNumber"
                                    TextChanged="HandleHouseNumberChanged"
                                    TextExpression="() => Order.ShippingAddress.HouseNumber" />
@@ -113,8 +115,8 @@
 	</Content>
 	<FooterTemplate>
 		<button class="btn btn-dark w-100"
-					@onclick="async () => await HandleClose()">Back</button>
+					@onclick="async () => await HandleClose()">Quay lại</button>
 		<button class="btn btn-success w-100"
-					@onclick="async () => await HandleConfirm()">Complete</button>
+					@onclick="async () => await HandleConfirm()">Hoàn thành</button>
 	</FooterTemplate>
 </DxPopup>

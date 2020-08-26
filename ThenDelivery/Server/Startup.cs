@@ -1,10 +1,12 @@
 using IdentityServer4.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using ThenDelivery.Server.Application.Common.Interfaces;
 using ThenDelivery.Server.Infrastructure;
 using ThenDelivery.Server.Services;
@@ -41,6 +43,23 @@ namespace ThenDelivery.Server
 			services.AddRazorPages();
 			services.AddTransient<IImageService, ImageService>();
 			#endregion
+
+			services.AddAuthentication().AddFacebook(facebookOptions =>
+			{
+				facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+				facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+
+				facebookOptions.Events = new OAuthEvents()
+				{
+					OnRemoteFailure = loginFailureHandler =>
+					{
+						var authProperties = facebookOptions.StateDataFormat.Unprotect(loginFailureHandler.Request.Query["state"]);
+						loginFailureHandler.Response.Redirect("/Identity/Account/Login");
+						loginFailureHandler.HandleResponse();
+						return Task.FromResult(0);
+					}
+				};
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

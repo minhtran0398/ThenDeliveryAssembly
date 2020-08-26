@@ -51,17 +51,17 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account
 		{
 			[Required]
 			[EmailAddress]
-			[Display(Name = "Email")]
+			[Display(Name = "Đại chỉ email")]
 			public string Email { get; set; }
 
 			[Required]
 			[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
 			[DataType(DataType.Password)]
-			[Display(Name = "Password")]
+			[Display(Name = "Mật khẩu")]
 			public string Password { get; set; }
 
 			[DataType(DataType.Password)]
-			[Display(Name = "Confirm password")]
+			[Display(Name = "Xác nhận mật khẩu")]
 			[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
 			public string ConfirmPassword { get; set; }
 		}
