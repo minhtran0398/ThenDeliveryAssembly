@@ -11,7 +11,7 @@ using ThenDelivery.Shared.Entities;
 
 namespace ThenDelivery.Server.Application.ProductController.Commands
 {
-   public class UpdateRangeProductCommand : IRequest<Unit>
+	public class UpdateRangeProductCommand : IRequest<Unit>
 	{
 		private readonly IEnumerable<ProductDto> _productList;
 
@@ -46,7 +46,8 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 
 					await _dbContext.SaveChangesAsync();
 					await trans.CommitAsync();
-				}catch (Exception ex)
+				}
+				catch (Exception ex)
 				{
 					await trans.RollbackAsync();
 					_logger.LogError(ex, ex.Message);
@@ -68,7 +69,6 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 					Name = productDto.Name,
 					OrderCount = productDto.OrderCount,
 					UnitPrice = productDto.UnitPrice,
-					MerchantId = productDto.Merchant.Id
 				};
 			}
 

@@ -1,6 +1,8 @@
-﻿namespace ThenDelivery.Shared.Entities
+﻿using ThenDelivery.Shared.Common;
+
+namespace ThenDelivery.Shared.Entities
 {
-	public class Topping
+	public class Topping : AuditableEntity
 	{
 		public int Id { get; set; }
 		public int ProductId { get; set; }

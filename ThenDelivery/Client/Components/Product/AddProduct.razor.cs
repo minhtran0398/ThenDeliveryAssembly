@@ -24,18 +24,18 @@ namespace ThenDelivery.Client.Components.Product
 		#region Properties
 		public List<MenuItemDto> MenuList { get; set; }
 		public ObservableCollection<ProductDto> ProductList { get; set; }
-      public ProductDto SelectedProduct { get; set; }
-      public bool IsShowPopupAddProduct { get; set; }
+		public ProductDto SelectedProduct { get; set; }
+		public bool IsShowPopupAddProduct { get; set; }
 		public bool IsEnableSaveButton { get; set; }
-      public bool IsInsertMode { get; set; }
-      #endregion
+		public bool IsInsertMode { get; set; }
+		#endregion
 
-      #region Variables
+		#region Variables
 
-      #endregion
+		#endregion
 
-      #region Life Cycle
-      protected override async Task OnInitializedAsync()
+		#region Life Cycle
+		protected override async Task OnInitializedAsync()
 		{
 			MenuList = await HttpClientServer
 				.CustomGetAsync<List<MenuItemDto>>($"api/menuitem?merchantId={TargetMerchantId}");
@@ -77,7 +77,6 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected void HandleAddProduct(ProductDto product)
 		{
-			product.Merchant = new MerchantDto() { Id = TargetMerchantId };
 			AddProduct(product);
 			IsShowPopupAddProduct = false;
 			StateHasChanged();
@@ -104,17 +103,17 @@ namespace ThenDelivery.Client.Components.Product
 		}
 
 		protected async Task HandleEditProduct(ProductDto product)
-      {
+		{
 			SelectedProduct = product;
 			IsShowPopupAddProduct = true;
 			await InvokeAsync(StateHasChanged);
 		}
 
 		protected async Task HandleDeleteProduct(int productId)
-      {
+		{
 			ProductList.RemoveFirst(e => e.Id == productId);
 			await InvokeAsync(StateHasChanged);
-      }
+		}
 		#endregion
 
 		#region Methods
@@ -122,17 +121,17 @@ namespace ThenDelivery.Client.Components.Product
 		{
 			if (product != null)
 			{
-				if(product.Id == 0)
-            {
+				if (product.Id == 0)
+				{
 					if (ProductList.Count == 0) product.Id = 1;
 					else product.Id = ProductList.Max(e => e.Id) + 1;
 					ProductList.Add(product);
-            }
-            else
-            {
+				}
+				else
+				{
 					var productToUpdate = ProductList.SingleOrDefault(e => e.Id == product.Id);
 					productToUpdate = product;
-            }
+				}
 				StateHasChanged();
 			}
 		}

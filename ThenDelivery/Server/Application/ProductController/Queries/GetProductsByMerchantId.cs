@@ -35,42 +35,37 @@ namespace ThenDelivery.Server.Application.ProductController.Queries
 			{
 				try
 				{
-					return await _dbContext.Products
-						.Where(p => p.MerchantId == request._merchantId)
-						.Select(p => new ProductDto()
-						{
-							Id = p.Id,
-							Description = p.Description,
-							FavoriteCount = p.FavoriteCount,
-							Image = p.Image,
-							IsAvailable = p.IsAvailable,
-							Name = p.Name,
-							OrderCount = p.OrderCount,
-							UnitPrice = p.UnitPrice,
-							MenuItem = _dbContext.MenuItems
-											.Where(m => m.Id == p.MenuItemId)
-											.Select(m => new MenuItemDto()
-											{
-												Id = m.Id,
-												Description = m.Description,
-												MerchantId = m.MerchantId,
-												Name = m.Name
-											}).Single(),
-							Merchant = new MerchantDto()
-							{
-								Id = request._merchantId
-							},
-							ToppingList = _dbContext.Toppings
-											.Where(t => t.ProductId == p.Id)
-											.Select(t => new ToppingDto()
-											{
-												Id = t.Id,
-												Name = t.Name,
-												ProductId = t.ProductId,
-												UnitPrice = t.UnitPrice,
-											}).ToList()
-						})
-						.ToListAsync();
+					return await (from p in _dbContext.Products
+									  join menuItem in _dbContext.MenuItems
+									  on p.MenuItemId equals menuItem.Id
+									  where menuItem.MerchantId == request._merchantId
+									  select new ProductDto()
+									  {
+										  Id = p.Id,
+										  Description = p.Description,
+										  FavoriteCount = p.FavoriteCount,
+										  Image = p.Image,
+										  IsAvailable = p.IsAvailable,
+										  Name = p.Name,
+										  OrderCount = p.OrderCount,
+										  UnitPrice = p.UnitPrice,
+										  MenuItem = new MenuItemDto()
+										  {
+											  Id = menuItem.Id,
+											  Description = menuItem.Description,
+											  MerchantId = menuItem.MerchantId,
+											  Name = menuItem.Name
+										  },
+										  ToppingList = _dbContext.Toppings
+										  .Where(t => t.ProductId == p.Id)
+										  .Select(t => new ToppingDto()
+										  {
+											  Id = t.Id,
+											  Name = t.Name,
+											  ProductId = t.ProductId,
+											  UnitPrice = t.UnitPrice,
+										  }).ToList()
+									  }).ToListAsync();
 				}
 				catch (Exception ex)
 				{

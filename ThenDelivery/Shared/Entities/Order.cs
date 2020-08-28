@@ -3,7 +3,7 @@ using ThenDelivery.Shared.Common;
 
 namespace ThenDelivery.Shared.Entities
 {
-	public class Order : AuditableEntity
+	public class Order
 	{
 		public int Id { get; set; }
 		public string UserId { get; set; }
@@ -11,6 +11,7 @@ namespace ThenDelivery.Shared.Entities
 		public int? ShippingAddressId { get; set; }
 		public DateTime OrderDateTime { get; set; }
 		public DateTime DeliveryDateTime { get; set; }
+		public int MerchantId { get; set; }
 		public string Note { get; set; }
 		public byte ReceiveVia { get; set; }
 		public byte Status { get; set; }

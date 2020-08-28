@@ -20,6 +20,10 @@ namespace ThenDelivery.Server.Persistence.Configurations
 					.HasMaxLength(36)
 					.IsRequired(false);
 
+			builder.Property(e => e.MerchantId)
+					.HasColumnType("int")
+					.IsRequired(true);
+
 			builder.Property(e => e.OrderDateTime)
 					.HasColumnType("datetime2")
 					.IsRequired(true);

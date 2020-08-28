@@ -15,6 +15,7 @@ namespace ThenDelivery.Shared.Dtos
 		public int Id { get; set; }
 		public UserDto User { get; set; }
 		public UserDto Shipper { get; set; }
+		public MerchantDto Merchant { get; set; }
 		public ShippingAddressDto ShippingAddress { get; set; }
 		public DateTime OrderDateTime { get; set; }
 		public DateTime DeliveryDateTime { get; set; }

@@ -12,10 +12,6 @@ namespace ThenDelivery.Server.Persistence.Configurations
 
 			builder.HasKey(e => e.Id);
 
-			builder.Property(e => e.MerchantId)
-					.HasColumnType("int")
-					.IsRequired(true);
-
 			builder.Property(e => e.MenuItemId)
 					.HasColumnType("int")
 					.IsRequired(true);

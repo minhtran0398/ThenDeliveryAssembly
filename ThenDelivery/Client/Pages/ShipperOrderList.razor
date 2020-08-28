@@ -15,8 +15,8 @@ else
       @foreach (var order in OrderList.OrderBy(e => e.Status).ThenByDescending(e => e.OrderDateTime))
       {
       <li class="list-group-item d-flex justify-content-between align-items-center">
-         Quán: @(order.OrderItemList[0].OrderProduct.Merchant.Name) - @(order.OrderItemList[0].OrderProduct.Merchant.PhoneNumber) <br />
-         Địa chỉ: @(order.OrderItemList[0].OrderProduct.Merchant.AddressString) <br />
+         Quán: @(order.Merchant.Name) - @(order.Merchant.PhoneNumber) <br />
+         Địa chỉ: @(order.Merchant.AddressString) <br />
          Người nhận: @(order.ShippingAddress.FullName) - @(order.ShippingAddress.PhoneNumber) <br />
          Địa chỉ: @(order.ShippingAddress.AddressString)
          @if (order.Status == OrderStatus.ShipperAccept || order.Status == OrderStatus.Delivery)

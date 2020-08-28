@@ -79,7 +79,6 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 					Name = productDto.Name,
 					OrderCount = productDto.OrderCount,
 					UnitPrice = productDto.UnitPrice,
-					MerchantId = productDto.Merchant.Id
 				};
 			}
 

@@ -13,8 +13,8 @@ using ThenDelivery.Shared.Enums;
 
 namespace ThenDelivery.Server.Application.OrderController.Queries
 {
-   public class GetOrderByMerchantId : IRequest<IEnumerable<OrderDto>>
-   {
+	public class GetOrderByMerchantId : IRequest<IEnumerable<OrderDto>>
+	{
 		private readonly int _merchantId;
 
 		public GetOrderByMerchantId(int merchantId)
@@ -111,20 +111,6 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 														IsAvailable = p.IsAvailable,
 														Name = p.Name,
 														UnitPrice = p.UnitPrice,
-														Merchant = new MerchantDto()
-														{
-															Id = mer.Id,
-															PhoneNumber = mer.PhoneNumber,
-															Avatar = mer.Avatar,
-															User = queryUser.SingleOrDefault(e => e.Id == mer.UserId),
-															Name = mer.Name,
-															OpenTime = CustomTime.GetTime(mer.OpenTime),
-															CloseTime = CustomTime.GetTime(mer.CloseTime),
-															HouseNumber = mer.HouseNumber,
-															City = queryCity.SingleOrDefault(e => e.CityCode == mer.CityCode),
-															District = queryDistrict.SingleOrDefault(e => e.DistrictCode == mer.DistrictCode),
-															Ward = queryWard.SingleOrDefault(e => e.WardCode == mer.WardCode),
-														},
 														OrderCount = p.OrderCount,
 														MenuItem = new MenuItemDto()
 														{

@@ -1,6 +1,8 @@
-﻿namespace ThenDelivery.Shared.Entities
+﻿using ThenDelivery.Shared.Common;
+
+namespace ThenDelivery.Shared.Entities
 {
-	public class MenuItem
+	public class MenuItem : AuditableEntity
 	{
 		public int Id { get; set; }
 		public int MerchantId { get; set; }
