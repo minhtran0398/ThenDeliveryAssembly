@@ -2,51 +2,53 @@
 
 @if (ToppingList is null)
 {
-	<p>Đang tải...</p>
+   <p>Đang tải...</p>
 }
 else
 {
-	foreach (var toppingItem in ToppingList)
-	{
-		<div class="row">
-			<div class="col-sm-5">
-				<label>Tên topping @toppingItem.Id:</label>
-				<DxTextBox NullText="vd: 'Đường'"
-							  Text="@toppingItem.Name"
-							  TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
-							  TextExpression="() => toppingItem.Name" />
-			</div>
-			<div class="col-sm-5">
-				<label>Giá:</label>
-				<CustomCurrencyEdit InputValue="@toppingItem.UnitPrice"
-										  ValueChanged="async (newValue) => await HandlePriceChanged(newValue, toppingItem.Id)" />
-			</div>
-			<div class="col-sm-2 delete-topping">
-				<button type="button"
-						  class="btn btn-sm btn-outline-danger"
-						  @onclick="async () => await HandleDeleteTopping(toppingItem.Id)">
-					<i class="fas fa-trash-alt"></i>
-				</button>
-			</div>
-		</div>
-	}
+   <EditForm EditContext="FormContext" OnValidSubmit="HandleOnSubmit">
+      @foreach (var toppingItem in ToppingList)
+      {
+         <div class="row">
+            <div class="col-sm-5">
+               <label>Tên topping @toppingItem.Id:</label>
+               <DxTextBox NullText="vd: 'Đường'"
+                          Text="@toppingItem.Name"
+                          TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
+                          TextExpression="() => toppingItem.Name" />
+            </div>
+            <div class="col-sm-5">
+               <label>Giá:</label>
+               <CustomCurrencyEdit InputValue="@toppingItem.UnitPrice"
+                                   ValueChanged="async (newValue) => await HandlePriceChanged(newValue, toppingItem.Id)" />
+            </div>
+            <div class="col-sm-2 delete-topping">
+               <button type="button"
+                       class="btn btn-sm btn-outline-danger"
+                       @onclick="async () => await HandleDeleteTopping(toppingItem.Id)">
+                  <i class="fas fa-trash-alt"></i>
+               </button>
+            </div>
+         </div>
+      }
+   </EditForm>
 }
 <div class="row">
-	<div class="col-md-12 row-item">
-		<a href="javascript:void(0)"
-			@onclick="HandleAddTopping"
-			style="text-decoration:none">Thêm Topping</a>
-	</div>
-	<div class="col-md-12 add-product__form-footer">
-		<DxButton SubmitFormOnClick="false"
-					 Text="Hủy"
-					 @onclick="HandleOnCancel"
-					 RenderStyle="@ButtonRenderStyle.Secondary"
-					 CssClass="add-product__form-footer-button" />
-		<DxButton SubmitFormOnClick="false"
-					 @onclick="HandleOnSubmit"
-					 Text="Lưu"
-					 RenderStyle="@ButtonRenderStyle.Secondary"
-					 CssClass="add-product__form-footer-button" />
-	</div>
+   <div class="col-md-12 row-item">
+      <a href="javascript:void(0)"
+         @onclick="HandleAddTopping"
+         style="text-decoration:none">Thêm Topping</a>
+   </div>
+   <div class="col-md-12 add-product__form-footer">
+      <DxButton SubmitFormOnClick="false"
+                Text="Hủy"
+                @onclick="HandleOnCancel"
+                RenderStyle="@ButtonRenderStyle.Secondary"
+                CssClass="add-product__form-footer-button" />
+      <DxButton SubmitFormOnClick="false"
+                @onclick="HandleOnSubmit"
+                Text="Lưu"
+                RenderStyle="@ButtonRenderStyle.Secondary"
+                CssClass="add-product__form-footer-button" />
+   </div>
 </div>

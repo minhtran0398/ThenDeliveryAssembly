@@ -12,14 +12,23 @@ namespace ThenDelivery.Client.Components.Commons
 		[Parameter] public ushort Width { get; set; } = 300;
 		[Parameter] public ushort Height { get; set; } = 300;
 		[Parameter] public string Base64String { get; set; }
-		[Parameter] public EventCallback<string> OnChangeImage { get; set; }
+      [Parameter] public string Url { get; set; }
+      [Parameter] public EventCallback<string> OnChangeImage { get; set; }
 
 		protected string imageData;
 
       protected override void OnInitialized()
       {
 			var format = "image/jpeg";
-			imageData = Base64String == null ? string.Empty : string.Format("data:{0};base64,{1}", format, Base64String);
+			if(Url != null)
+         {
+				imageData = Url;
+
+			}
+         else
+         {
+				imageData = Base64String == null ? string.Empty : string.Format("data:{0};base64,{1}", format, Base64String);
+			}
 		}
 
       protected async Task HandleFileSelected(IFileListEntry[] files)

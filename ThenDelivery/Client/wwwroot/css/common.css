@@ -118,7 +118,7 @@ img {
 	display: table;
 	width: 100%;
 	table-layout: fixed;
-	width: calc(100% - 10px);
+	width: calc(100% - 17px);
 }
 
 .table-container__body {

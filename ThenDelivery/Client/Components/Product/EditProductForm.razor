@@ -1,0 +1,61 @@
+﻿@inherits EditProductFormBase
+
+<EditForm EditContext="FormContext">
+   <FluentValidator Validator="new EditProductVMValidator()" />
+   <ValidationSummary />
+   <div class="row">
+      <div class="col-md-12 row-item">
+         <label>Hình đại diện: </label><br />
+         <CustomImageEdit Url="@ProductModel.Image"
+                          OnChangeImage="HandleImageChanged" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Tên món: </label>
+         <DxTextBox Text="@ProductModel.Name"
+                    TextChanged="HandleProductNameChanged"
+                    TextExpression="() => ProductModel.Name" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Đơn giá: </label>
+         <CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
+                             ValueChanged="HandleUnitPriceChanged" />
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Set topping: </label>
+         @if (IsShowFormTopping == false)
+         {
+            <p>@ProductModel.ToppingListString</p>
+            <a href="javascript:void(0)"
+               @onclick="HandleCreateTopping"
+               style="text-decoration:none">
+               <i class="fas fa-plus"></i>
+               Tạo Set Topping
+            </a>
+         }
+         else
+         {
+            <AddTopping ToppingList="ProductModel.ToppingList"
+                        OnCancel="HandleCancelCreateTopping"
+                        OnSubmit="HandleSubmitCreateTopping" />
+         }
+      </div>
+      <div class="col-md-12 row-item">
+         <label>Mô tả: </label>
+         <DxTextBox Text="@ProductModel.Description"
+                    TextChanged="HandleDescriptionChanged"
+                    TextExpression="() => ProductModel.Description" />
+      </div>
+      <div class="col-md-12 add-product__form-footer">
+         <DxButton SubmitFormOnClick="false"
+                   Text="Hủy"
+                   @onclick="HandleOnCancel"
+                   RenderStyle="@ButtonRenderStyle.Secondary"
+                   CssClass="add-product__form-footer-button" />
+         <DxButton SubmitFormOnClick="false"
+                   @onclick="HandleOnSubmit"
+                   Text="Lưu"
+                   RenderStyle="@ButtonRenderStyle.Secondary"
+                   CssClass="add-product__form-footer-button" />
+      </div>
+   </div>
+</EditForm>

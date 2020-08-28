@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,8 @@ namespace ThenDelivery.Client.Components.Topping
 {
 	public class AddToppingBase : CustomComponentBase<AddToppingBase>
 	{
-		[Parameter] public List<ToppingDto> ToppingList { get; set; }
+      [CascadingParameter] public EditContext FormContext { get; set; }
+      [Parameter] public List<ToppingDto> ToppingList { get; set; }
 		[Parameter] public EventCallback<List<ToppingDto>> OnSubmit { get; set; }
 		[Parameter] public EventCallback OnCancel { get; set; }
 
@@ -43,8 +45,11 @@ namespace ThenDelivery.Client.Components.Topping
 
 		protected async Task HandleDeleteTopping(int id)
 		{
-			ToppingList.RemoveFirst(e => e.Id == id);
-			await InvokeAsync(StateHasChanged);
+			if(FormContext.Validate())
+         {
+				ToppingList.RemoveFirst(e => e.Id == id);
+				await InvokeAsync(StateHasChanged);
+			}
 		}
 
 		protected async Task HandleOnCancel()

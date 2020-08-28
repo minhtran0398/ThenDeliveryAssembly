@@ -6,12 +6,9 @@ namespace ThenDelivery.Shared.Dtos
    {
       public EditMerchantVM()
       {
-         MenuItemList = new List<MenuItemDto>();
-         ProductList = new List<ProductDto>();
+         MenuItemList = new List<EditMenuItemVM>();
       }
-
       public int MerchantId { get; set; }
-      public List<MenuItemDto> MenuItemList { get; set; }
-      public List<ProductDto> ProductList { get; set; }
+      public List<EditMenuItemVM> MenuItemList { get; set; }
    }
 }

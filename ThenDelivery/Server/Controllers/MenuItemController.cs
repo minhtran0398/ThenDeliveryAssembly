@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Application.MenuItemController.Commands;
+using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Server.Application.MerchantMenuController.Commands;
 using ThenDelivery.Server.Application.MerchantMenuController.Queries;
 using ThenDelivery.Shared.Common;
@@ -69,5 +70,37 @@ namespace ThenDelivery.Server.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+
+		[HttpGet("edit")]
+		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
+		public async Task<IActionResult> GetMenuItemForEdit(int merchantId)
+      {
+         try
+         {
+				IEnumerable<EditMenuItemVM> merchantMenues =
+						await Mediator.Send(new GetEditMenuItemQuery(merchantId));
+
+				return Ok(merchantMenues);
+			}
+         catch (Exception ex)
+         {
+				return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
+
+		[HttpPut("edit")]
+		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
+		public async Task<IActionResult> UpdateMenuItemMerchant([FromBody] EditMerchantVM editMerchant)
+      {
+         try
+         {
+				await Mediator.Send(new UpdateMenuItemCommand(editMerchant));
+				return Ok(new CustomResponse(200, "Update merchant menu item menu success"));
+			}
+         catch (Exception ex)
+         {
+				return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 	}
 }
