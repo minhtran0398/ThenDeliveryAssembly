@@ -57,6 +57,7 @@ namespace ThenDelivery.Client.Components.Topping
 			{
 				OrderProduct = Product,
 				Quantity = Quantity,
+				ProductPrice = Product.UnitPrice,
 				SelectedToppingList = SelectedToppingList.ToList(),
 			};
 			SetInitState();

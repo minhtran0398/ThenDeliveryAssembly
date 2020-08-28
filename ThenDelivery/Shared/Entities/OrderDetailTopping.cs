@@ -4,5 +4,6 @@
 	{
 		public int OrderDetailId { get; set; }
 		public int ToppingId { get; set; }
-	}
+      public decimal ToppingPrice { get; set; }
+   }
 }

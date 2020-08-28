@@ -121,7 +121,8 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 					yield return new OrderDetailTopping()
 					{
 						ToppingId = toppingDto.Id,
-						OrderDetailId = orderDetailId
+						OrderDetailId = orderDetailId,
+						ToppingPrice = toppingDto.UnitPrice
 					};
 				}
 			}

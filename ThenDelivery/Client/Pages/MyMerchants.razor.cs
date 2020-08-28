@@ -34,5 +34,15 @@ namespace ThenDelivery.Client.Pages
 			}
 			ResponseModel.IsShowPopup = true;
 		}
+
+		protected async Task HandleOpenMerchant(MerchantDto merchant)
+		{
+			ResponseModel = await HttpClientServer.CustomPutAsync("api/merchant/open", merchant);
+			if (ResponseModel.IsSuccess)
+			{
+				merchant.Status = MerchantStatus.Approved;
+			}
+			ResponseModel.IsShowPopup = true;
+		}
 	}
 }

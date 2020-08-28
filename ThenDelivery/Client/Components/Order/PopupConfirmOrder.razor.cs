@@ -33,7 +33,7 @@ namespace ThenDelivery.Client.Components.Order
 		/// <summary>
 		/// Temporary shipping fee
 		/// </summary>
-		public decimal ShippingFee { get; set; } = 10000;
+		public decimal ShippingFee { get; set; } = 0;
 		/// <summary>
 		/// Final price will inclue all anothers cast like VAT, trans...
 		/// </summary>

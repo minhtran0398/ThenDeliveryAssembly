@@ -107,7 +107,8 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 					ReceiveVia = orderDto.ReceiveVia,
 					ShipperId = string.Empty,
 					ShippingAddressId = newShippingAddressId,
-					UserId = orderDto.User.Id
+					UserId = orderDto.User.Id,
+					MerchantId = orderDto.Merchant.Id
 				};
 				return order;
 			}
@@ -133,7 +134,8 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 					yield return new OrderDetailTopping()
 					{
 						ToppingId = toppingDto.Id,
-						OrderDetailId = orderDetailId
+						OrderDetailId = orderDetailId,
+						ToppingPrice = toppingDto.UnitPrice
 					};
 				}
 			}

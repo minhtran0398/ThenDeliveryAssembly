@@ -13,11 +13,8 @@ namespace ThenDelivery.Client.Components.Order
 		[Parameter] public EditContext FormContext { get; set; }
 		[Parameter] public EventCallback OnOrderConfirm { get; set; }
 
-		protected decimal TotalPrice { get; set; }
-
 		protected override void OnParametersSet()
 		{
-			UpdateTotalPrice();
 		}
 
 		protected async Task HandleNoteChanged(int orderId, ChangeEventArgs args)
@@ -40,24 +37,13 @@ namespace ThenDelivery.Client.Components.Order
 			{
 				Order.OrderItemList.RemoveFirst(e => e.Id == orderId);
 			}
-			UpdateTotalPrice();
 			StateHasChanged();
 		}
 
 		protected void HandleIncreaseQuantity(int orderId)
 		{
 			Order.OrderItemList.Single(e => e.Id == orderId).Quantity += 1;
-			UpdateTotalPrice();
 			StateHasChanged();
-		}
-
-		private void UpdateTotalPrice()
-		{
-			TotalPrice = 0;
-			Order.OrderItemList.ForEach(order =>
-			{
-				TotalPrice += order.OrderItemPrice;
-			});
 		}
 
 		protected async Task HandleConfirmOrder()

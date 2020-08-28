@@ -32,7 +32,7 @@ namespace ThenDelivery.Shared.Dtos
 				decimal result = 0;
 				OrderItemList.ForEach(item =>
 				{
-					result += (item.Quantity * item.OrderProduct.UnitPrice);
+					result += item.OrderItemPrice;
 				});
 				return result;
 			}

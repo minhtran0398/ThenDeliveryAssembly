@@ -47,7 +47,7 @@ else
             @onclick="async () => await HandleShowChooseOrder(order)"
             class="mb-2 list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-               <h5 class="mb-1">@order.Merchant.Name</h5>
+               <h5 class="mb-1">@order.Merchant.Name - @order.Merchant.PhoneNumber</h5>
                <small>@TimeRange.GetDurationStringToNow(order.OrderDateTime)</small>
             </div>
             <p class="mb-1">

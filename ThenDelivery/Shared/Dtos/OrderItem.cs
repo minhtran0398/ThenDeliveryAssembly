@@ -12,7 +12,8 @@ namespace ThenDelivery.Shared.Dtos
 		public int OrderId { get; set; }
 		public List<ToppingDto> SelectedToppingList { get; set; }
 		public short Quantity { get; set; }
-		public string Note { get; set; }
+      public decimal ProductPrice { get; set; }
+      public string Note { get; set; }
 		public string ToppingListString
 		{
 			get
@@ -48,7 +49,7 @@ namespace ThenDelivery.Shared.Dtos
       {
          get
          {
-				var result = OrderProduct.UnitPrice;
+				var result = ProductPrice;
 				foreach (var toppingItem in SelectedToppingList)
 				{
 					result += toppingItem.UnitPrice;

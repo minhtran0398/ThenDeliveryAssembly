@@ -19,7 +19,7 @@
 					<div class="col pl-0">
 						@if (orderItem.SelectedToppingList?.Count > 0)
 						{
-							<strong>@orderItem.OrderProduct.Name</strong>@orderItem.ToppingListString.Insert(0, "- ")
+							<strong>@orderItem.OrderProduct.Name</strong>@orderItem.ToppingListString.Insert(0, " - ")
 						}
 						else
 						{
@@ -35,7 +35,7 @@
 									  @onchange="async (newValue) => await HandleNoteChanged(orderItem.Id, newValue)"/>
 					</div>
 					<div class="col-auto pl-0">
-						<strong>@orderItem.OrderUnitItemPrice.ToString("N0") đ</strong>
+						<strong>@orderItem.OrderItemPrice.ToString("N0") đ</strong>
 					</div>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 					Tổng cộng
 				</div>
 				<div class="col-sm-auto">
-					<span class="text-primary font-weight-bold">@TotalPrice.ToString("N0") đ</span>
+					<span class="text-primary font-weight-bold">@Order.TotalAmount.ToString("N0") đ</span>
 				</div>
 			</div>
 		</div>

@@ -28,8 +28,6 @@ namespace ThenDelivery.Client.Pages
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			Order = new OrderDto();
-			FormContext = new EditContext(Order);
 		}
 
 		protected override async Task OnInitializedAsync()
@@ -44,6 +42,12 @@ namespace ThenDelivery.Client.Pages
 
 			SelectedMenu = MenuItemList.Count > 0 ? MenuItemList[0] : null;
 			ChangeProductListMenu(SelectedMenu);
+
+			Order = new OrderDto()
+			{
+				Merchant = Merchant
+			};
+			FormContext = new EditContext(Order);
 		}
 
 		protected void HandleOnChangeMenu(MenuItemDto newValue)

@@ -35,11 +35,18 @@ else
                              @onclick="() => HandleMoveToOrderPage(merchant.Id)">
                         Quản lý đơn hàng
                      </button>
-                     @if(merchant.Status == MerchantStatus.Approved)
+                     @if (merchant.Status == MerchantStatus.Approved)
                      {
                         <button class="btn btn-sm btn-outline-danger mr-1"
                                 @onclick="async () => await HandleCloseMerchant(merchant)">
                            Đóng quán
+                        </button>
+                     }
+                     else if (merchant.Status == MerchantStatus.Closed)
+                     {
+                        <button class="btn btn-sm btn-outline-primary mr-1"
+                                @onclick="async () => await HandleOpenMerchant(merchant)">
+                           Mở lại quán
                         </button>
                      }
                   }

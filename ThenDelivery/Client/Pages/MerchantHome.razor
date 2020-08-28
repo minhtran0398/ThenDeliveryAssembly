@@ -23,7 +23,7 @@
                  OnAddOrderItem="HandleAddOrder" />
 </div>
 
-@if (Order.OrderItemList?.Count > 0)
+@if (Order?.OrderItemList?.Count > 0)
 {
    <div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
       <PopupConfirmOrder Order="Order"

@@ -94,14 +94,14 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 					var queryOrderItem = from od in _dbContext.OrderDetails
 												join p in _dbContext.Products on od.ProductId equals p.Id
 												join mi in _dbContext.MenuItems on p.MenuItemId equals mi.Id
-												join mer in _dbContext.Merchants on mi.MerchantId equals mer.Id
-												where mer.Id == request._merchantId
+												where mi.MerchantId == request._merchantId
 												select new OrderItem
 												{
 													Id = od.Id,
 													Note = od.Note,
 													OrderId = od.OrderId,
 													Quantity = od.Quantity,
+													ProductPrice = od.UnitPrice,
 													OrderProduct = new ProductDto()
 													{
 														Id = p.Id,
@@ -139,11 +139,12 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 																					  Id = t.Id,
 																					  Name = t.Name,
 																					  ProductId = t.ProductId,
-																					  UnitPrice = t.UnitPrice
+																					  UnitPrice = odt.ToppingPrice
 																				  }).ToList()
 												};
 
 					var queryResult = (from order in _dbContext.Orders
+											 join mer in _dbContext.Merchants on order.MerchantId equals mer.Id
 											 select new OrderDto
 											 {
 												 Id = order.Id,
@@ -155,7 +156,21 @@ namespace ThenDelivery.Server.Application.OrderController.Queries
 												 Shipper = queryUser.SingleOrDefault(e => e.Id == order.ShipperId),
 												 User = queryUser.SingleOrDefault(e => e.Id == order.UserId),
 												 ShippingAddress = queryShippingAddress.SingleOrDefault(s => s.Id == order.ShippingAddressId),
-												 OrderItemList = queryOrderItem.Where(o => o.OrderId == order.Id).ToList()
+												 OrderItemList = queryOrderItem.Where(o => o.OrderId == order.Id).ToList(),
+												 Merchant = new MerchantDto()
+												 {
+													 Id = mer.Id,
+													 PhoneNumber = mer.PhoneNumber,
+													 Avatar = mer.Avatar,
+													 User = queryUser.SingleOrDefault(e => e.Id == mer.UserId),
+													 Name = mer.Name,
+													 OpenTime = CustomTime.GetTime(mer.OpenTime),
+													 CloseTime = CustomTime.GetTime(mer.CloseTime),
+													 HouseNumber = mer.HouseNumber,
+													 City = queryCity.SingleOrDefault(e => e.CityCode == mer.CityCode),
+													 District = queryDistrict.SingleOrDefault(e => e.DistrictCode == mer.DistrictCode),
+													 Ward = queryWard.SingleOrDefault(e => e.WardCode == mer.WardCode),
+												 }
 											 });
 					result = await queryResult.ToListAsync();
 					result.RemoveAll(e => e.OrderItemList.Count == 0);

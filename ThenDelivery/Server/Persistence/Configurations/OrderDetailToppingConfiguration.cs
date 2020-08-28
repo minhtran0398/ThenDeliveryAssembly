@@ -11,6 +11,10 @@ namespace ThenDelivery.Server.Persistence.Configurations
 			builder.ToTable("OrderDetailToppings");
 
 			builder.HasKey(e => new { e.OrderDetailId, e.ToppingId });
+
+			builder.Property(e => e.ToppingPrice)
+					.HasColumnType("decimal(8, 0)")
+					.IsRequired(true);
 		}
 	}
 }
