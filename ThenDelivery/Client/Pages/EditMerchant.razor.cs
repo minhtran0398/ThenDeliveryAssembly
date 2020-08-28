@@ -20,12 +20,10 @@ namespace ThenDelivery.Client.Pages
       public EditMerchantVM MerchantModel { get; set; }
       public EditMenuItemVM SelectedMenuItem { get; set; }
       public EditProductVM SelectedProduct { get; set; }
-      public int ActiveMenuEdit { get; set; }
       public bool IsShowPopupAddProduct { get; set; }
 
       protected override async Task OnInitializedAsync()
       {
-         ActiveMenuEdit = -1;
          var response = await HttpClientServer.GetAsync($"api/merchant/isExist?merchantId={MerchantId}");
          if (response.IsSuccessStatusCode == false)
          {
@@ -52,7 +50,6 @@ namespace ThenDelivery.Client.Pages
          {
             menuItem.Name = newName;
          }
-         ActiveMenuEdit = -1;
          await InvokeAsync(StateHasChanged);
       }
 
@@ -69,7 +66,6 @@ namespace ThenDelivery.Client.Pages
             Name="Nhập tên nhóm mới",
             MerchantId = MerchantId,
          });
-         ActiveMenuEdit = newId;
          StateHasChanged();
       }
 
@@ -81,7 +77,6 @@ namespace ThenDelivery.Client.Pages
 
       protected async Task HandleClickMenuItem(EditMenuItemVM editMenu)
       {
-         ActiveMenuEdit = editMenu.Id;
          SelectedMenuItem = editMenu;
          await InvokeAsync(StateHasChanged);
       }

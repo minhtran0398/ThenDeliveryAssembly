@@ -1,4 +1,4 @@
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -50,7 +50,12 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
                Order order = await _dbContext.Orders.SingleOrDefaultAsync(e => e.Id == request._orderId);
                if (order is null)
                {
-                  throw new Exception("Order doesnt exist");
+                  throw new Exception("Không tìm thấy đơn hàng");
+               }
+
+               if(order.Status == (byte)OrderStatus.Cancel)
+               {
+                  throw new Exception("Đơn hàng đã bị Hủy");
                }
 
                if (order.Status == (byte)request._orderStatus)

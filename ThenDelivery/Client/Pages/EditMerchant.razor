@@ -16,7 +16,7 @@
       <ValidationSummary />
       <div class="row">
          <div class="col-4 edit-merchant-menu">
-            <h3>Thêm menu</h3>
+            <h3>Thực đơn</h3>
             <ul class="list-group">
                @if (MerchantModel.MenuItemList != null)
                {
@@ -27,8 +27,7 @@
                                    NullText="Nhập tên nhóm món"
                                    TextChanged="async (newNm) => await HandleEditMenuItemName(newNm, menuItem)"
                                    TextExpression="() => menuItem.Name"
-                                   @onclick="async () => await HandleClickMenuItem(menuItem)"
-                                   ReadOnly="(ActiveMenuEdit != menuItem.Id)" />
+                                   @onclick="async () => await HandleClickMenuItem(menuItem)" />
                         <DxButton CssClass="menu-create-group__item-button"
                                   RenderStyle="@ButtonRenderStyle.Danger"
                                   SubmitFormOnClick="false"
@@ -45,7 +44,7 @@
          </div>
          <div class="col-8 edit-merchant-product">
             <div class="add-product__form-title">
-               <h3>Thêm món</h3>
+               <h3>Danh sách món cho thực đơn @SelectedMenuItem.Name</h3>
                <DxButton CssClass="add-product__form-title-button"
                          Visible="@(SelectedMenuItem.ProductList?.Count != 0)"
                          Text="Thêm món"
@@ -73,7 +72,7 @@
                         <tr>
                            <th class="" style="width: 100px;">Tên món</th>
                            <th class="" style="width: 100px;">Giá</th>
-                           <th class="table-container__action-td" style="width: 200px;">Set topping</th>
+                           <th class="table-container__action-td" style="width: 200px;">Món ăn kèm</th>
                            <th class="table-container__action-td" style="width: 30px;"></th>
                            <th class="table-container__action-td" style="width: 30px;"></th>
                         </tr>
@@ -101,7 +100,7 @@
             }
          </div>
       </div>
-      <div class="row">
+      <div class="row justify-content-center">
          <DxButton Text="Lưu"
                    RenderStyle="ButtonRenderStyle.Success"
                    SizeMode="SizeMode.Small"

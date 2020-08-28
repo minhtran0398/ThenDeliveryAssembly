@@ -3,32 +3,36 @@
 
 @if (SelectedOrder != null)
 {
-   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm">
+   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
       <Content>
          <p>Bạn chắc chắn muốn giao đơn hàng này?</p>
       </Content>
       <FooterTemplate>
-         <button class="btn btn-success"
+         <button class="btn btn-sm btn-success"
                  @onclick="async () => await HandleConfirm()">
-            Confirm
+            Xác nhân
          </button>
-         <button class="btn btn-dark"
+         <button class="btn btn-sm btn-dark"
                  @onclick="HandleClose">
-            Close
+            Đóng
          </button>
       </FooterTemplate>
    </DxPopup>
 }
 @if (ResponseModel != null)
 {
-   <DxPopup HeaderText="@(ResponseModel.IsSuccess ? "Success" : "Fail")" @bind-Visible="@IsShowPopupResult">
+   <DxPopup HeaderText="@(ResponseModel.IsSuccess ? "Thành công" : "Thất bại")" @bind-Visible="@IsShowPopupResult"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
       <Content>
          <p>@(ResponseModel.Message)</p>
       </Content>
       <FooterTemplate>
-         <button class="btn btn-success"
+         <button class="btn btn-sm btn-success"
                  @onclick="@(() => IsShowPopupResult = false)">
-            Confirm
+            Xác nhận
          </button>
       </FooterTemplate>
    </DxPopup>

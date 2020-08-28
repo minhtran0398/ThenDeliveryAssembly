@@ -4,12 +4,14 @@
 @if (OrderResponse?.IsShowPopup == true)
 {
    <DxPopup HeaderText="@(OrderResponse.IsSuccess ? "Thành công" : "Thất bại")"
-            @bind-Visible="@OrderResponse.IsShowPopup" ShowCloseButton="false">
+            @bind-Visible="@OrderResponse.IsShowPopup" ShowCloseButton="false"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
       <Content>
          <p>@(OrderResponse.Message)</p>
       </Content>
       <FooterTemplate>
-         <button class="btn btn-success"
+         <button class="btn btn-sm btn-success"
                  @onclick="@(() => OrderResponse.IsShowPopup = false)">
             Đóng
          </button>

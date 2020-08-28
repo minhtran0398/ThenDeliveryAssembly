@@ -1,34 +1,60 @@
 ﻿@inherits OrderListCpnBase
 
+@if (ResponseModel != null)
+{
+   <DxPopup HeaderText="Thông tin" @bind-Visible="@ResponseModel.IsShowPopup"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
+      <Content>
+         <p>@ResponseModel.Message</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-sm btn-dark" @onclick="() => ResponseModel.IsShowPopup = false">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
+}
+
 <table class="table font-small table-bordered">
-	<thead class="thead-dark">
-		<tr>
-			<th scope="col">STT</th>
-			<th scope="col">Thời gian</th>
-			<th scope="col">Địa chỉ</th>
-			<th scope="col">Tổng tiền</th>
-			<th scope="col">Trạng thái</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var orderItem in OrderList.OrderBy(e => e.Status).ThenBy(e => e.OrderDateTime))
-		{
-			<tr>
+   <thead class="thead-dark">
+      <tr>
+         <th scope="col">STT</th>
+         <th scope="col">Thời gian</th>
+         <th scope="col">Địa chỉ</th>
+         <th scope="col">Tổng tiền</th>
+         <th scope="col">Trạng thái</th>
+         <th scope="col"></th>
+      </tr>
+   </thead>
+   <tbody>
+      @foreach (var orderItem in OrderList.OrderBy(e => e.Status).ThenBy(e => e.OrderDateTime))
+      {
+         <tr>
             <th scope="row">@(++Count)</th>
-				<td>
-					Thời gian đặt: @orderItem.OrderDateTime.ToString("HH:mm dd/MM/yyyy") <br/>
-					Thời gian giao hàng: @orderItem.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")
-				</td>
-				<td>
-					@(orderItem.Merchant.Name) <br/>
-					@(orderItem.Merchant.AddressString)
-				</td>
-				<td>
-					Thành tiền: @(orderItem.TotalAmount.ToString("N0"))đ <br/>
-					Tổng cộng @(orderItem.OrderItemList.Count) món
-				</td>
-				<td>@(orderItem.Status.GetStringValue())</td>
-			</tr>
-		}
-	</tbody>
+            <td>
+               Thời gian đặt: @orderItem.OrderDateTime.ToString("HH:mm dd/MM/yyyy") <br />
+               Thời gian giao hàng: @orderItem.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")
+            </td>
+            <td>
+               @(orderItem.Merchant.Name) <br />
+               @(orderItem.Merchant.AddressString)
+            </td>
+            <td>
+               Thành tiền: @(orderItem.TotalAmount.ToString("N0"))đ <br />
+               Tổng cộng @(orderItem.OrderItemList.Count) món
+            </td>
+            <td><span class="@(orderItem.Status.GetCssClass())">@(orderItem.Status.GetStringValue())</span></td>
+            @if (orderItem.Status.CanCancel())
+            {
+               <td>
+                  <DxButton Text="Hủy đơn"
+                            RenderStyle="ButtonRenderStyle.Danger"
+                            SizeMode="SizeMode.Small"
+                            @onclick="async () => await HandleCancelOrder(orderItem)" />
+               </td>
+            }
+         </tr>
+      }
+   </tbody>
 </table>

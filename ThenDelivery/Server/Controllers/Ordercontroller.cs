@@ -35,7 +35,7 @@ namespace ThenDelivery.Server.Controllers
 			{
 				string shipperId = _currentUserService.GetLoggedInUserId();
 				await Mediator.Send(new UpdateOrderStatusCommand(orderDto.Id, orderDto.Status, shipperId));
-				return Ok(new CustomResponse(200, "Update success"));
+				return Ok(new CustomResponse(200, "Cập nhật thành công"));
 			}
 			catch (UpdateOrderStatusException ex)
 			{
@@ -61,6 +61,26 @@ namespace ThenDelivery.Server.Controllers
 			catch (Exception ex)
 			{
 				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+		}
+
+		[HttpPut("cancel")]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
+		public async Task<IActionResult> CancelOrder([FromBody] OrderDto orderDto)
+      {
+			try
+			{
+				string shipperId = _currentUserService.GetLoggedInUserId();
+				await Mediator.Send(new CancelOrderCommand(orderDto.Id));
+				return Ok(new CustomResponse(200, "Hủy đơn thành công"));
+			}
+			catch (UpdateOrderStatusException ex)
+			{
+				return BadRequest(new CustomResponse(ex.StatusCode, "Hủy đơn thất bại"));
+			}
+			catch (Exception)
+			{
+				return BadRequest(new CustomResponse(400, "Lỗi cập nhật"));
 			}
 		}
 

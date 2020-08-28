@@ -3,12 +3,14 @@
 
 @if (ResponseModel != null)
 {
-   <DxPopup HeaderText="Thông tin" @bind-Visible="@ResponseModel.IsShowPopup">
+   <DxPopup HeaderText="Thông tin" @bind-Visible="@ResponseModel.IsShowPopup"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
       <Content>
          <p>@ResponseModel.Message</p>
       </Content>
       <FooterTemplate>
-         <button class="btn btn-dark" @onclick="() => ResponseModel.IsShowPopup = false">
+         <button class="btn btn-sm btn-dark" @onclick="() => ResponseModel.IsShowPopup = false">
             Đóng
          </button>
       </FooterTemplate>
@@ -16,16 +18,18 @@
 }
 @if (SelectedMerchant != null)
 {
-   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm">
+   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupConfirm"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
       <Content>
          <p>Bạn chắc chắn muốn cấp quyền hoạt động cho quán?</p>
       </Content>
       <FooterTemplate>
-         <button class="btn btn-success"
+         <button class="btn btn-sm btn-success"
                  @onclick="async () => await HandleConfirmApprove()">
             Xác nhận
          </button>
-         <button class="btn btn-dark"
+         <button class="btn btn-sm btn-dark"
                  @onclick="HandleCancelApprove">
             Đóng
          </button>

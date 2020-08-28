@@ -42,93 +42,36 @@ namespace ThenDelivery.Server.Application.MenuItemController.Commands
 				using var trans = _dbContext.Database.BeginTransaction();
 				try
 				{
-					var menuItemList = await _dbContext.MenuItems
+					var menuItemListDb = await _dbContext.MenuItems
 						.Where(e => e.MerchantId == request._merchantVM.MerchantId)
 						.AsNoTracking().ToListAsync();
-					var productList = await _dbContext.Products
-						.AsNoTracking().ToListAsync();
-					var newList = GetMenuItem(request._merchantVM);
-					var newProductList = GetProduct(request._merchantVM);
+					var newMenuItemList = GetMenuItemList(request._merchantVM);
 
 					// case delete
-					foreach (var menuItem in menuItemList)
-					{
-						if (newList.Any(e => e.Id == menuItem.Id) == false)
-						{
-							_dbContext.MenuItems.Remove(menuItem);
-							var products = _dbContext.Products.Where(e => e.MenuItemId == menuItem.Id);
-							foreach (var product in products)
-							{
-							}
-						}
-					}
-					foreach (var menuItem in newList)
-					{
-						// case edit menu Item
-						if (menuItemList.Any(e => e.Id == menuItem.Id))
-						{
-
-						}
-
-					}
-
-					// case edit
-					var listToUpdate = menuItemList.Join(newList, o => o.Id, n => n.Id, (o, n) => new MenuItem()
-					{
-						Id = n.Id,
-						Description = n.Description,
-						MerchantId = n.MerchantId,
-						Name = n.Name
-					});
-					_dbContext.MenuItems.UpdateRange(listToUpdate);
-					await _dbContext.SaveChangesAsync();
-					var listProductToUpdate = productList.Join(newProductList, o => o.Id, n => n.Id, (o, n) => new Product()
-					{
-						Id = n.Id,
-						FavoriteCount = n.FavoriteCount,
-						Description = n.Description,
-						Image = n.Image,
-						IsAvailable = n.IsAvailable,
-						MenuItemId = n.Id,
-						Name = n.Name,
-						OrderCount = n.OrderCount,
-						UnitPrice = n.UnitPrice
-					});
-					_dbContext.Products.UpdateRange(listProductToUpdate);
-					await _dbContext.SaveChangesAsync();
-
-					// case delete
-					var listToDelete = menuItemList.Except(newList, new MenuIdComparer());
+					var listToDelete = menuItemListDb.Except(newMenuItemList, new MenuIdComparer());
+               foreach (var menuItem in listToDelete)
+               {
+						var productToDelete = _dbContext.Products.Where(e => e.MenuItemId == menuItem.Id);
+						_dbContext.RemoveRange(productToDelete);
+               }
 					_dbContext.MenuItems.RemoveRange(listToDelete);
 					await _dbContext.SaveChangesAsync();
-					var listProductToDelete = productList.Except(newProductList, new ProductIdComparer());
-					_dbContext.Products.RemoveRange(listProductToDelete);
-					await _dbContext.SaveChangesAsync();
 
-					// case insert
-					var listToInsert = newList.Except(menuItemList, new MenuIdComparer()).Select(n => new MenuItem()
+					foreach (var newMenuItem in newMenuItemList)
 					{
-						Id = 0,
-						Description = n.Description,
-						MerchantId = n.MerchantId,
-						Name = n.Name
-					});
-					await _dbContext.MenuItems.AddRangeAsync(listToInsert);
-					await _dbContext.SaveChangesAsync();
-					var listProductToInsert = newProductList.Except(productList, new ProductIdComparer()).Select(n => new Product()
-					{
-						Id = 0,
-						FavoriteCount = n.FavoriteCount,
-						Description = n.Description,
-						Image = n.Image,
-						IsAvailable = n.IsAvailable,
-						MenuItemId = n.Id,
-						Name = n.Name,
-						OrderCount = n.OrderCount,
-						UnitPrice = n.UnitPrice
-					});
-					await _dbContext.Products.AddRangeAsync(listProductToInsert);
-					await _dbContext.SaveChangesAsync();
+						var menuItemDb = menuItemListDb.SingleOrDefault(e => e.Id == newMenuItem.Id);
+						// case edit menu Item
+						if (menuItemDb != null)
+						{
+							menuItemDb.SetData(newMenuItem);
+							var productList = GetProductList(request._merchantVM, menuItemDb.Id);
+						}
+						// case insert
+                  else
+                  {
+
+                  }
+					}
 
 					await trans.CommitAsync();
 					return Unit.Value;
@@ -140,7 +83,7 @@ namespace ThenDelivery.Server.Application.MenuItemController.Commands
 				}
 			}
 
-			public IEnumerable<MenuItem> GetMenuItem(EditMerchantVM merchantVM)
+			public IEnumerable<MenuItem> GetMenuItemList(EditMerchantVM merchantVM)
 			{
 				foreach (var item in merchantVM.MenuItemList)
 				{
@@ -154,26 +97,23 @@ namespace ThenDelivery.Server.Application.MenuItemController.Commands
 				}
 			}
 
-			public IEnumerable<Product> GetProduct(EditMerchantVM merchantVM)
+			public IEnumerable<Product> GetProductList(EditMerchantVM merchantVM, int menuItemId)
 			{
-				foreach (var item in merchantVM.MenuItemList)
-				{
-					foreach (var product in item.ProductList)
-					{
-						yield return new Product()
-						{
-							Id = product.Id,
-							FavoriteCount = product.FavoriteCount,
-							Description = product.Description,
-							Image = _imageService.SaveImage(product.Image, "Product"),
-							IsAvailable = product.IsAvailable,
-							MenuItemId = item.Id,
-							Name = product.Name,
-							OrderCount = product.OrderCount,
-							UnitPrice = product.UnitPrice
-						};
-					}
-				}
+            foreach (var product in merchantVM.MenuItemList.SingleOrDefault(e => e.Id == menuItemId).ProductList)
+            {
+               yield return new Product()
+               {
+                  Id = product.Id,
+                  FavoriteCount = product.FavoriteCount,
+                  Description = product.Description,
+                  Image = _imageService.SaveImage(product.Image, "Product"),
+                  IsAvailable = product.IsAvailable,
+                  MenuItemId = menuItemId,
+                  Name = product.Name,
+                  OrderCount = product.OrderCount,
+                  UnitPrice = product.UnitPrice
+               };
+            }
 			}
 		}
 	}
