@@ -37,11 +37,11 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
             try
             {
                return await (from menu in _dbContext.MenuItems
-                             where menu.MerchantId == request._merchantId
+                             where menu.MerchantId == request._merchantId && menu.IsDeleted == false
                              let query = from product in _dbContext.Products
-                                         where product.MenuItemId == menu.Id
+                                         where product.MenuItemId == menu.Id && product.IsDeleted == false
                                          let queryT = from top in _dbContext.Toppings
-                                                      where top.ProductId == product.Id
+                                                      where top.ProductId == product.Id && top.IsDeleted == false
                                                       select new ToppingDto()
                                                       {
                                                          Id = top.Id,
@@ -59,7 +59,7 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
                                             Name = product.Name,
                                             OrderCount = product.OrderCount,
                                             UnitPrice = product.UnitPrice,
-                                            ToppingList = queryT.ToList()
+                                            ToppingList = queryT.ToList(),
                                          }
                              select new EditMenuItemVM()
                              {

@@ -13,5 +13,16 @@ namespace ThenDelivery.Shared.Entities
 		public int FavoriteCount { get; set; }
 		public decimal UnitPrice { get; set; }
 		public string Image { get; set; }
+
+		public void SetData(Product product)
+      {
+			foreach (var item in this.GetType().GetProperties())
+			{
+				if (item.CanRead && item.CanWrite)
+				{
+					item.SetValue(this, product.GetType().GetProperty(item.Name).GetValue(product));
+				}
+			}
+		}
 	}
 }

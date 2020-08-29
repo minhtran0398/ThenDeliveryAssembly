@@ -7,7 +7,7 @@
 else
 {
    <EditForm EditContext="FormContext" OnValidSubmit="HandleOnSubmit">
-      @foreach (var toppingItem in ToppingList)
+      @foreach (var toppingItem in ToppingList.Where(e => e.IsDelete == false))
       {
          <div class="row">
             <div class="col-sm-5">

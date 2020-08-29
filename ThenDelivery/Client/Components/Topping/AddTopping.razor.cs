@@ -28,7 +28,7 @@ namespace ThenDelivery.Client.Components.Topping
 		protected void HandleAddTopping()
 		{
 			int newId = ToppingList?.Max(e => e?.Id) + 1 ?? 0;
-			ToppingList.Add(new ToppingDto() { Id = newId });
+			ToppingList.Add(new ToppingDto() { Id = newId, IsCreateNew = true });
 		}
 
 		protected async Task HandleToppingNameChanged(string newValue, int id)
@@ -47,7 +47,15 @@ namespace ThenDelivery.Client.Components.Topping
 		{
 			if(FormContext.Validate())
          {
-				ToppingList.RemoveFirst(e => e.Id == id);
+				var tp = ToppingList.SingleOrDefault(e => e.Id == id);
+				if(tp.IsCreateNew)
+            {
+					ToppingList.RemoveFirst(e => e.Id == id);
+            }
+            else
+            {
+					tp.IsDelete = true;
+            }
 				await InvokeAsync(StateHasChanged);
 			}
 		}

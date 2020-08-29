@@ -83,7 +83,7 @@ namespace ThenDelivery.Server.Controllers
       }
 
       [HttpPut("open")]
-      [Authorize(Roles = Const.Role.MerchantRole)]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
       public async Task<IActionResult> OpenMerchant([FromBody] MerchantDto merchantDto)
       {
          try
@@ -113,7 +113,7 @@ namespace ThenDelivery.Server.Controllers
       }
 
       [HttpGet("my")]
-      [Authorize(Roles = Const.Role.MerchantRole)]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
       public async Task<IActionResult> GetMerchantCurrentUserId()
       {
          try
@@ -174,11 +174,13 @@ namespace ThenDelivery.Server.Controllers
       }
 
       [HttpGet("isExist")]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
       public async Task<IActionResult> IsExistMerchant(int merchantId)
       {
          try
          {
-            bool result = await Mediator.Send(new CheckExistMerchantQuery(merchantId));
+            var userId = _currentUserService.GetLoggedInUserId();
+            bool result = await Mediator.Send(new CheckExistMerchantQuery(merchantId, userId));
             return Ok(result);
          }
          catch (Exception ex)

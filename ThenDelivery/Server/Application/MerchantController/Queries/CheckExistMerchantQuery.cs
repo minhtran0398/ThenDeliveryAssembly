@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
@@ -10,10 +12,12 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
    public class CheckExistMerchantQuery : IRequest<bool>
    {
       private readonly int _merchantId;
+      private readonly string _userId;
 
-      public CheckExistMerchantQuery(int merchantId)
+      public CheckExistMerchantQuery(int merchantId, string userId)
       {
          _merchantId = merchantId;
+         _userId = userId;
       }
 
       public class Handler : IRequestHandler<CheckExistMerchantQuery, bool>
@@ -31,8 +35,8 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
          {
             try
             {
-               var merchant = await _dbContext.Merchants.FindAsync(request._merchantId);
-               return merchant != null;
+               var merchants = await _dbContext.Merchants.Where(e => e.Id == request._merchantId && e.UserId == request._userId).ToListAsync();
+               return merchants.Count != 0;
             }
             catch (Exception ex)
             {

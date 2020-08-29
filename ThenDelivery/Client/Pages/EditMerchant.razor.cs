@@ -27,12 +27,12 @@ namespace ThenDelivery.Client.Pages
          var response = await HttpClientServer.GetAsync($"api/merchant/isExist?merchantId={MerchantId}");
          if (response.IsSuccessStatusCode == false)
          {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/", true);
          }
          bool isExist = await response.Content.ReadFromJsonAsync<bool>();
          if (isExist == false)
          {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/", true);
          }
 
          MerchantModel = new EditMerchantVM() { MerchantId = MerchantId };
@@ -65,13 +65,26 @@ namespace ThenDelivery.Client.Pages
             Id = newId,
             Name="Nhập tên nhóm mới",
             MerchantId = MerchantId,
+            IsCreateNew = true
          });
          StateHasChanged();
       }
 
       protected async Task HandleRemoveMenuItem(int menuItemId)
       {
-         MerchantModel.MenuItemList.RemoveFirst(s => s.Id == menuItemId);
+         var menuItem = MerchantModel.MenuItemList.SingleOrDefault(s => s.Id == menuItemId);
+         if(menuItem.IsCreateNew)
+         {
+            MerchantModel.MenuItemList.Remove(menuItem);
+         }
+         else
+         {
+            menuItem.IsDelete = true;
+            for (int i = 0; i < menuItem.ProductList.Count; i++)
+            {
+               menuItem.ProductList[i].IsDelete = true;
+            }
+         }
          await InvokeAsync(StateHasChanged);
       }
 
@@ -95,7 +108,15 @@ namespace ThenDelivery.Client.Pages
 
       protected async Task HandleDeleteProduct(int productId)
       {
-         SelectedMenuItem.ProductList.RemoveFirst(e => e.Id == productId);
+         var product = SelectedMenuItem.ProductList.SingleOrDefault(e => e.Id == productId);
+         if(product.IsCreateNew)
+         {
+            SelectedMenuItem.ProductList.Remove(product);
+         }
+         else
+         {
+            product.IsDelete = true;
+         }
          await InvokeAsync(StateHasChanged);
       }
 
@@ -103,7 +124,7 @@ namespace ThenDelivery.Client.Pages
       {
          AddProduct(product);
          IsShowPopupAddProduct = false;
-         SelectedProduct = new EditProductVM();
+         SelectedProduct = new EditProductVM() { IsCreateNew = true, };
          StateHasChanged();
       }
 
@@ -121,6 +142,8 @@ namespace ThenDelivery.Client.Pages
             {
                if (SelectedMenuItem.ProductList.Count == 0) product.Id = 1;
                else product.Id = SelectedMenuItem.ProductList.Max(e => e.Id) + 1;
+
+               product.IsCreateNew = true;
                SelectedMenuItem.ProductList.Add(product);
             }
             else

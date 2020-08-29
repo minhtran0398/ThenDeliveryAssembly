@@ -20,6 +20,8 @@ namespace ThenDelivery.Shared.Dtos
       public decimal UnitPrice { get; set; }
       public string Image { get; set; }
       public List<ToppingDto> ToppingList { get; set; }
+      public bool IsDelete { get; set; }
+      public bool IsCreateNew { get; set; }
 
       public string ToppingListString
       {
@@ -61,6 +63,8 @@ namespace ThenDelivery.Shared.Dtos
       public string Name { get; set; }
       public string Description { get; set; }
       public List<EditProductVM> ProductList { get; set; }
+      public bool IsDelete { get; set; }
+      public bool IsCreateNew { get; set; }
 
    }
    public class MenuIdComparer : IEqualityComparer<MenuItem>

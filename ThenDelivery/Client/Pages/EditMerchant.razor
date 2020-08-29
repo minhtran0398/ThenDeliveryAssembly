@@ -20,7 +20,7 @@
             <ul class="list-group">
                @if (MerchantModel.MenuItemList != null)
                {
-                  @foreach (var menuItem in MerchantModel.MenuItemList)
+                  @foreach (var menuItem in MerchantModel.MenuItemList.Where(e => e.IsDelete == false))
                   {
                      <li class="list-group-item p-0 pb-2" style="display:flex;background-color:#f2f2f2;border:none">
                         <DxTextBox Text="@menuItem.Name"
@@ -78,7 +78,7 @@
                         </tr>
                      </thead>
                      <tbody class="table-container__body">
-                        @foreach (var product in SelectedMenuItem.ProductList)
+                        @foreach (var product in SelectedMenuItem.ProductList.Where(e => e.IsDelete == false))
                         {
                            <tr class="table-container__row">
                               <td class="" style="width: 100px;">@product.Name</td>

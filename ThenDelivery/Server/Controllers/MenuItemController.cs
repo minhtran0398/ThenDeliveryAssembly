@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThenDelivery.Server.Application.Common.Interfaces;
 using ThenDelivery.Server.Application.MenuItemController.Commands;
 using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Server.Application.MerchantMenuController.Commands;
@@ -17,6 +18,13 @@ namespace ThenDelivery.Server.Controllers
 	[AllowAnonymous]
 	public class MenuItemController : CustomControllerBase<MenuItemController>
 	{
+		private readonly IImageService _imageService;
+
+      public MenuItemController(IImageService imageService)
+      {
+			_imageService = imageService;
+      }
+
 		[HttpPost]
 		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> AddRangeMenuItem(IEnumerable<MenuItemDto> menuList)
@@ -94,6 +102,16 @@ namespace ThenDelivery.Server.Controllers
       {
          try
          {
+            foreach (var menuItem in editMerchant.MenuItemList)
+            {
+               foreach (var product in menuItem.ProductList)
+               {
+						if(product.Image.Length > 100)
+                  {
+							product.Image = _imageService.SaveImage(product.Image, "Product");
+                  }
+               }
+            }
 				await Mediator.Send(new UpdateMenuItemCommand(editMerchant));
 				return Ok(new CustomResponse(200, "Update merchant menu item menu success"));
 			}
