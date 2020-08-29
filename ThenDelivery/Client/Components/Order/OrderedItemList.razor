@@ -2,7 +2,7 @@
 
 <div class="ordered-container">
 	<div class="ordered-header">
-		<h5>@(Order.OrderItemList?.Count ?? 0) món</h5>
+		<h5>@(Order?.TotalProduct ?? 0) món</h5>
 	</div>
 	<div class="ordered-list">
 		@foreach (var orderItem in Order.OrderItemList)
@@ -53,12 +53,15 @@
 			</div>
 		</div>
 		<div class="ordered-confirm-order">
-			<button type="button"
-					  class="btn btn-danger btn-confirm-order btn-sm"
-					  @onclick="async () => await HandleConfirmOrder()">
-				<i class="fas fa-check-circle"></i>
-				Đặt
-			</button>
+			<DxButton Text=" Đặt"
+					IconCssClass="fas fa-check-circle"
+					IconPosition="ButtonIconPosition.BeforeText"
+					CssClass="btn-confirm-order"
+					RenderStyle="ButtonRenderStyle.Danger"
+					SizeMode="SizeMode.Small"
+					Enabled="@(Order.OrderItemList?.Count > 0)"
+					@onclick="async () => await HandleConfirmOrder()">
+			</DxButton>
 		</div>
 	</div>
 </div>

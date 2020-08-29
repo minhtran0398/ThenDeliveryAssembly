@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 using ThenDelivery.Shared.Exceptions;
+using ThenDelivery.Shared.Helper.ExtensionMethods;
+using ThenDelivery.Shared.Helper;
 
 namespace ThenDelivery.Client.Components.Order
 {
@@ -24,6 +26,8 @@ namespace ThenDelivery.Client.Components.Order
 		[Parameter] public EditContext FormContext { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
 		[Parameter] public EventCallback<CustomResponse> OnAfterConfirm { get; set; }
+		[Parameter] public CustomTime OpenTime { get; set; }
+		[Parameter] public CustomTime CloseTime { get; set; }
 		[Inject] public IJSRuntime JSRuntime { get; set; }
 		public List<ShippingAddressDto> ShippingAddressList { get; set; }
 		public DisplayPopup SelectedPopup { get; set; }
@@ -96,13 +100,18 @@ namespace ThenDelivery.Client.Components.Order
 		}
 
 		protected bool IsEnableSubmit()
-      {
-			if(Order.ShippingAddress == null)
-         {
+		{
+			if (Order.ShippingAddress == null)
+			{
 				return false;
-         }
+			}
+			CustomTime ct = new CustomTime(Order.DeliveryDateTime);
+			if (ct.IsInRange(OpenTime, CloseTime) == false)
+			{
+				return false;
+			}
 			return true;
-      }
+		}
 
 		[JSInvokable]
 		public static void SendOrder()

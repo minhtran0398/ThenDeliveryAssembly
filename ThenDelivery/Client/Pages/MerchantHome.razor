@@ -30,7 +30,9 @@
    <div class="@(IsShowPopupOrderConfirm ? "" : "d-none")">
       <PopupConfirmOrder Order="Order"
                          OnClose="HandleCloseConfirmPopup"
-                         OnAfterConfirm="HandleOnAfterConfirmOrder"/>
+                         OnAfterConfirm="HandleOnAfterConfirmOrder"
+                         OpenTime="Merchant.OpenTime"
+                         CloseTime="Merchant.CloseTime"/>
    </div>
 }
 

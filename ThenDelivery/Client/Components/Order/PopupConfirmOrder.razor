@@ -6,23 +6,42 @@
             ShowCloseButton="true"
             CloseButtonClick="async () => await HandleCloseConfirm()"
             CssClass="confirm-order-popup"
-            HeaderCssClass="bg-dark text-white">
+            HeaderCssClass="bg-dark text-white p-2">
       <Content>
          <div class="row">
             <div class="col-5">
                <div class="row mr-0 ml-0">
                   @if (Order.ShippingAddress != null)
                   {
-                     <span class="d-block font-weight-bold font-small">@Order.ShippingAddress.FullName - @Order.ShippingAddress.PhoneNumber</span>
-                     <span class="font-small">@Order.ShippingAddress.AddressString</span>
+                     <span class="d-block font-weight-bold font-small">
+                        <span class="font-primary">Người nhận:</span> @Order.ShippingAddress.FullName - @Order.ShippingAddress.PhoneNumber
+                     </span>
+                     <span class="font-small">
+                        <span class="font-primary font-weight-bold">Địa chỉ:</span> @Order.ShippingAddress.AddressString
+                     </span>
                   }
                </div>
                <div class="row ml-0 mr-0">
-                  <span class="font-small">Est.Time: @Order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")</span>
+                  <span class="font-small">Thời gian giao hàng: @Order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")</span>
+                  @if(new CustomTime(Order.DeliveryDateTime).IsInRange(OpenTime, CloseTime) == false)
+                  {
+                     <span class="font-small text-danger font-italic">
+                        Thời gian giao hàng phải nằm trong giờ hoạt động của quán
+                        @OpenTime.TimeString -> @CloseTime.TimeString
+                     </span>
+                  }
                </div>
                <div class="row mr-0 ml-0 mt-2">
-                  <a class="text-decoration-none" href="javascript:void(0)"
-                     @onclick="HandleChangeShippingAddress">Thay đổi thông tin đặt hàng</a>
+                  @if(ShippingAddressList?.Count == 0)
+                  {
+                     <a class="text-decoration-none" href="javascript:void(0)"
+                        @onclick="HandleChangeShippingAddress">Vui lòng thêm thông tin giao hàng</a>
+                  }
+                  else
+                  {
+                     <a class="text-decoration-none" href="javascript:void(0)"
+                        @onclick="HandleChangeShippingAddress">Thay đổi thông tin đặt hàng</a>
+                  }
                </div>
             </div>
             <div class="col-7">
@@ -38,14 +57,14 @@
                      }
                   </ul>
                </div>
-               <div class="row mt-3">
-                  <div class="col">Total @GetTotalProduct() món</div>
+               <div class="row mt-3 font-weight-bold">
+                  <div class="col">Tổng cộng @GetTotalProduct() món</div>
                   <div class="col-auto">@GetTotalPrice().ToString("N0") đ</div>
                </div>
-               <div class="row">
+               @* <div class="row">
                   <div class="col">Total</div>
                   <div class="col-auto">@GetFinalPrice().ToString("N0") đ</div>
-               </div>
+               </div> *@
             </div>
          </div>
          <div id="paypal-button-container"></div>

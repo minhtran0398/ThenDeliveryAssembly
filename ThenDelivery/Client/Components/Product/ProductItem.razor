@@ -12,7 +12,7 @@
 		<div class="col item-restaurant-info">
 			<h3 class="item-restaurant-name">@Product.Name</h3>
 			<div class="item-restaurant-desc">@Product.Description</div>
-			<div class="item-restaurant-total">Đã được đặt<span class="txt-bold">&nbsp;@Product.OrderCount&nbsp;</span>lần</div>
+			<div class="item-restaurant-total" style="position: absolute;">Đã được đặt<span class="txt-bold">&nbsp;@Product.OrderCount&nbsp;</span>lần</div>
 		</div>
 		<div class="col-auto item-restaurant-more">
 			<div class="row ">
@@ -22,10 +22,17 @@
 					</div>
 				</div>
 				<div class="col-auto adding-food-cart txt-right">
-					<button class="btn btn-sm btn-danger btn-add-product"
-							  @onclick="async () => await HandleAddProductOrder(Product)">
-						+
-					</button>
+					@if(Product.IsAvailable)
+					{
+						<button class="btn btn-sm btn-danger btn-add-product"
+								@onclick="async () => await HandleAddProductOrder(Product)">
+							+
+						</button>
+					}
+					else
+					{
+						<span class="badge badge-pill badge-danger">Tạm ngừng</span>
+					}
 				</div>
 			</div>
 		</div>

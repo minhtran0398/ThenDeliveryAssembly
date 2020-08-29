@@ -26,6 +26,19 @@ namespace ThenDelivery.Shared.Dtos
 
 		public List<OrderItem> OrderItemList { get; set; }
 
+		public int TotalProduct
+		{
+			get
+			{
+				int result = 0;
+				foreach (var item in OrderItemList)
+				{
+					result += item.Quantity;
+				}
+				return result;
+			}
+		}
+
 		public decimal TotalAmount
 		{
 			get
