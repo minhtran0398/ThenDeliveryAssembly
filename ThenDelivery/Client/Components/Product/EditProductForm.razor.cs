@@ -28,7 +28,7 @@ namespace ThenDelivery.Client.Components.Product
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			if (ProductModel is null) ProductModel = new EditProductVM();
+			if (ProductModel is null) ProductModel = new EditProductVM() { IsAvailable = true };
 			FormContext = new EditContext(ProductModel);
 		}
 		#endregion

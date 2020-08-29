@@ -30,7 +30,7 @@
                      SelectedItemExpression="() => ProductModel.MenuItem" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Set topping: </label>
+         <label>Món ăn kèm: </label>
          @if (IsShowFormTopping == false)
          {
             <p>@ProductModel.ToppingListString</p>
@@ -38,7 +38,7 @@
                @onclick="HandleCreateTopping"
                style="text-decoration:none">
                <i class="fas fa-plus"></i>
-               Tạo Set Topping
+               Thêm món ăn kèm
             </a>
          }
          else

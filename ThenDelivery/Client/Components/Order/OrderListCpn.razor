@@ -28,7 +28,7 @@
       </tr>
    </thead>
    <tbody>
-      @foreach (var orderItem in OrderList.OrderBy(e => e.Status).ThenBy(e => e.OrderDateTime))
+      @foreach (var orderItem in OrderList.OrderBy(e => e.OrderDateTime))
       {
          <tr>
             <th scope="row">@(++Count)</th>

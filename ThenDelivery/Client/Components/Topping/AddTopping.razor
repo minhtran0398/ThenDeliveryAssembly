@@ -11,7 +11,7 @@ else
       {
          <div class="row">
             <div class="col-sm-5">
-               <label>Tên topping @toppingItem.Id:</label>
+               <label>Tên món ăn kèm @toppingItem.Id:</label>
                <DxTextBox NullText="vd: 'Đường'"
                           Text="@toppingItem.Name"
                           TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
@@ -37,7 +37,7 @@ else
    <div class="col-md-12 row-item">
       <a href="javascript:void(0)"
          @onclick="HandleAddTopping"
-         style="text-decoration:none">Thêm Topping</a>
+         style="text-decoration:none">Thêm món ăn kèm</a>
    </div>
    <div class="col-md-12 add-product__form-footer">
       <DxButton SubmitFormOnClick="false"

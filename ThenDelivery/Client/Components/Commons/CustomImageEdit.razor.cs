@@ -22,8 +22,14 @@ namespace ThenDelivery.Client.Components.Commons
 			var format = "image/jpeg";
 			if(Url != null)
          {
-				imageData = Url;
-
+				if(Url.Length > 100)
+            {
+					imageData = Url == null ? string.Empty : string.Format("data:{0};base64,{1}", format, Url);
+				}
+            else
+            {
+					imageData = Url;
+            }
 			}
          else
          {

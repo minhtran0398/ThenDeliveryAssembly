@@ -40,7 +40,7 @@ namespace ThenDelivery.Server.Application.MerchantMenuController.Queries
 				try
 				{
 					return await (from menu in _dbContext.MenuItems
-									  where menu.MerchantId == request._merchantId
+									  where menu.MerchantId == request._merchantId && menu.IsDeleted == false
 									  select new MenuItemDto()
 									  {
 										  Id = menu.Id,

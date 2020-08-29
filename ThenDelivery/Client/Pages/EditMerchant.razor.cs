@@ -67,6 +67,7 @@ namespace ThenDelivery.Client.Pages
             MerchantId = MerchantId,
             IsCreateNew = true
          });
+         SelectedMenuItem = MerchantModel.MenuItemList.SingleOrDefault(e => e.Id == newId);
          StateHasChanged();
       }
 
@@ -124,7 +125,7 @@ namespace ThenDelivery.Client.Pages
       {
          AddProduct(product);
          IsShowPopupAddProduct = false;
-         SelectedProduct = new EditProductVM() { IsCreateNew = true, };
+         SelectedProduct = new EditProductVM() { IsCreateNew = true, IsAvailable = true };
          StateHasChanged();
       }
 
@@ -166,6 +167,10 @@ namespace ThenDelivery.Client.Pages
          {
             var result = await HttpClientServer.CustomPutAsync($"api/menuitem/edit", MerchantModel);
             Logger.LogInformation(JsonConvert.SerializeObject(result));
+            var newData = await HttpClientServer
+               .CustomGetAsync<List<EditMenuItemVM>>($"api/menuitem/edit?merchantId={MerchantId}");
+            MerchantModel.MenuItemList = newData;
+            await InvokeAsync(StateHasChanged);
          }
       }
    }

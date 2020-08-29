@@ -91,7 +91,8 @@ namespace ThenDelivery.Server.Application.ProductController.Commands
 						Id = 0,
 						Name = toppingDto.Name,
 						ProductId = productId,
-						UnitPrice = toppingDto.UnitPrice
+						UnitPrice = toppingDto.UnitPrice,
+						IsDeleted = toppingDto.IsDelete
 					};
 				}
 			}

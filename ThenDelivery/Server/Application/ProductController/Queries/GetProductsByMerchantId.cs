@@ -57,7 +57,7 @@ namespace ThenDelivery.Server.Application.ProductController.Queries
 											  Name = menuItem.Name
 										  },
 										  ToppingList = _dbContext.Toppings
-										  .Where(t => t.ProductId == p.Id)
+										  .Where(t => t.ProductId == p.Id && t.IsDeleted == false)
 										  .Select(t => new ToppingDto()
 										  {
 											  Id = t.Id,

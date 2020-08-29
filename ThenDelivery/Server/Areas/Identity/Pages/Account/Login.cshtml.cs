@@ -39,10 +39,12 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account
 		{
 			[Required]
 			[EmailAddress]
+			[Display(Name = "Địa chỉ email")]
 			public string Email { get; set; }
 
 			[Required]
 			[DataType(DataType.Password)]
+			[Display(Name = "Mật khẩu")]
 			public string Password { get; set; }
 
 			[Display(Name = "Lưu mật khẩu?")]

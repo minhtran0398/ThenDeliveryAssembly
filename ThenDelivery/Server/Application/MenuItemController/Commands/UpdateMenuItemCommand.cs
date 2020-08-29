@@ -47,36 +47,37 @@ namespace ThenDelivery.Server.Application.MenuItemController.Commands
 					foreach (var newMenuItem in newMenuItemList)
 					{
 						// case delete
-						if(newMenuItem.IsDeleted)
-                  {
-							var mn = menuItemListDb.SingleOrDefault(e => e.Id == newMenuItem.Id);
-							mn.IsDeleted = true;
-							mn.Name = newMenuItem.Name;
-							var pdList = GetProductList(request._merchantVM, mn.Id);
-							foreach (var product in pdList)
-                     {
-								var toppingRm = _dbContext.Toppings.Where(e => e.ProductId == product.Id)
-														.Select(e => new Topping()
-														{
-															Id = e.Id,
-															Name = e.Name,
-															ProductId = e.ProductId,
-															IsDeleted = true,
-															UnitPrice = e.UnitPrice
-														});
-								_dbContext.Toppings.UpdateRange(toppingRm);
-                     }
-							_dbContext.Products.UpdateRange(pdList);
-							_dbContext.MenuItems.Update(mn);
-							await _dbContext.SaveChangesAsync();
+						//if(newMenuItem.IsDeleted)
+      //            {
+						//	var mn = menuItemListDb.SingleOrDefault(e => e.Id == newMenuItem.Id);
+						//	mn.IsDeleted = true;
+						//	mn.Name = newMenuItem.Name;
+						//	var pdList = GetProductList(request._merchantVM, mn.Id);
+						//	foreach (var product in pdList)
+      //               {
+						//		var toppingRm = _dbContext.Toppings.Where(e => e.ProductId == product.Id)
+						//								.Select(e => new Topping()
+						//								{
+						//									Id = e.Id,
+						//									Name = e.Name,
+						//									ProductId = e.ProductId,
+						//									IsDeleted = true,
+						//									UnitPrice = e.UnitPrice
+						//								});
+						//		_dbContext.Toppings.UpdateRange(toppingRm);
+      //               }
+						//	_dbContext.Products.UpdateRange(pdList);
+						//	_dbContext.MenuItems.Update(mn);
+						//	await _dbContext.SaveChangesAsync();
 
-							continue;
-                  }
+						//	continue;
+      //            }
 						var menuItemDb = menuItemListDb.SingleOrDefault(e => e.Id == newMenuItem.Id);
 						// case edit menu Item
 						if (menuItemDb != null)
 						{
                      menuItemDb.SetData(newMenuItem);
+							_dbContext.MenuItems.Update(menuItemDb);
                      var newProductList = GetProductList(request._merchantVM, menuItemDb.Id);
 							var productDb = _dbContext.Products.Where(e => e.MenuItemId == menuItemDb.Id);
                      foreach (var newProduct in newProductList)

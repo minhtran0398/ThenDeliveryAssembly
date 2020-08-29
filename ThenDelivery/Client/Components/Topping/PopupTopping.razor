@@ -20,11 +20,11 @@
    <Content>
       @if (Product.ToppingList is null || Product.ToppingList.Count == 0)
       {
-         <h3>Không có topping</h3>
+         <h2>Không có món ăn kèm</h2>
       }
       else
       {
-         <h3>Thêm topping</h3>
+         <h3>Thêm món ăn kèm</h3>
          <DxListBox Data="@Product.ToppingList"
                     TextFieldName="Text"
                     SelectionMode="ListBoxSelectionMode.Multiple"
