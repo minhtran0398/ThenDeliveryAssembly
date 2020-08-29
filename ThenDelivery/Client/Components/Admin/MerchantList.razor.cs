@@ -9,57 +9,78 @@ using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Client.Components.Admin
 {
-   [Authorize(Roles = Const.Role.AdministrationRole)]
-   public class MerchantListBase : CustomComponentBase<MerchantListBase>
-   {
-      #region Inject
+	[Authorize(Roles = Const.Role.AdministrationRole)]
+	public class MerchantListBase : CustomComponentBase<MerchantListBase>
+	{
+		#region Inject
 
-      #endregion
+		#endregion
 
-      #region Properties
-      protected List<MerchantDto> MerchantList { get; set; }
-      public MerchantDto SelectedMerchant { get; set; }
-      public CustomResponse ResponseModel { get; set; }
-      public bool IsShowPopupConfirm { get; set; }
-      #endregion
+		#region Properties
+		protected List<MerchantDto> MerchantList { get; set; }
+		public MerchantDto SelectedMerchant { get; set; }
+		public CustomResponse ResponseModel { get; set; }
+		public bool IsShowPopupConfirm { get; set; }
+		public bool IsShowPopupDeactive { get; set; }
+		#endregion
 
-      #region Life Cycle
-      protected override async Task OnInitializedAsync()
-      {
-         await base.OnInitializedAsync();
-         MerchantList = await HttpClientServer.CustomGetAsync<List<MerchantDto>>("api/merchant/all");
-      }
-      #endregion
+		#region Life Cycle
+		protected override async Task OnInitializedAsync()
+		{
+			await base.OnInitializedAsync();
+			MerchantList = await HttpClientServer.CustomGetAsync<List<MerchantDto>>("api/merchant/all");
+		}
+		#endregion
 
-      #region Event Handler
+		#region Event Handler
 
-      protected void HandleApproveMerchant(MerchantDto merchant)
-      {
-         SelectedMerchant = merchant;
-         IsShowPopupConfirm = true;
-      }
+		protected void HandleApproveMerchant(MerchantDto merchant)
+		{
+			SelectedMerchant = merchant;
+			IsShowPopupConfirm = true;
+		}
 
-      protected async Task HandleConfirmApprove()
-      {
-         IsShowPopupConfirm = false;
-         await InvokeAsync(StateHasChanged);
-         ResponseModel = await HttpClientServer.CustomPutAsync($"api/merchant/approve", SelectedMerchant);
-         if (ResponseModel.IsSuccess)
-         {
-            SelectedMerchant.Status = MerchantStatus.Approved;
-         }
-         ResponseModel.IsShowPopup = true;
-         await InvokeAsync(StateHasChanged);
-      }
+		protected void HandleDeactiveMerchant(MerchantDto merchant)
+		{
+			SelectedMerchant = merchant;
+			IsShowPopupDeactive = true;
+		}
 
-      protected void HandleCancelApprove()
-      {
-         IsShowPopupConfirm = false;
-      }
-      #endregion
+		protected async Task HandleConfirmApprove()
+		{
+			IsShowPopupConfirm = false;
+			await InvokeAsync(StateHasChanged);
+			ResponseModel = await HttpClientServer.CustomPutAsync($"api/merchant/approve", SelectedMerchant);
+			if (ResponseModel.IsSuccess)
+			{
+				SelectedMerchant.Status = MerchantStatus.Approved;
+			}
+			ResponseModel.IsShowPopup = true;
+			await InvokeAsync(StateHasChanged);
+		}
 
-      #region Methods
+		protected async Task HandleConfirmDeactive()
+		{
+			IsShowPopupDeactive = false;
+			await InvokeAsync(StateHasChanged);
+			ResponseModel = await HttpClientServer.CustomPutAsync($"api/merchant/deactive", SelectedMerchant);
+			if (ResponseModel.IsSuccess)
+			{
+				SelectedMerchant.Status = MerchantStatus.AdminClosed;
+			}
+			ResponseModel.IsShowPopup = true;
+			await InvokeAsync(StateHasChanged);
+		}
 
-      #endregion
-   }
+		protected void HandleCancelApprove()
+		{
+			IsShowPopupConfirm = false;
+			IsShowPopupDeactive = false;
+		}
+		#endregion
+
+		#region Methods
+
+		#endregion
+	}
 }

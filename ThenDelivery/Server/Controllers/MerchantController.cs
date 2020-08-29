@@ -82,12 +82,31 @@ namespace ThenDelivery.Server.Controllers
 			}
 		}
 
+		[HttpPut("deactive")]
+		[Authorize(Roles = Const.Role.AdministrationRole)]
+		public async Task<IActionResult> DeactiveMerchant([FromBody] MerchantDto merchantDto)
+		{
+			try
+			{
+				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.AdminClosed));
+				return Ok(new CustomResponse(200, "Cập nhật thành công"));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+		}
+
 		[HttpPut("open")]
 		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> OpenMerchant([FromBody] MerchantDto merchantDto)
 		{
 			try
 			{
+				if (merchantDto.Status == MerchantStatus.AdminClosed)
+				{
+					return BadRequest(new CustomResponse(400, "Bạn không có quyền cấp quyền cho quán. Vui lòng liên hệ admin để mở lại quán."));
+				}
 				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
 				return Ok(new CustomResponse(200, "Cập nhật thành công"));
 			}

@@ -32,6 +32,12 @@ namespace ThenDelivery.Client.Pages
 			{
 				merchant.Status = MerchantStatus.Closed;
 			}
+			else
+			{
+				MyMerchantList =
+					await HttpClientServer.CustomGetAsync<List<MerchantDto>>("api/Merchant/my");
+				await InvokeAsync(StateHasChanged);
+			}
 			ResponseModel.IsShowPopup = true;
 		}
 
@@ -41,6 +47,12 @@ namespace ThenDelivery.Client.Pages
 			if (ResponseModel.IsSuccess)
 			{
 				merchant.Status = MerchantStatus.Approved;
+			}
+			else
+			{
+				MyMerchantList =
+					await HttpClientServer.CustomGetAsync<List<MerchantDto>>("api/Merchant/my");
+				await InvokeAsync(StateHasChanged);
 			}
 			ResponseModel.IsShowPopup = true;
 		}

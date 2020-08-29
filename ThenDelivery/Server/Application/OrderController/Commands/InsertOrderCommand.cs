@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Dtos;
 using ThenDelivery.Shared.Entities;
+using System.Linq;
 
 namespace ThenDelivery.Server.Application.OrderController.Commands
 {
@@ -41,9 +42,10 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 						throw new Exception("UserId is not valid");
 					}
 
+					var shippingAddressListDb = _dbContext.ShippingAddresses.Where(e => e.UserId == request._orderDto.User.Id);
 					// insert when user create new shipping address
 					var shippingAddress = request._orderDto.ShippingAddress;
-					if (shippingAddress.Id == 0)
+					if (shippingAddressListDb.Any(e => e.Id == shippingAddress.Id) == false)
 					{
 						var shippingAddressToInsert = new ShippingAddress()
 						{
@@ -60,8 +62,8 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 						await _dbContext.SaveChangesAsync();
 						shippingAddress.Id = shippingAddressToInsert.Id;
 					}
-               else
-               {
+					else
+					{
 						var shippingAddressToUpdate = await _dbContext.ShippingAddresses
 																.SingleOrDefaultAsync(e => e.Id == shippingAddress.Id);
 						shippingAddressToUpdate.CityCode = shippingAddress.City.CityCode;

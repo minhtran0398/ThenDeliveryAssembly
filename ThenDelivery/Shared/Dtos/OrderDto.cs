@@ -10,6 +10,7 @@ namespace ThenDelivery.Shared.Dtos
 		{
 			OrderItemList = new List<OrderItem>();
 			DeliveryDateTime = DateTime.Now;
+			ShippingAddress = new ShippingAddressDto();
 		}
 
 		public int Id { get; set; }

@@ -41,7 +41,7 @@
                {
                   <div class="form-check shipping-info-address-item">
                      <input class="form-check-input mt-3" type="radio"
-                            id="@addressItem.Id" name="group"
+                            id="@addressItem.Id" name="group" checked="@(addressItem.Id == Order.ShippingAddress.Id)"
                             @onchange="async () => await HandleChangeShippingAddress(addressItem)">
                      <div class="form-check-label" for="@addressItem.Id">
                         <span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 using ThenDelivery.Shared.Helper;
+using System.Linq;
 
 namespace ThenDelivery.Client.Components.Address
 {
@@ -23,14 +24,14 @@ namespace ThenDelivery.Client.Components.Address
 		[Parameter] public List<ShippingAddressDto> ShippingAddressList { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
 		[Parameter] public EventCallback OnConfirm { get; set; }
-      public ShippingAddressDto ShippingAddress { get; set; }
-      public EditContext FormContext { get; set; }
-      public DateTime DeliveryDate { get; set; }
+		public ShippingAddressDto ShippingAddress { get; set; }
+		public EditContext FormContext { get; set; }
+		public DateTime DeliveryDate { get; set; }
 
-      public PopupAddressMode AddressMode { get; set; }
+		public PopupAddressMode AddressMode { get; set; }
 		public CustomTime DeliveryTime { get; set; }
 
-      protected override void OnInitialized()
+		protected override void OnInitialized()
 		{
 			base.OnInitialized();
 			DeliveryTime = new CustomTime(Order.DeliveryDateTime);
@@ -40,9 +41,9 @@ namespace ThenDelivery.Client.Components.Address
 			{
 				ShippingAddress = new ShippingAddressDto();
 			}
-         else
-         {
-				ShippingAddress = Order.ShippingAddress;
+			else
+			{
+				ShippingAddress = new ShippingAddressDto(Order.ShippingAddress);
 			}
 			FormContext = new EditContext(ShippingAddress);
 		}
@@ -86,6 +87,8 @@ namespace ThenDelivery.Client.Components.Address
 				case PopupAddressMode.SelectEdit:
 					// not new model of form context => set default value
 					ShippingAddress.SetData(new ShippingAddressDto());
+					var max = ShippingAddressList?.Max(e => e?.Id) ?? 0;
+					ShippingAddress.Id = max + 1;
 					AddressMode = PopupAddressMode.CreateNew;
 					break;
 				case PopupAddressMode.CreateNew:
@@ -112,25 +115,26 @@ namespace ThenDelivery.Client.Components.Address
 
 		protected async Task HandleClose()
 		{
+			ShippingAddress = null;
 			await OnClose.InvokeAsync(null);
 		}
 
 		protected bool IsEnableSubmit()
-      {
+		{
 			TimeSpan time = DeliveryTime.ToTimeSpan();
 			var datetime = DeliveryDate.Date + time;
 			if (datetime < DateTime.Now)
-         {
+			{
 				return false;
-         }
+			}
 			return FormContext.Validate();
-      }
+		}
 
 		protected void HandleDeliveryDateChanged(DateTime dateTime)
-      {
+		{
 			DeliveryDate = dateTime.Date;
 			StateHasChanged();
-      }
+		}
 
 		protected async Task HandleConfirm()
 		{
@@ -138,7 +142,24 @@ namespace ThenDelivery.Client.Components.Address
 			{
 				TimeSpan time = DeliveryTime.ToTimeSpan();
 				Order.DeliveryDateTime = DeliveryDate.Date + time;
-				Order.ShippingAddress = ShippingAddress;
+				if (Order.ShippingAddress is null)
+				{
+					Order.ShippingAddress = new ShippingAddressDto(ShippingAddress);
+				}
+				else
+				{
+					Order.ShippingAddress.SetData(ShippingAddress);
+				}
+
+				if (AddressMode == PopupAddressMode.CreateNew)
+				{
+					ShippingAddressList.Add(new ShippingAddressDto(ShippingAddress));
+				}
+				else
+				{
+					var s = ShippingAddressList.SingleOrDefault(e => e.Id == ShippingAddress.Id);
+					s.SetData(ShippingAddress);
+				}
 				await OnConfirm.InvokeAsync(null);
 			}
 		}
@@ -146,21 +167,25 @@ namespace ThenDelivery.Client.Components.Address
 		protected void HandleSelectedCityChanged(CityDto newValue)
 		{
 			ShippingAddress.City = newValue;
+			StateHasChanged();
 		}
 
 		protected void HandleSelectedDistrictChanged(DistrictDto newValue)
 		{
 			ShippingAddress.District = newValue;
+			StateHasChanged();
 		}
 
 		protected void HandleSelectedWardChanged(WardDto newValue)
 		{
 			ShippingAddress.Ward = newValue;
+			StateHasChanged();
 		}
 
 		protected void HandleHouseNumberChanged(string newValue)
 		{
 			ShippingAddress.HouseNumber = newValue;
+			StateHasChanged();
 		}
 
 		#region Methods

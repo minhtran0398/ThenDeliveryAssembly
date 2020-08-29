@@ -20,7 +20,7 @@
    <Content>
       @if (Product.ToppingList is null || Product.ToppingList.Count == 0)
       {
-         <h2>Không có món ăn kèm</h2>
+         <h5>Không có món ăn kèm</h5>
       }
       else
       {
@@ -45,8 +45,11 @@
                    @onclick="HandleIncreaseQuantity" />
       </div>
       <div class="col-auto">
+         <div class="">Tổng tiền: @(((Product.UnitPrice + ToppingPrice) * Quantity).ToString("N0"))đ</div>
+      </div>
+      <div class="col-auto">
          <button class="btn btn-primary btn-sm" @onclick="async () => await HandleAddOrder()">
-            OK +@(((Product.UnitPrice + ToppingPrice) * Quantity).ToString("N0"))đ
+            Xác nhận
          </button>
       </div>
    </FooterTemplate>

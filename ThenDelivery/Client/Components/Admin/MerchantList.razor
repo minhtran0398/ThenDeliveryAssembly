@@ -36,6 +36,26 @@
       </FooterTemplate>
    </DxPopup>
 }
+@if (SelectedMerchant != null)
+{
+   <DxPopup HeaderText="Xác nhận" @bind-Visible="@IsShowPopupDeactive"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
+      <Content>
+         <p>Bạn chắc chắn muốn ngừng hoạt động quán này?</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-sm btn-success"
+                 @onclick="async () => await HandleConfirmDeactive()">
+            Xác nhận
+         </button>
+         <button class="btn btn-sm btn-dark"
+                 @onclick="HandleCancelApprove">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
+}
 @if (MerchantList is null)
 {
    <p>Đang tải...</p>
@@ -53,6 +73,7 @@ else
             <th>Mã số thuế</th>
             <th>Ngày giờ đăng ký</th>
             <th>Trạng thái</th>
+            <th></th>
          </tr>
       </thead>
       <tbody>
@@ -69,16 +90,23 @@ else
                <td>@merchant.TaxCode</td>
                <td>@merchant.CreateTime.ToString("HH:mm dd/MM/yyyy")</td>
                <td>
-                  @if (merchant.Status == MerchantStatus.NotApproved)
+                  <span class="@merchant.Status.GetCssClass()">@merchant.Status.GetStringValue()</span>
+               </td>
+               <td>
+                  @if (merchant.Status == MerchantStatus.NotApproved
+                        || merchant.Status == MerchantStatus.AdminClosed)
                   {
                      <button class="btn btn-sm btn-success"
                              @onclick="() => HandleApproveMerchant(merchant)">
                         Cấp quyền hoạt động
                      </button>
                   }
-                  else
+                  else if(merchant.Status != MerchantStatus.AdminClosed)
                   {
-                     <span class="@merchant.Status.GetCssClass()">@merchant.Status.GetStringValue()</span>
+                     <button class="btn btn-sm btn-danger"
+                             @onclick="() => HandleDeactiveMerchant(merchant)">
+                        Ngừng hoạt động
+                     </button>
                   }
                </td>
             </tr>

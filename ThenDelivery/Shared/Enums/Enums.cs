@@ -15,6 +15,7 @@ namespace ThenDelivery.Shared.Enums
 		None = 0,
 		NotApproved = 1,
 		Approved = 2,
-		Closed = 3
+		Closed = 3,
+		AdminClosed
 	}
 }
