@@ -8,31 +8,30 @@ using ThenDelivery.Server.Persistence;
 using ThenDelivery.Shared.Entities;
 using ThenDelivery.Shared.Enums;
 using ThenDelivery.Shared.Exceptions;
-using ThenDelivery.Shared.Helper.ExtensionMethods;
 
 namespace ThenDelivery.Server.Application.OrderController.Commands
 {
-	public class CancelOrderCommand : IRequest<Unit>
+	public class MerchantAcceptOrderCommand : IRequest<Unit>
 	{
 		private readonly int _orderId;
 
-		public CancelOrderCommand(int orderId)
+		public MerchantAcceptOrderCommand(int orderId)
 		{
 			_orderId = orderId;
 		}
 
-		public class Handler : IRequestHandler<CancelOrderCommand, Unit>
+		public class Handler : IRequestHandler<MerchantAcceptOrderCommand, Unit>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
-			private readonly ILogger<CancelOrderCommand> _logger;
+			private readonly ILogger<MerchantAcceptOrderCommand> _logger;
 
-			public Handler(ThenDeliveryDbContext dbContext, ILogger<CancelOrderCommand> logger)
+			public Handler(ThenDeliveryDbContext dbContext, ILogger<MerchantAcceptOrderCommand> logger)
 			{
 				_dbContext = dbContext;
 				_logger = logger;
 			}
 
-			public async Task<Unit> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
+			public async Task<Unit> Handle(MerchantAcceptOrderCommand request, CancellationToken cancellationToken)
 			{
 				using var trans = _dbContext.Database.BeginTransaction();
 				try
@@ -43,12 +42,12 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 						throw new Exception("Order doesnt exist");
 					}
 
-					if (order.Status == (byte)OrderStatus.Cancel || !((OrderStatus)(order.Status)).CanCancel())
+					if (order.Status == (byte)OrderStatus.MerchantAccept)
 					{
 						throw new UpdateOrderStatusException();
 					}
 
-					order.Status = (byte)OrderStatus.Cancel;
+					order.Status = (byte)OrderStatus.MerchantAccept;
 
 					await _dbContext.SaveChangesAsync();
 					await trans.CommitAsync();

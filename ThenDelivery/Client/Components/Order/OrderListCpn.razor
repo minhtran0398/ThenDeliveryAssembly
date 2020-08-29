@@ -16,6 +16,22 @@
    </DxPopup>
 }
 
+<DxPopup HeaderText="Thông tin" @bind-Visible="@IsShowPopup"
+         HeaderCssClass="bg-dark text-white p-2"
+         FooterCssClass="p-2 modal-footer">
+   <Content>
+      <p>Bạn chắc chắn muốn hủy đơn hàng này?</p>
+   </Content>
+   <FooterTemplate>
+      <button class="btn btn-sm btn-primary" @onclick="async () => await CancelOrder()">
+         Xác nhận
+      </button>
+      <button class="btn btn-sm btn-dark" @onclick="() => IsShowPopup = false">
+         Đóng
+      </button>
+   </FooterTemplate>
+</DxPopup>
+
 <table class="table font-small table-bordered">
    <thead class="thead-dark">
       <tr>
@@ -28,7 +44,7 @@
       </tr>
    </thead>
    <tbody>
-      @foreach (var orderItem in OrderList.OrderBy(e => e.OrderDateTime))
+      @foreach (var orderItem in OrderList.OrderByDescending(e => e.OrderDateTime))
       {
          <tr>
             <th scope="row">@(++Count)</th>
@@ -45,15 +61,15 @@
                Tổng cộng @(orderItem.OrderItemList.Count) món
             </td>
             <td><span class="@(orderItem.Status.GetCssClass())">@(orderItem.Status.GetStringValue())</span></td>
-            @if (orderItem.Status.CanCancel())
-            {
-               <td>
-                  <DxButton Text="Hủy đơn"
-                            RenderStyle="ButtonRenderStyle.Danger"
-                            SizeMode="SizeMode.Small"
-                            @onclick="async () => await HandleCancelOrder(orderItem)" />
-               </td>
-            }
+            <td>
+               @if (orderItem.Status.CanCancel())
+               {
+                     <DxButton Text="Hủy đơn"
+                               RenderStyle="ButtonRenderStyle.Danger"
+                               SizeMode="SizeMode.Small"
+                               @onclick="() => HandleCancelOrder(orderItem)" />
+               }
+            </td>
          </tr>
       }
    </tbody>

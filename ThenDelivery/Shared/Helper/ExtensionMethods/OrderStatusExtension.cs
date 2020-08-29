@@ -10,8 +10,9 @@ namespace ThenDelivery.Shared.Helper.ExtensionMethods
 			return status switch
 			{
 				OrderStatus.OrderSuccess => "Đặt hàng thành công",
+				OrderStatus.MerchantAccept => "Đã xác hận",
 				OrderStatus.ShipperAccept => "Đã nhận đơn",
-				OrderStatus.Delivery => "Đang giao",
+				OrderStatus.Delivery => "Đang giao hàng",
 				OrderStatus.DeliverySuccess => "Giao hàng thành công",
 				OrderStatus.Cancel => "Đơn đã hủy",
 				_ => throw new ArgumentException("invalid GetStringValue enum value", nameof(status)),
@@ -22,7 +23,7 @@ namespace ThenDelivery.Shared.Helper.ExtensionMethods
 		{
 			return status switch
 			{
-				OrderStatus.OrderSuccess => "Chọn đơn hàng này",
+				OrderStatus.MerchantAccept => "Chọn đơn hàng này",
 				OrderStatus.ShipperAccept => "Tiến hành giao hàng",
 				OrderStatus.Delivery => "Hoàn tất đơn hàng",
 				_ => throw new ArgumentException("invalid GetStringNextAction enum value", nameof(status)),
@@ -34,7 +35,8 @@ namespace ThenDelivery.Shared.Helper.ExtensionMethods
 			return status switch
 			{
 				OrderStatus.None => OrderStatus.OrderSuccess,
-				OrderStatus.OrderSuccess => OrderStatus.ShipperAccept,
+				OrderStatus.OrderSuccess => OrderStatus.MerchantAccept,
+				OrderStatus.MerchantAccept => OrderStatus.ShipperAccept,
 				OrderStatus.ShipperAccept => OrderStatus.Delivery,
 				OrderStatus.Delivery => OrderStatus.DeliverySuccess,
 				_ => throw new ArgumentException("Invalid GetNextStatus Enum Value", nameof(status)),
@@ -45,22 +47,24 @@ namespace ThenDelivery.Shared.Helper.ExtensionMethods
 		{
 			return status switch
 			{
+				OrderStatus.OrderSuccess => "badge badge-pill badge-secondary",
+				OrderStatus.MerchantAccept => "badge badge-pill badge-info",
 				OrderStatus.ShipperAccept => "badge badge-pill badge-info",
 				OrderStatus.Delivery => "badge badge-pill badge-primary",
 				OrderStatus.DeliverySuccess => "badge badge-pill badge-success",
-				OrderStatus.OrderSuccess => "badge badge-pill badge-secondary",
 				OrderStatus.Cancel => "badge badge-pill badge-danger",
 				_ => throw new ArgumentException("invalid enum value", nameof(status)),
 			};
 		}
 
 		public static bool CanCancel(this OrderStatus status)
-      {
+		{
 			return status switch
 			{
 				OrderStatus.None => true,
 				OrderStatus.OrderSuccess => true,
-				OrderStatus.ShipperAccept => true,
+				OrderStatus.MerchantAccept => false,
+				OrderStatus.ShipperAccept => false,
 				OrderStatus.Delivery => false,
 				OrderStatus.DeliverySuccess => false,
 				OrderStatus.Cancel => false,

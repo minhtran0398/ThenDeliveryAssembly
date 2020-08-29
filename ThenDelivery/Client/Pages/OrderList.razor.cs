@@ -59,7 +59,7 @@ namespace ThenDelivery.Client.Pages
 		protected async Task LoadOrderList()
 		{
 			OrderList =
-				await HttpClientServer.CustomGetAsync<List<OrderDto>>($"api/Order?orderStatus={(byte)OrderStatus.OrderSuccess}");
+				await HttpClientServer.CustomGetAsync<List<OrderDto>>($"api/Order?orderStatus={(byte)OrderStatus.MerchantAccept}");
 		}
 	}
 }

@@ -4,14 +4,15 @@ namespace ThenDelivery.Shared.Enums
 	{
 		None = 0,
 		OrderSuccess = 1,
-		ShipperAccept = 2,
-		Delivery = 3,
-		DeliverySuccess = 4,
-		Cancel = 5
+		MerchantAccept = 2,
+		ShipperAccept = 3,
+		Delivery = 4,
+		DeliverySuccess = 5,
+		Cancel = 6
 	}
 
 	public enum MerchantStatus
-   {
+	{
 		None = 0,
 		NotApproved = 1,
 		Approved = 2,
