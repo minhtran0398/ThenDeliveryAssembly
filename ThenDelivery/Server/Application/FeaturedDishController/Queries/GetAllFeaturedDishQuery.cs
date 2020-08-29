@@ -13,6 +13,13 @@ namespace ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries
 {
 	public class GetAllFeaturedDishQuery : IRequest<IEnumerable<FeaturedDishDto>>
 	{
+		private readonly int _id;
+
+		public GetAllFeaturedDishQuery(int id = 0)
+		{
+			_id = id;
+		}
+
 		public class Handler : IRequestHandler<GetAllFeaturedDishQuery, IEnumerable<FeaturedDishDto>>
 		{
 			private readonly ThenDeliveryDbContext _dbContext;
@@ -30,17 +37,30 @@ namespace ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries
 				var result = new List<FeaturedDishDto>();
 				try
 				{
-					result = await (from fe in _dbContext.FeaturedDishes
-										 select new FeaturedDishDto
-										 {
-											 Id = fe.Id,
-											 Name = fe.Name,
-										 }).ToListAsync();
+					if (request._id == 0)
+					{
+						result = await (from fe in _dbContext.FeaturedDishes
+											 select new FeaturedDishDto
+											 {
+												 Id = fe.Id,
+												 Name = fe.Name,
+											 }).ToListAsync();
+					}
+					else
+					{
+						result = await (from fe in _dbContext.FeaturedDishes
+											 where fe.Id == request._id
+											 select new FeaturedDishDto
+											 {
+												 Id = fe.Id,
+												 Name = fe.Name,
+											 }).ToListAsync();
+					}
 				}
 				catch (Exception ex)
 				{
 					_logger.LogError(ex.Message);
-					return null;
+					throw;
 				}
 				return result;
 			}

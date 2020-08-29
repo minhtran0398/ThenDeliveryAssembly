@@ -1,0 +1,25 @@
+@page "/featured-dish/{FeaturedDishId:int}"
+@inherits HomeFilterDishBase
+
+@if (MerchantList == null)
+{
+	<p>Đang tải...</p>
+}
+else if(MerchantList.Count == 0)
+{
+	<p>Không có cửa hàng nào bán món @(FeaturedDish?.Name)</p>
+}
+else
+{
+	<div class="now-list-restaurant">
+		<div class="title-wrapper">
+			Danh sách cửa hàng có món @(FeaturedDish?.Name)
+		</div>
+		<div class="list-restaurant">
+			@foreach (var merchant in MerchantList)
+			{
+				<MerchantCard MerchantModel="merchant" />
+			}
+		</div>
+	</div>
+}

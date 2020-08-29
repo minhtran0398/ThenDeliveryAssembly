@@ -8,17 +8,13 @@
 else
 {
 	<div class="now-list-restaurant">
-		<div class="title-wrapper">
-			<h2 class="title">Ưu đãi</h2>
-			<a class="view-all-deal" href="/ho-chi-minh/food/deals">
-				<span class="icon-list-deal">
-					<span class="square"></span>
-					<span class="square"></span>
-					<span class="square"></span>
-					<span class="square"></span>
-				</span>
-				Xem tất cả
-			</a>
+		<div class="">
+			@foreach (var featuredDish in FeaturedDishList)
+			{
+				<a href="/featured-dish/@(featuredDish.Id)" target="_blank" class="category-item-link">
+					<span class="category-item">@featuredDish.Name</span>
+				</a>
+			}
 		</div>
 		<div class="list-restaurant">
 			@foreach (var merchant in MerchantList)

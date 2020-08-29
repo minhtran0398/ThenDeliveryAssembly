@@ -13,6 +13,24 @@
 .disabled-content{
 	
 }
+
+.category-item-link{
+	margin-right: 15px;
+	margin-bottom: 15px;
+	display: inline-block;
+}
+
+.category-item{
+	font-size: 14px;
+	padding: 5px 15px;
+	white-space: nowrap;
+	cursor: pointer;
+	padding: 7px 21px;
+	border-radius: 6px;
+	border: 1px solid;
+	display: inline-block;
+	transition: all .3s ease;
+}
 /*================================================================*/
 /* Create menu */
 .menu-create-group {
