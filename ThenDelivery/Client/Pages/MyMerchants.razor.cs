@@ -25,6 +25,11 @@ namespace ThenDelivery.Client.Pages
 			NavigationManager.NavigateTo($"/order-of-merchant/{merchantId}");
 		}
 
+		protected void HandleMoveToEditMenuPage(int merchantId)
+		{
+			NavigationManager.NavigateTo($"/merchant-edit/{merchantId}");
+		}
+
 		protected async Task HandleCloseMerchant(MerchantDto merchant)
 		{
 			ResponseModel = await HttpClientServer.CustomPutAsync("api/merchant/close", merchant);

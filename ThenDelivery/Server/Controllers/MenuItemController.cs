@@ -20,10 +20,10 @@ namespace ThenDelivery.Server.Controllers
 	{
 		private readonly IImageService _imageService;
 
-      public MenuItemController(IImageService imageService)
-      {
+		public MenuItemController(IImageService imageService)
+		{
 			_imageService = imageService;
-      }
+		}
 
 		[HttpPost]
 		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
@@ -82,43 +82,43 @@ namespace ThenDelivery.Server.Controllers
 		[HttpGet("edit")]
 		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> GetMenuItemForEdit(int merchantId)
-      {
-         try
-         {
+		{
+			try
+			{
 				IEnumerable<EditMenuItemVM> merchantMenues =
 						await Mediator.Send(new GetEditMenuItemQuery(merchantId));
 
 				return Ok(merchantMenues);
 			}
-         catch (Exception ex)
-         {
+			catch (Exception ex)
+			{
 				return BadRequest(new CustomResponse(400, ex.Message));
-         }
-      }
+			}
+		}
 
 		[HttpPut("edit")]
 		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
 		public async Task<IActionResult> UpdateMenuItemMerchant([FromBody] EditMerchantVM editMerchant)
-      {
-         try
-         {
-            foreach (var menuItem in editMerchant.MenuItemList)
-            {
-               foreach (var product in menuItem.ProductList)
-               {
-						if(product.Image.Length > 100)
-                  {
+		{
+			try
+			{
+				foreach (var menuItem in editMerchant.MenuItemList)
+				{
+					foreach (var product in menuItem.ProductList)
+					{
+						if (product.Image.Length > 100)
+						{
 							product.Image = _imageService.SaveImage(product.Image, "Product");
-                  }
-               }
-            }
+						}
+					}
+				}
 				await Mediator.Send(new UpdateMenuItemCommand(editMerchant));
-				return Ok(new CustomResponse(200, "Update merchant menu item menu success"));
+				return Ok(new CustomResponse(200, "Cập nhật thành công"));
 			}
-         catch (Exception ex)
-         {
-				return BadRequest(new CustomResponse(400, ex.Message));
-         }
-      }
+			catch (Exception)
+			{
+				return BadRequest(new CustomResponse(400, "Cập nhật thất bại"));
+			}
+		}
 	}
 }

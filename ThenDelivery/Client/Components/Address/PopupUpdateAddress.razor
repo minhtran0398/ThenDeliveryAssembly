@@ -1,16 +1,17 @@
 ﻿@inherits PopupUpdateAddressBase
 
 <DxPopup HeaderText="Thay đổi thông tin giao hàng"
-			ShowCloseButton="true"
+			ShowCloseButton="false"
 			CssClass="shipping-info-edit-popup"
          HeaderCssClass="bg-dark text-white p-2"
          FooterCssClass="p-2 modal-footer">
 	<Content>
 		<div class="shipping-info-delivery-time">
-			Thời gian giao hàng <br/>
+			<span class="font-weight-bold">Thời gian giao hàng</span> <br/>
 			<div class="row">
 				<div class="col">
 					<DxDateEdit Date="@DeliveryDate"
+                           MinDate="@(DateTime.Today)"
                            DisplayFormat="dd/MM/yyyy"
                            DateChanged="HandleDeliveryDateChanged"
                            DateExpression="() => DeliveryDate"
@@ -24,7 +25,7 @@
 		</div>
       <div class="shipping-info-address">
          <div class="shipping-info-title">
-            Chọn địa chỉ giao hàng
+            <span class="font-weight-bold">Chọn địa chỉ giao hàng</span>
             <div class="float-right">
                <a href="javascript:void(0)" class="text-decoration-none"
                      @onclick="async () => await HandleChangeMode()">@GetStringMode()</a>
@@ -53,13 +54,13 @@
                }
             }
          </div>
-         @if (ShippingAddress != null && AddressMode != PopupAddressMode.Select)
-         {
-            <div class="shipping-info-create-address">
-               <EditForm EditContext="FormContext" OnValidSubmit="async () => await HandleConfirm()">
-                  <FluentValidator Validator="new ShippingAddressValidator()" />
-                  <ValidationSummary />
-                  <div class="row">
+         <div class="shipping-info-create-address">
+            <EditForm EditContext="FormContext" OnValidSubmit="async () => await HandleConfirm()">
+               <FluentValidator Validator="new ShippingAddressValidator()" />
+               <ValidationSummary />
+               <div class="row">
+                  @if (ShippingAddress != null && AddressMode != PopupAddressMode.Select)
+                  {
                      <div class="col-md-6">
                         <label>Họ tên:</label>
                         <DxTextBox Text="@ShippingAddress.FullName"
@@ -111,10 +112,10 @@
                                    TextChanged="HandleHouseNumberChanged"
                                    TextExpression="() => ShippingAddress.HouseNumber" />
                      </div>
-                  </div>
-               </EditForm>
-            </div>
-         }
+                  }
+               </div>
+            </EditForm>
+         </div>
       </div>
 	</Content>
 	<FooterTemplate>

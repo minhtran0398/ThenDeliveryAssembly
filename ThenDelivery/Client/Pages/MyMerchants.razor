@@ -31,7 +31,8 @@ else
             <div class="w-100">
                <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1 my-merchant-name">@merchant.Name</h5>
-                  @if (merchant.Status != MerchantStatus.NotApproved)
+                  @if (merchant.Status != MerchantStatus.NotApproved
+                        && merchant.Status != MerchantStatus.AdminClosed)
                   {
                      <button class="btn btn-sm btn-outline-primary mr-1"
                              @onclick="() => HandleMoveToOrderPage(merchant.Id)">
@@ -53,7 +54,16 @@ else
                      }
                   }
                </div>
-               <p class="mb-1">@merchant.AddressString</p>
+               <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-1">@merchant.AddressString</p>
+                  @if (merchant.Status != MerchantStatus.AdminClosed)
+                  {
+                     <button class="btn btn-sm btn-outline-primary mr-1"
+                             @onclick="() => HandleMoveToEditMenuPage(merchant.Id)">
+                        Quản lý danh mục món ăn
+                     </button>
+                  }
+               </div>
                <small class="@merchant.Status.GetCssClass()">
                   @merchant.Status.GetStringValue()
                </small>

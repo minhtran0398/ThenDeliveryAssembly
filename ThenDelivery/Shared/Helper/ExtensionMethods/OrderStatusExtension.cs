@@ -10,7 +10,7 @@ namespace ThenDelivery.Shared.Helper.ExtensionMethods
 			return status switch
 			{
 				OrderStatus.OrderSuccess => "Đặt hàng thành công",
-				OrderStatus.MerchantAccept => "Đã xác hận",
+				OrderStatus.MerchantAccept => "Đã xác nhận",
 				OrderStatus.ShipperAccept => "Đã nhận đơn",
 				OrderStatus.Delivery => "Đang giao hàng",
 				OrderStatus.DeliverySuccess => "Giao hàng thành công",

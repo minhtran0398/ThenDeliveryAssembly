@@ -22,7 +22,9 @@
                   }
                </div>
                <div class="row ml-0 mr-0">
-                  <span class="font-small">Thời gian giao hàng: @Order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")</span>
+                  <span class="font-small">
+                     <span class="font-weight-bold">Thời gian giao hàng:</span> @Order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy")
+                  </span>
                   @if(new CustomTime(Order.DeliveryDateTime).IsInRange(OpenTime, CloseTime) == false)
                   {
                      <span class="font-small text-danger font-italic">

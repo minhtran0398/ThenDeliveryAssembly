@@ -2,16 +2,16 @@
 @page "/merchant-register"
 
 <DxTabs ActiveTabIndex="@ActiveTabIndex">
-	<DxTabPage Text="Thông tin quán">
+	<DxTabPage Text="Thông tin quán" CssClass="disabled-content">
 		<MerchantRegisterForm MerchantModel="MerchantModel"
 									 OnSubmitMerchant="HandleAfterSubmitMerchant"/>
 	</DxTabPage>
-	<DxTabPage Text="Tạo nhóm món"
+	<DxTabPage Text="Tạo thực đơn"  CssClass="disabled-content"
 				  Visible="@(ActiveTabIndex >= 1)">
 		<MerchantMenuForm TargetMerchantId="MerchantModelId"
 								OnChangeTab="HandleOnMenuChangeTab"/>
 	</DxTabPage>
-	<DxTabPage Text="Thêm món"
+	<DxTabPage Text="Thêm món" CssClass="disabled-content"
 				  Visible="@(ActiveTabIndex >= 2)">
 		<AddProduct TargetMerchantId="MerchantModelId"
 						OnChangeTab="HandleOnProductChangeTab"/>
