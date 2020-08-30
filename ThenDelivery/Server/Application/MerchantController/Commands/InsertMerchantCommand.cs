@@ -32,37 +32,37 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
 
 			public async Task<int> Handle(InsertMerchantCommand request, CancellationToken cancellationToken)
 			{
-				using (var trans = _dbContext.Database.BeginTransaction())
-				{
-					try
-					{
-						Merchant merchantToAdd = GetMerchant(request._merchantDto);
+using (var trans = _dbContext.Database.BeginTransaction())
+{
+	try
+	{
+		Merchant merchantToAdd = GetMerchant(request._merchantDto);
 
-						await _dbContext.Merchants.AddAsync(merchantToAdd);
-						await _dbContext.SaveChangesAsync();
-						request._merchantDto.Id = merchantToAdd.Id;
+		await _dbContext.Merchants.AddAsync(merchantToAdd);
+		await _dbContext.SaveChangesAsync();
+		request._merchantDto.Id = merchantToAdd.Id;
 
-						// Insert to many to many table with merchant type
-						List<MTMerchant> merchantTypeMerchantToAdd =
-							GetMerchantTypes(request._merchantDto);
-						await _dbContext.MTMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
+		// Insert to many to many table with merchant type
+		List<MTMerchant> merchantTypeMerchantToAdd =
+			GetMerchantTypes(request._merchantDto);
+		await _dbContext.MTMerchants.AddRangeAsync(merchantTypeMerchantToAdd);
 
-						// Insert to many to many table with featured dish category
-						List<FDMerchant> featuredDishCategoryMerchantToAdd =
-							GetFeaturedDishCategoies(request._merchantDto);
-						await _dbContext.FDMerchants.AddRangeAsync(featuredDishCategoryMerchantToAdd);
-						await _dbContext.SaveChangesAsync();
+		// Insert to many to many table with featured dish category
+		List<FDMerchant> featuredDishCategoryMerchantToAdd =
+			GetFeaturedDishCategoies(request._merchantDto);
+		await _dbContext.FDMerchants.AddRangeAsync(featuredDishCategoryMerchantToAdd);
+		await _dbContext.SaveChangesAsync();
 
-						await trans.CommitAsync();
-					}
-					catch (Exception ex)
-					{
-						await trans.RollbackAsync();
-						_logger.LogError(ex, "Insert fail: {0}", request._merchantDto);
-						return -1;
-					}
-				}
-				return request._merchantDto.Id;
+		await trans.CommitAsync();
+	}
+	catch (Exception ex)
+	{
+		await trans.RollbackAsync();
+		_logger.LogError(ex, "Insert fail: {0}", request._merchantDto);
+		return -1;
+	}
+}
+return request._merchantDto.Id;
 			}
 
 			private Merchant GetMerchant(MerchantDto merchantDto)

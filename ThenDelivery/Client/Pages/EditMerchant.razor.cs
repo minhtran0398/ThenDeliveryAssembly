@@ -170,7 +170,13 @@ namespace ThenDelivery.Client.Pages
 
 		protected async Task HandleValidSubmit()
 		{
-			if (FormContext.Validate())
+			if(MerchantModel.MenuItemList.Any(e => e.ProductList.Count == 0))
+         {
+				ResponseModel = new CustomResponse(200, "Lỗi. Mỗi thực đơn phải có ít nhất 1 món ăn");
+				ResponseModel.IsShowPopup = true;
+				return;
+         }
+			if (FormContext.Validate() && MerchantModel.MenuItemList.All(e => e.ProductList.Count > 0))
 			{
 				ResponseModel = await HttpClientServer.CustomPutAsync($"api/menuitem/edit", MerchantModel);
 				ResponseModel.IsShowPopup = true;

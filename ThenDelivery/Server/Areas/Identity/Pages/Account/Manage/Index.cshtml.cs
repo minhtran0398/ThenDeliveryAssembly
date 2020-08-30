@@ -20,7 +20,8 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 			_signInManager = signInManager;
 		}
 
-		public string Username { get; set; }
+		[Display(Name = "Địa chỉ email")]
+		public string Email { get; set; }
 
 		[TempData]
 		public string StatusMessage { get; set; }
@@ -30,6 +31,9 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 
 		public class InputModel
 		{
+			[Display(Name = "Tên người dùng")]
+			public string Username { get; set; }
+
 			[Phone]
 			[Display(Name = "Số điện thoại")]
 			public string PhoneNumber { get; set; }
@@ -38,13 +42,15 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 		private async Task LoadAsync(User user)
 		{
 			var userName = await _userManager.GetUserNameAsync(user);
+			var email = await _userManager.GetEmailAsync(user);
 			var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-			Username = userName;
+			Email = email;
 
 			Input = new InputModel
 			{
-				PhoneNumber = phoneNumber
+				PhoneNumber = phoneNumber,
+				Username = userName
 			};
 		}
 
@@ -75,12 +81,22 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account.Manage
 			}
 
 			var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+			var userName = await _userManager.GetUserNameAsync(user);
 			if (Input.PhoneNumber != phoneNumber)
 			{
 				var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
 				if (!setPhoneResult.Succeeded)
 				{
-					StatusMessage = "Unexpected error when trying to set phone number.";
+					StatusMessage = "Lỗi cập nhật.";
+					return RedirectToPage();
+				}
+			}
+			if (Input.Username != userName)
+			{
+				var setUserName = await _userManager.SetUserNameAsync(user, Input.Username);
+				if (!setUserName.Succeeded)
+				{
+					StatusMessage = "Lỗi cập nhật.";
 					return RedirectToPage();
 				}
 			}

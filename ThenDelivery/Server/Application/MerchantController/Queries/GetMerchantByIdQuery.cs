@@ -126,13 +126,13 @@ namespace ThenDelivery.Server.Application.MerchantController.Queries
 												 UserName = user.UserName,
 											 }
 										 })
-										 .Where(m => m.Id == request._merchantId)
+										 .Where(m => m.Id == request._merchantId && m.Status == MerchantStatus.Approved)
 										 .SingleAsync();
 				}
 				catch (Exception ex)
 				{
 					_logger.LogError(ex, ex.Message);
-					return null;
+					throw;
 				}
 
 				return result;

@@ -8,7 +8,7 @@
 </DxPopup>
 
 <div class="add-product__form-title">
-	<h3>Menu giao hàng - Thêm món</h3>
+	<h3>Thêm món</h3>
 	<p>vd: Thêm món Cơm gà, Cánh gà chiên vào "Món chính"</p>
 	<DxButton CssClass="add-product__form-title-button"
 				 Visible="@(ProductList?.Count != 0)"
@@ -74,5 +74,5 @@ else
              Enabled="@IsEnableSaveButton"
              RenderStyle="@ButtonRenderStyle.Success"
              @onclick="async () => await HandleSaveAndContinue()"
-             Text="Lưu và tiếp tục" />
+             Text="Hoàn tất đăng ký" />
 </div>

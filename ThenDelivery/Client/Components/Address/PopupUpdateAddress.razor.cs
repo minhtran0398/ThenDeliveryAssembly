@@ -27,6 +27,7 @@ namespace ThenDelivery.Client.Components.Address
 		public ShippingAddressDto ShippingAddress { get; set; }
 		public EditContext FormContext { get; set; }
 		public DateTime DeliveryDate { get; set; }
+		public bool IsShowForm { get; set; }
 
 		public PopupAddressMode AddressMode { get; set; }
 		public CustomTime DeliveryTime { get; set; }
@@ -46,12 +47,14 @@ namespace ThenDelivery.Client.Components.Address
 				ShippingAddress = new ShippingAddressDto(Order.ShippingAddress);
 			}
 			FormContext = new EditContext(ShippingAddress);
+			StateHasChanged();
 		}
 
 		protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
 		{
 			AddressMode = PopupAddressMode.SelectEdit;
 			// set value => not set directly to another object
+			IsShowForm = true;
 			ShippingAddress.SetData(address);
 			await InvokeAsync(StateHasChanged);
 		}
@@ -86,13 +89,16 @@ namespace ThenDelivery.Client.Components.Address
 				case PopupAddressMode.Select:
 				case PopupAddressMode.SelectEdit:
 					// not new model of form context => set default value
+					IsShowForm = true;
 					ShippingAddress.SetData(new ShippingAddressDto());
+					FormContext = new EditContext(ShippingAddress);
 					var max = ShippingAddressList?.Max(e => e?.Id) ?? 0;
 					ShippingAddress.Id = max + 1;
 					AddressMode = PopupAddressMode.CreateNew;
 					break;
 				case PopupAddressMode.CreateNew:
-					ShippingAddress = null;
+					//ShippingAddress = null;
+					IsShowForm = false;
 					AddressMode = PopupAddressMode.SelectEdit;
 					break;
 				default:
@@ -123,7 +129,7 @@ namespace ThenDelivery.Client.Components.Address
 		{
 			TimeSpan time = DeliveryTime.ToTimeSpan();
 			var datetime = DeliveryDate.Date + time;
-			if (datetime < DateTime.Now)
+			if (datetime < DateTime.Now - TimeSpan.FromMinutes(1))
 			{
 				return false;
 			}

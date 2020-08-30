@@ -41,6 +41,11 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 					{
 						throw new Exception("UserId is not valid");
 					}
+					var userOrder = await _dbContext.Users.SingleOrDefaultAsync(e => e.Id == request._orderDto.User.Id);
+					if (userOrder.EmailConfirmed == false)
+					{
+						throw new ArgumentException("Vui lòng xác nhận email để đặt hàng");
+					}
 
 					var shippingAddressListDb = _dbContext.ShippingAddresses.Where(e => e.UserId == request._orderDto.User.Id);
 					// insert when user create new shipping address
@@ -89,6 +94,10 @@ namespace ThenDelivery.Server.Application.OrderController.Commands
 
 					await _dbContext.SaveChangesAsync();
 					await trans.CommitAsync();
+				}
+				catch (ArgumentException)
+				{
+					throw;
 				}
 				catch (Exception ex)
 				{

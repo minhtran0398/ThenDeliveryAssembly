@@ -1,0 +1,161 @@
+﻿@page "/merchant-edit-info/{Id:int}"
+@inherits MerchantEditPageBase
+
+@if (ResponseModel != null)
+{
+   <DxPopup HeaderText="Thông tin" @bind-Visible="@ResponseModel.IsShowPopup"
+            HeaderCssClass="bg-dark text-white p-2"
+            FooterCssClass="p-2 modal-footer">
+      <Content>
+         <p>@ResponseModel.Message</p>
+      </Content>
+      <FooterTemplate>
+         <button class="btn btn-sm btn-dark" @onclick="() => HandleReload()">
+            Đóng
+         </button>
+      </FooterTemplate>
+   </DxPopup>
+}
+
+@if (MerchantModel is null)
+{
+   <p>Đang tải...</p>
+}
+else
+{
+   <EditForm EditContext="EditContext"
+             OnSubmit="async () => await HandleOnSubmit()">
+      <FluentValidator Validator="new MerchantValidator()" />
+      <ValidationSummary />
+
+      <div class="row">
+         <div class="col-md-6 row-item pt-2">
+            <label>Ảnh đại diện: </label>
+            <div class="">
+               <CustomImageEdit Base64String="@MerchantModel.Avatar"
+                                Width="100"
+                                Height="100"
+                                OnChangeImage="HandleAvatarChanged" />
+            </div>
+         </div>
+         <div class="col-md-6 row-item pt-2">
+            <label>Hình cover: </label>
+            <div class="">
+               <CustomImageEdit Base64String="@MerchantModel.CoverPicture"
+                                Width="100"
+                                Height="100"
+                                OnChangeImage="HandleCoverPictureChanged" />
+            </div>
+         </div>
+         <div class="col-md-6 row-item">
+            <label>Tên quán: </label>
+            <DxTextBox Text="@MerchantModel.Name"
+                       TextChanged="HandleMerchantNameChanged"
+                       TextExpression="() => MerchantModel.Name" />
+         </div>
+         <div class="col-md-6 row-item">
+            <label>Mã số thuế: </label>
+            <DxTextBox Text="@MerchantModel.TaxCode"
+                       TextChanged="HandleTaxCodeChanged"
+                       TextExpression="() => MerchantModel.TaxCode" />
+         </div>
+         <div class="col-md-6 row-item">
+            <label>Số điện thoại: </label>
+            <DxTextBox Text="@MerchantModel.PhoneNumber"
+                       TextChanged="HandlePhoneNumberChanged"
+                       TextExpression="() => MerchantModel.PhoneNumber" />
+         </div>
+         <div class="col-md-6 row-item">
+            <label>Từ khóa tìm kiếm (cách nhau bằng dấu phẩy): </label>
+            <DxTextBox Text="@MerchantModel.SearchKey"
+                       TextChanged="HandleSearchKeyChanged"
+                       TextExpression="() => MerchantModel.SearchKey" />
+         </div>
+         <div class="col-md-6 row-item">
+            <label>Giờ mở cửa: </label>
+            <DxTextBox Text="@MerchantModel.OpenTime.TimeString"
+                       TextExpression="() => MerchantModel.OpenTime.TimeString"
+                       TextChanged="async (newValue) => await HandleOpenTimeChanged(newValue)" />
+         </div>
+         <div class="col-md-6 row-item">
+            <label>Giờ đóng cửa: </label>
+            <DxTextBox Text="@MerchantModel.CloseTime.TimeString"
+                       TextExpression="() => MerchantModel.CloseTime.TimeString"
+                       TextChanged="async (newValue) => await HandleCloseTimeChanged(newValue)" />
+         </div>
+         <div class="col-md-12 row-item">
+            <label>Mô tả quán: </label>
+            <DxTextBox Text="@MerchantModel.Description"
+                       TextChanged="HandleDescriptionChanged"
+                       TextExpression="() => MerchantModel.Description" />
+         </div>
+         <div class="col-md-3 row-item">
+            <label>Tỉnh / thành phố: </label>
+            <DxComboBox NullText="Chọn tỉnh thành phố ..."
+                        AllowUserInput="true"
+                        FilteringMode="DataGridFilteringMode.Contains"
+                        TextFieldName="DisplayText"
+                        DataAsync="HandleLoadCitiesAsync"
+                        SelectedItem="@MerchantModel.City"
+                        SelectedItemChanged="HandleSelectedCityChanged"
+                        SelectedItemExpression="() => MerchantModel.City" />
+         </div>
+         <div class="col-md-3 row-item">
+            <label>Quận / huyện: </label>
+            <DxComboBox NullText="Chọn quận huyện ..."
+                        AllowUserInput="true"
+                        FilteringMode="DataGridFilteringMode.Contains"
+                        TextFieldName="DisplayText"
+                        DataAsync="HandleLoadDistrictsAsync"
+                        SelectedItem="@MerchantModel.District"
+                        SelectedItemChanged="HandleSelectedDistrictChanged"
+                        SelectedItemExpression="() => MerchantModel.District" />
+         </div>
+         <div class="col-md-3 row-item">
+            <label>Xã / Phường / Thị trấn: </label>
+            <DxComboBox NullText="Chọn phường xã thị trấn ..."
+                        AllowUserInput="true"
+                        FilteringMode="DataGridFilteringMode.Contains"
+                        TextFieldName="DisplayText"
+                        DataAsync="HandleLoadWardsAsync"
+                        SelectedItem="@MerchantModel.Ward"
+                        SelectedItemChanged="HandleSelectedWardChanged"
+                        SelectedItemExpression="() => MerchantModel.Ward" />
+         </div>
+         <div class="col-md-3 row-item">
+            <label>Địa chỉ quán: </label>
+            <DxTextBox Text="@MerchantModel.HouseNumber"
+                       TextChanged="HandleHouseNumberChanged"
+                       TextExpression="() => MerchantModel.HouseNumber" />
+         </div>
+         <div class="col-md-4 row-item">
+            <label>Loại quán (tối đa @Const.MaxMerTypePerMerchant): </label>
+            <DxListBox DataAsync="HandleLoadMerchantTypeAsync"
+                       TextFieldName="DisplayText"
+                       SelectionMode="ListBoxSelectionMode.Multiple"
+                       ShowCheckboxes="true"
+                       SelectedItems="@MerchantModel.MerTypeList"
+                       SelectedItemsChanged="HandleSelectedMerTypeChanged"
+                       SelectedItemsExpression="() => MerchantModel.MerTypeList"
+                       style="height: 232px;">
+            </DxListBox>
+         </div>
+         <div class="col-md-4 row-item">
+            <label>Món ăn đặc trưng (tối đa @Const.MaxFeaturedDishPerMerchant): </label>
+            <DxListBox DataAsync="HandleLoadFeaturedDishCategoryAsync"
+                       TextFieldName="DisplayText"
+                       SelectionMode="ListBoxSelectionMode.Multiple"
+                       ShowCheckboxes="true"
+                       SelectedItems="@MerchantModel.FeaturedDishList"
+                       SelectedItemsChanged="HandleSelectedFeaturedDishChanged"
+                       SelectedItemsExpression="() => MerchantModel.FeaturedDishList"
+                       style="height: 232px;">
+            </DxListBox>
+         </div>
+
+         <div class="col-md-12">
+            <DxButton SubmitFormOnClick="true" Text="Cập nhật" RenderStyle="@ButtonRenderStyle.Secondary" />
+         </div>
+      </div>
+   </EditForm>
+}

@@ -58,9 +58,13 @@ namespace ThenDelivery.Server.Controllers
 
 				return Ok(new CustomResponse(200, "Đặt hàng thành công"));
 			}
-			catch (Exception ex)
+			catch (ArgumentException)
 			{
-				return BadRequest(new CustomResponse(400, ex.Message));
+				return BadRequest(new CustomResponse(400, "Vui lòng xác nhận email để đặt hàng"));
+			}
+			catch (Exception)
+			{
+				return BadRequest(new CustomResponse(400, "Đặt hàng thất bại"));
 			}
 		}
 

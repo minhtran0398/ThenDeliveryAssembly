@@ -55,17 +55,17 @@ else
             @onclick="async () => await HandleShowChooseOrder(order)"
             class="mb-2 list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-               <h5 class="mb-1">@order.Merchant.Name - @order.Merchant.PhoneNumber</h5>
+               <h5 class="mb-1 font-weight-bold">@order.Merchant.Name - @order.Merchant.PhoneNumber</h5>
                <small>@TimeRange.GetDurationStringToNow(order.OrderDateTime)</small>
             </div>
             <p class="mb-1">
-               Mở cửa: 
+               <span class="font-weight-bold">Mở cửa: </span>
                @(order.Merchant.OpenTime.TimeString) -
                @(order.Merchant.CloseTime.TimeString)
             </p>
-            <small>Địa chỉ quán: @(order.Merchant.AddressString)</small> <br />
-            <small>Địa chỉ khách hàng: @(order.ShippingAddress.AddressString)</small> <br />
-            <small>Thời gian giao: @(order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy"))</small>
+            <small><span class="font-weight-bold">Địa chỉ quán: </span>@(order.Merchant.AddressString)</small> <br />
+            <small><span class="font-weight-bold">Địa chỉ khách hàng: </span>@(order.ShippingAddress.AddressString)</small> <br />
+            <small><span class="font-weight-bold">Thời gian giao: </span>@(order.DeliveryDateTime.ToString("HH:mm dd/MM/yyyy"))</small>
          </a>
       }
    </div>

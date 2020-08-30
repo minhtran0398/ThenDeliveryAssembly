@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Server.Application.Common.Interfaces;
+using ThenDelivery.Server.Application.FeaturedDishCategoryController.Queries;
 using ThenDelivery.Server.Application.MerchantController.Commands;
 using ThenDelivery.Server.Application.MerchantController.Queries;
 using ThenDelivery.Shared.Common;
@@ -28,24 +29,24 @@ namespace ThenDelivery.Server.Controllers
 			_imageService = imageService;
 		}
 
-		[HttpPost]
-		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
-		public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
-		{
-			string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
-			string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
-			merchantDto.Avatar = pathAvatar;
-			merchantDto.CoverPicture = pathCoverPicture;
-			merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
-			int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
+[HttpPost]
+[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
+public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
+{
+	string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
+	string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
+	merchantDto.Avatar = pathAvatar;
+	merchantDto.CoverPicture = pathCoverPicture;
+	merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
+	int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
 
-			// valid if data insert fail
-			if (createdMerchantId == -1)
-			{
-				return BadRequest();
-			}
-			return Ok(createdMerchantId);
-		}
+	// valid if data insert fail
+	if (createdMerchantId == -1)
+	{
+		return BadRequest();
+	}
+	return Ok(createdMerchantId);
+}
 
 		[HttpPut]
 		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
@@ -157,9 +158,9 @@ namespace ThenDelivery.Server.Controllers
 					IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
 					return Ok(merchantList.ToList());
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
-					return BadRequest(new CustomResponse(400, ex.Message));
+					return BadRequest(new CustomResponse(400, "Lỗi lấy thông tin cửa hàng"));
 				}
 			}
 			else
@@ -169,9 +170,9 @@ namespace ThenDelivery.Server.Controllers
 					MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
 					return Ok(merchant);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
-					return BadRequest(new CustomResponse(400, ex.Message));
+					return BadRequest(new CustomResponse(400, "Lỗi lấy thông tin cửa hàng"));
 				}
 			}
 		}
@@ -201,6 +202,28 @@ namespace ThenDelivery.Server.Controllers
 				var userId = _currentUserService.GetLoggedInUserId();
 				bool result = await Mediator.Send(new CheckExistMerchantQuery(merchantId, userId));
 				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new CustomResponse(400, ex.Message));
+			}
+		}
+
+		[HttpGet("getByFeaturedId")]
+		public async Task<IActionResult> GetMerchantByFeaturedDish(int id)
+		{
+			try
+			{
+				List<FeaturedDishDto> featuredDuishCategories
+							 = (await Mediator.Send(new GetAllFeaturedDishQuery(id))).ToList();
+				if (featuredDuishCategories?.Count == 0)
+				{
+					return BadRequest(new CustomResponse(400, "Không tìm thấy món đặc trưng"));
+				}
+
+				IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
+				merchantList = merchantList.Where(e => e.FeaturedDishList.Contains(featuredDuishCategories[0], new FeaturedDishComparerId())).ToList();
+				return Ok(merchantList.ToList());
 			}
 			catch (Exception ex)
 			{

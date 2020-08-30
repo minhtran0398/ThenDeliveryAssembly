@@ -41,18 +41,18 @@ namespace ThenDelivery.Client.Components.Merchant
 		#region Events
 		protected async Task HandleOnSubmit()
 		{
-			if(EditContext.Validate())
-         {
-				if(MerchantModel.Id == 0)
-            {
+			if (EditContext.Validate())
+			{
+				if (MerchantModel.Id == 0)
+				{
 					var returnedIdString = await HttpClientServer.CustomPostAsync($"api/merchant", MerchantModel);
 					if (int.TryParse(returnedIdString, out int returnId) && returnId != -1)
 					{
 						await OnSubmitMerchant.InvokeAsync(returnId);
 					}
 				}
-            else if (EditContext.IsModified())
-            {
+				else if (EditContext.IsModified())
+				{
 					var response = await HttpClientServer.CustomPutAsync($"api/merchant", MerchantModel);
 					await OnSubmitMerchant.InvokeAsync(MerchantModel.Id);
 				}
@@ -88,7 +88,7 @@ namespace ThenDelivery.Client.Components.Merchant
 		{
 			if (string.IsNullOrWhiteSpace(newTimeString) == false)
 			{
-				
+
 				MerchantModel.OpenTime.TimeString = newTimeString;
 			}
 			await InvokeAsync(StateHasChanged);
@@ -120,27 +120,16 @@ namespace ThenDelivery.Client.Components.Merchant
 
 		protected void HandleSelectedMerTypeChanged(IEnumerable<MerTypeDto> newValue)
 		{
-			Logger.LogInformation("HandleSelectedMerTypeChanged" + newValue.Count());
-			if(MerchantModel.MerTypeList.Count() > Const.MaxMerTypePerMerchant)
-         {
-				StateHasChanged();
-         }
-         else
-         {
-				MerchantModel.MerTypeList = newValue.ToList();
-         }
+			MerchantModel.MerTypeList.RemoveAll(e => true);
+			MerchantModel.MerTypeList.AddRange(newValue);
+			StateHasChanged();
 		}
 
 		protected void HandleSelectedFeaturedDishChanged(IEnumerable<FeaturedDishDto> newValue)
 		{
-			if (MerchantModel.FeaturedDishList.Count() > Const.MaxFeaturedDishPerMerchant)
-			{
-				StateHasChanged();
-			}
-         else
-         {
-				MerchantModel.FeaturedDishList = newValue.ToList();
-         }
+			MerchantModel.FeaturedDishList.RemoveAll(e => true);
+			MerchantModel.FeaturedDishList.AddRange(newValue);
+			StateHasChanged();
 		}
 
 		protected void HandleHouseNumberChanged(string newValue)
@@ -164,14 +153,14 @@ namespace ThenDelivery.Client.Components.Merchant
 		protected async Task<IEnumerable<MerTypeDto>> HandleLoadMerchantTypeAsync(CancellationToken _ = default)
 		{
 			var result = await HttpClientServer.CustomGetAsync<IEnumerable<MerTypeDto>>("api/mertype");
-			if(MerchantModel.MerTypeList.Count > 0)
-         {
-            for (int index = 0; index < MerchantModel.MerTypeList.Count; index++)
-            {
+			if (MerchantModel.MerTypeList.Count > 0)
+			{
+				for (int index = 0; index < MerchantModel.MerTypeList.Count; index++)
+				{
 					MerchantModel.MerTypeList[index] =
 						result.SingleOrDefault(e => e.Id == MerchantModel.MerTypeList[index].Id);
 				}
-         }
+			}
 			return result;
 		}
 

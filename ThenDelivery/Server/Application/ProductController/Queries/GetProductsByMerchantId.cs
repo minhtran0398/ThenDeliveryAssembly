@@ -38,7 +38,7 @@ namespace ThenDelivery.Server.Application.ProductController.Queries
 					return await (from p in _dbContext.Products
 									  join menuItem in _dbContext.MenuItems
 									  on p.MenuItemId equals menuItem.Id
-									  where menuItem.MerchantId == request._merchantId
+									  where menuItem.MerchantId == request._merchantId && p.IsDeleted == false
 									  select new ProductDto()
 									  {
 										  Id = p.Id,

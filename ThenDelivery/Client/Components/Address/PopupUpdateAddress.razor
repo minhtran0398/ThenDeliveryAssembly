@@ -59,7 +59,7 @@
                <FluentValidator Validator="new ShippingAddressValidator()" />
                <ValidationSummary />
                <div class="row">
-                  @if (ShippingAddress != null && AddressMode != PopupAddressMode.Select)
+                  @if (IsShowForm && ShippingAddress != null && AddressMode != PopupAddressMode.Select)
                   {
                      <div class="col-md-6">
                         <label>Họ tên:</label>

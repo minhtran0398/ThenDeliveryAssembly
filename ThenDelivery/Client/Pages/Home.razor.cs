@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ThenDelivery.Client.Components;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
+using System.Linq;
 
 namespace ThenDelivery.Client.Pages
 {
@@ -14,7 +15,7 @@ namespace ThenDelivery.Client.Pages
 		protected override async Task OnInitializedAsync()
 		{
 			MerchantList = await HttpClientAnonymous.CustomGetAsync<List<MerchantDto>>("api/merchant");
-			FeaturedDishList = await HttpClientAnonymous.CustomGetAsync<List<FeaturedDishDto>>("api/featureddish");
+			FeaturedDishList = (await HttpClientAnonymous.CustomGetAsync<List<FeaturedDishDto>>("api/featureddish")).Take(10).ToList();
 		}
 	}
 }
