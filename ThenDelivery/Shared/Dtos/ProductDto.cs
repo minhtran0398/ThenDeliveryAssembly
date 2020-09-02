@@ -38,5 +38,21 @@ namespace ThenDelivery.Shared.Dtos
 				return stringBuilder.ToString()[0..^2];
 			}
 		}
+
+		public void SetData(ProductDto newData)
+		{
+			foreach (var item in this.GetType().GetProperties())
+			{
+				if (item.CanRead && item.CanWrite
+					&& item.PropertyType != typeof(List<ToppingDto>)
+					&& item.PropertyType != typeof(MenuItemDto))
+				{
+					item.SetValue(this, newData.GetType().GetProperty(item.Name).GetValue(newData));
+				}
+			}
+			ToppingList.Clear();
+			ToppingList.AddRange(newData.ToppingList);
+			MenuItem.SetData(newData.MenuItem);
+		}
 	}
 }

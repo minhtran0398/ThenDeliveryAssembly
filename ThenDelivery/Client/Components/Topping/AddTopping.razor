@@ -11,14 +11,14 @@ else
       {
          <div class="row">
             <div class="col-sm-5">
-               <label>Tên món ăn kèm @toppingItem.Id:</label>
+               <label>Tên món ăn kèm @toppingItem.Id: <span class="text-danger">*</span></label>
                <DxTextBox NullText="vd: 'Đường'"
                           Text="@toppingItem.Name"
                           TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
                           TextExpression="() => toppingItem.Name" />
             </div>
             <div class="col-sm-5">
-               <label>Giá:</label>
+               <label>Giá: <span class="text-danger">*</span></label>
                <CustomCurrencyEdit InputValue="@toppingItem.UnitPrice"
                                    ValueChanged="async (newValue) => await HandlePriceChanged(newValue, toppingItem.Id)" />
             </div>
@@ -41,14 +41,10 @@ else
    </div>
    <div class="col-md-12 add-product__form-footer">
       <DxButton SubmitFormOnClick="false"
-                Text="Hủy"
-                @onclick="HandleOnCancel"
-                RenderStyle="@ButtonRenderStyle.Secondary"
-                CssClass="add-product__form-footer-button" />
-      <DxButton SubmitFormOnClick="false"
                 @onclick="HandleOnSubmit"
                 Text="Lưu"
-                RenderStyle="@ButtonRenderStyle.Secondary"
+                Enabled="IsEnableSubmit()"
+                RenderStyle="@ButtonRenderStyle.Success"
                 CssClass="add-product__form-footer-button" />
    </div>
 </div>

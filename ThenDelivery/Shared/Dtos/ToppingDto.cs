@@ -16,5 +16,16 @@
 				return string.Format("{0} - {1:N0}", Name, UnitPrice);
 			}
 		}
+
+		public void SetData(ToppingDto newData)
+		{
+			foreach (var item in this.GetType().GetProperties())
+			{
+				if (item.CanRead && item.CanWrite)
+				{
+					item.SetValue(this, newData.GetType().GetProperty(item.Name).GetValue(newData));
+				}
+			}
+		}
 	}
 }

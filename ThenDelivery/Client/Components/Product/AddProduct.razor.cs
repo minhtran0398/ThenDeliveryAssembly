@@ -72,13 +72,14 @@ namespace ThenDelivery.Client.Components.Product
 
 		protected void HandleShowProductForm()
 		{
+			SelectedProduct = new ProductDto() { IsAvailable = true };
 			IsShowPopupAddProduct = true;
 		}
 
-		protected void HandleAddProduct(ProductDto product)
+		protected void HandleAddProduct(bool isShowForm)
 		{
-			AddProduct(product);
-			IsShowPopupAddProduct = false;
+			AddProduct(SelectedProduct);
+			IsShowPopupAddProduct = isShowForm;
 			StateHasChanged();
 		}
 
@@ -127,11 +128,11 @@ namespace ThenDelivery.Client.Components.Product
 					else product.Id = ProductList.Max(e => e.Id) + 1;
 					ProductList.Add(product);
 				}
-				else
-				{
-					var productToUpdate = ProductList.SingleOrDefault(e => e.Id == product.Id);
-					productToUpdate = product;
-				}
+				//else
+				//{
+				//	var productToUpdate = ProductList.SingleOrDefault(e => e.Id == product.Id);
+				//	productToUpdate = product;
+				//}
 				StateHasChanged();
 			}
 		}

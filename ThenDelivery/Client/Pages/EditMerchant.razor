@@ -19,7 +19,7 @@
 
 <DxPopup HeaderText="Tạo món" @bind-Visible="@IsShowPopupAddProduct"
          ShowCloseButton="false">
-   <EditProductForm ProductModel="SelectedProduct"
+   <EditProductForm Product="SelectedProduct"
                    OnSaveProduct="HandleAddProduct"
                    OnCancel="HandleCancelAddProduct" />
 </DxPopup>

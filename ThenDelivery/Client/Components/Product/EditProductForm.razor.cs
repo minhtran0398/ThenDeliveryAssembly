@@ -14,13 +14,14 @@ namespace ThenDelivery.Client.Components.Product
 		#endregion
 
 		#region Parameters
-		[Parameter] public EventCallback<EditProductVM> OnSaveProduct { get; set; }
+		[Parameter] public EventCallback<bool> OnSaveProduct { get; set; }
 		[Parameter] public EventCallback<bool> OnCancel { get; set; }
-		[Parameter] public EditProductVM ProductModel { get; set; }
+		[Parameter] public EditProductVM Product { get; set; }
 		#endregion
 
 		#region Properties
-		public EditContext FormContext { get; set; }
+		public EditProductVM ProductModel { get; set; }
+      public EditContext FormContext { get; set; }
 		public bool IsShowFormTopping { get; set; }
 		#endregion
 
@@ -28,7 +29,15 @@ namespace ThenDelivery.Client.Components.Product
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			if (ProductModel is null) ProductModel = new EditProductVM() { IsAvailable = true };
+			if (Product is null)
+			{
+				ProductModel = new EditProductVM() { IsCreateNew = true, IsAvailable = true };
+			}
+			else
+         {
+				ProductModel = new EditProductVM();
+				ProductModel.SetData(Product);
+			}
 			FormContext = new EditContext(ProductModel);
 		}
 		#endregion
@@ -38,15 +47,16 @@ namespace ThenDelivery.Client.Components.Product
 		{
 			if (FormContext.Validate())
 			{
-				await OnSaveProduct.InvokeAsync(ProductModel);
-				ProductModel = new EditProductVM();
+				Product.SetData(ProductModel);
+				await OnSaveProduct.InvokeAsync(false);
+				ProductModel = null;
 			}
 		}
 
 		protected async Task HandleOnCancel()
 		{
 			await OnCancel.InvokeAsync(false);
-			ProductModel = new EditProductVM();
+			ProductModel = null;
 		}
 
 		protected void HandleCreateTopping()
@@ -83,6 +93,12 @@ namespace ThenDelivery.Client.Components.Product
 		protected void HandleImageChanged(string newValue)
 		{
 			ProductModel.Image = newValue;
+		}
+
+		protected bool IsEnableSubmit()
+		{
+			if (IsShowFormTopping) return false;
+			return FormContext.Validate();
 		}
 		#endregion
 

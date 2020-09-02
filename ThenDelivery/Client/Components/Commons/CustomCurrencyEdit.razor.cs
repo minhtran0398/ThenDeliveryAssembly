@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -8,11 +9,12 @@ namespace ThenDelivery.Client.Components.Commons
 	public class CustomCurrencyEditBase : ComponentBase
 	{
 		[Inject] public ILogger<CustomCurrencyEditBase> Logger { get; set; }
-		[Parameter] public decimal InputValue { get; set; }
+      [CascadingParameter] public EditContext FormContext { get; set; }
+      [Parameter] public decimal InputValue { get; set; }
 		[Parameter] public EventCallback<decimal> ValueChanged { get; set; }
 		[Parameter] public decimal? MinValue { get; set; }
 		[Parameter] public decimal? MaxValue { get; set; }
-		[Parameter] public string DisplayFormat { get; set; } = "C0";
+		[Parameter] public string DisplayFormat { get; set; } = "N0";
 
 		protected string ValueString { get; set; }
 

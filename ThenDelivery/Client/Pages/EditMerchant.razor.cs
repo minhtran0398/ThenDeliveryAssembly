@@ -104,6 +104,7 @@ namespace ThenDelivery.Client.Pages
 
 		protected void HandleShowProductForm()
 		{
+			SelectedProduct = new EditProductVM() { IsCreateNew = true, IsAvailable = true };
 			IsShowPopupAddProduct = true;
 		}
 
@@ -128,18 +129,16 @@ namespace ThenDelivery.Client.Pages
 			await InvokeAsync(StateHasChanged);
 		}
 
-		protected void HandleAddProduct(EditProductVM product)
+		protected void HandleAddProduct(bool isShowForm = false)
 		{
-			AddProduct(product);
-			IsShowPopupAddProduct = false;
-			SelectedProduct = new EditProductVM() { IsCreateNew = true, IsAvailable = true };
+			AddProduct(SelectedProduct);
+			IsShowPopupAddProduct = isShowForm;
 			StateHasChanged();
 		}
 
 		protected void HandleCancelAddProduct(bool isShowForm = false)
 		{
 			IsShowPopupAddProduct = isShowForm;
-			SelectedProduct = new EditProductVM();
 		}
 
 		private void AddProduct(EditProductVM product)
@@ -154,11 +153,11 @@ namespace ThenDelivery.Client.Pages
 					product.IsCreateNew = true;
 					SelectedMenuItem.ProductList.Add(product);
 				}
-				else
-				{
-					var productToUpdate = SelectedMenuItem.ProductList.SingleOrDefault(e => e.Id == product.Id);
-					productToUpdate = product;
-				}
+				//else
+				//{
+				//	var productToUpdate = SelectedMenuItem.ProductList.SingleOrDefault(e => e.Id == product.Id);
+				//	productToUpdate = product;
+				//}
 				StateHasChanged();
 			}
 		}

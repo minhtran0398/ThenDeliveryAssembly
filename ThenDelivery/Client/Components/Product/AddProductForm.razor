@@ -5,23 +5,23 @@
    <ValidationSummary />
    <div class="row">
       <div class="col-md-12 row-item">
-         <label>Hình đại diện: </label><br/>
+         <label>Hình đại diện: <span class="text-danger">*</span></label><br/>
          <CustomImageEdit Base64String="@ProductModel.Image"
                           OnChangeImage="HandleImageChanged" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Tên món: </label>
+         <label>Tên món: <span class="text-danger">*</span></label>
          <DxTextBox Text="@ProductModel.Name"
                     TextChanged="HandleProductNameChanged"
                     TextExpression="() => ProductModel.Name" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Đơn giá: </label>
+         <label>Đơn giá: <span class="text-danger">*</span></label>
          <CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
                              ValueChanged="HandleUnitPriceChanged" />
       </div>
       <div class="col-md-12 row-item">
-         <label>Thực đơn: </label>
+         <label>Thực đơn: <span class="text-danger">*</span></label>
          <DxComboBox NullText="Select menu ..."
                      TextFieldName="DisplayText"
                      Data="MenuList"

@@ -13,6 +13,8 @@ namespace ThenDelivery.Shared.Validation
          RuleFor(e => e.Name).NotNull().WithMessage("Vui lòng nhập tên cho món ăn");
          RuleFor(e => e.UnitPrice).GreaterThanOrEqualTo(Const.MinProductUnitPrice)
             .WithMessage($"Giá bán phải lớn hơn hoặc bằng {Const.MinProductUnitPrice:N0}đ");
+
+         RuleForEach(e => e.ToppingList).SetValidator(new EditToppingVMValidator());
       }
    }
 }

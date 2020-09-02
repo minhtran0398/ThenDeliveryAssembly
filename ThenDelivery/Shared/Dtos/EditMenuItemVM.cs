@@ -44,11 +44,13 @@ namespace ThenDelivery.Shared.Dtos
 		{
 			foreach (var item in this.GetType().GetProperties())
 			{
-				if (item.CanRead && item.CanWrite)
+				if (item.CanRead && item.CanWrite && item.PropertyType != typeof(List<ToppingDto>))
 				{
 					item.SetValue(this, newData.GetType().GetProperty(item.Name).GetValue(newData));
 				}
 			}
+			ToppingList.Clear();
+			ToppingList.AddRange(newData.ToppingList);
 		}
 	}
 

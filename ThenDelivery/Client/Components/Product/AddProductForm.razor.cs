@@ -15,22 +15,31 @@ namespace ThenDelivery.Client.Components.Product
 
 		#region Parameters
 		[Parameter] public List<MenuItemDto> MenuList { get; set; }
-		[Parameter] public EventCallback<ProductDto> OnSaveProduct { get; set; }
+		[Parameter] public EventCallback<bool> OnSaveProduct { get; set; }
 		[Parameter] public EventCallback<bool> OnCancel { get; set; }
-		[Parameter] public ProductDto ProductModel { get; set; }
+		[Parameter] public ProductDto Product { get; set; }
 		#endregion
 
 		#region Properties
       public EditContext FormContext { get; set; }
-      public bool IsShowFormTopping { get; set; }
+		public ProductDto ProductModel { get; set; }
+		public bool IsShowFormTopping { get; set; }
 		#endregion
 
 		#region Life Cycle
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			if(ProductModel is null) ProductModel = new ProductDto();
-			ProductModel.MenuItem = MenuList.FirstOrDefault();
+			if (Product is null)
+			{
+				ProductModel = new ProductDto() { IsAvailable = true };
+				ProductModel.MenuItem = MenuList.FirstOrDefault();
+			}
+			else
+			{
+				ProductModel = new ProductDto();
+				ProductModel.SetData(Product);
+			}
 			FormContext = new EditContext(ProductModel);
 		}
 		#endregion
@@ -40,15 +49,16 @@ namespace ThenDelivery.Client.Components.Product
 		{
 			if(FormContext.Validate())
          {
-				await OnSaveProduct.InvokeAsync(ProductModel);
-				ProductModel = new ProductDto();
+				Product.SetData(ProductModel);
+				await OnSaveProduct.InvokeAsync(false);
+				ProductModel = null;
 			}
 		}
 
 		protected async Task HandleOnCancel()
 		{
 			await OnCancel.InvokeAsync(false);
-			ProductModel = new ProductDto();
+			ProductModel = null;
 		}
 
 		protected void HandleCreateTopping()

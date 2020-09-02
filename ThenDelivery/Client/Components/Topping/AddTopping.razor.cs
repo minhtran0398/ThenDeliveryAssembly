@@ -25,6 +25,11 @@ namespace ThenDelivery.Client.Components.Topping
 			}
 		}
 
+		protected bool IsEnableSubmit()
+      {
+			return FormContext.Validate();
+      }
+
 		protected void HandleAddTopping()
 		{
 			int newId = ToppingList?.Max(e => e?.Id) + 1 ?? 0;
@@ -45,29 +50,30 @@ namespace ThenDelivery.Client.Components.Topping
 
 		protected async Task HandleDeleteTopping(int id)
 		{
-			if(FormContext.Validate())
+			var tp = ToppingList.SingleOrDefault(e => e.Id == id);
+			if(tp.IsCreateNew)
          {
-				var tp = ToppingList.SingleOrDefault(e => e.Id == id);
-				if(tp.IsCreateNew)
-            {
-					ToppingList.RemoveFirst(e => e.Id == id);
-            }
-            else
-            {
-					tp.IsDelete = true;
-            }
-				await InvokeAsync(StateHasChanged);
-			}
+				ToppingList.RemoveFirst(e => e.Id == id);
+         }
+         else
+         {
+				tp.IsDelete = true;
+         }
+			await InvokeAsync(StateHasChanged);
 		}
 
 		protected async Task HandleOnCancel()
 		{
+			ToppingList.RemoveAt(ToppingList.Count - 1);
 			await OnCancel.InvokeAsync(null);
 		}
 
 		protected async Task HandleOnSubmit()
 		{
-			await OnSubmit.InvokeAsync(ToppingList);
+			if (FormContext.Validate())
+			{
+				await OnSubmit.InvokeAsync(ToppingList);
+			}
 		}
 	}
 }
