@@ -92,9 +92,14 @@ namespace ThenDelivery.Server.Areas.Identity.Pages.Account
 					_logger.LogWarning("User account locked out.");
 					return RedirectToPage("./Lockout");
 				}
+				else if (result.IsNotAllowed)
+				{
+					ModelState.AddModelError(string.Empty, "Vui lòng xác nhận email của bạn để đăng nhập.");
+					return Page();
+				}
 				else
 				{
-					ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+					ModelState.AddModelError(string.Empty, "Lỗi đăng nhập.");
 					return Page();
 				}
 			}

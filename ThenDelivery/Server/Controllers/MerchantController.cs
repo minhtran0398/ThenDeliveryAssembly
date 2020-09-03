@@ -15,220 +15,220 @@ using ThenDelivery.Shared.Exceptions;
 
 namespace ThenDelivery.Server.Controllers
 {
-	[AllowAnonymous]
-	public class MerchantController : CustomControllerBase<MerchantController>
-	{
-		private readonly ICurrentUserService _currentUserService;
-		private readonly IImageService _imageService;
+   [AllowAnonymous]
+   public class MerchantController : CustomControllerBase<MerchantController>
+   {
+      private readonly ICurrentUserService _currentUserService;
+      private readonly IImageService _imageService;
 
 
-		public MerchantController(ICurrentUserService currentUserService,
-			IImageService imageService)
-		{
-			_currentUserService = currentUserService;
-			_imageService = imageService;
-		}
+      public MerchantController(ICurrentUserService currentUserService,
+         IImageService imageService)
+      {
+         _currentUserService = currentUserService;
+         _imageService = imageService;
+      }
 
-[HttpPost]
-[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
-public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
-{
-	string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
-	string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
-	merchantDto.Avatar = pathAvatar;
-	merchantDto.CoverPicture = pathCoverPicture;
-	merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
-	int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
+      [HttpPost]
+      [Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
+      public async Task<IActionResult> CreateMerchant([FromBody] MerchantDto merchantDto)
+      {
+         string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
+         string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
+         merchantDto.Avatar = pathAvatar;
+         merchantDto.CoverPicture = pathCoverPicture;
+         merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
+         int createdMerchantId = await Mediator.Send(new InsertMerchantCommand(merchantDto));
 
-	// valid if data insert fail
-	if (createdMerchantId == -1)
-	{
-		return BadRequest();
-	}
-	return Ok(createdMerchantId);
-}
+         // valid if data insert fail
+         if (createdMerchantId == -1)
+         {
+            return BadRequest();
+         }
+         return Ok(createdMerchantId);
+      }
 
-		[HttpPut]
-		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
-		public async Task<IActionResult> EditMerchant([FromBody] MerchantDto merchantDto)
-		{
-			try
-			{
-				string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
-				string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
-				merchantDto.Avatar = pathAvatar;
-				merchantDto.CoverPicture = pathCoverPicture;
-				merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
-				await Mediator.Send(new UpdateMerchantCommand(merchantDto));
-				return Ok(new CustomResponse(200, "Cập nhật thành công"));
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpPut]
+      [Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
+      public async Task<IActionResult> EditMerchant([FromBody] MerchantDto merchantDto)
+      {
+         try
+         {
+            string pathAvatar = _imageService.SaveImage(merchantDto.Avatar, "Merchant\\Avatar");
+            string pathCoverPicture = _imageService.SaveImage(merchantDto.CoverPicture, "Merchant\\CoverPicture");
+            merchantDto.Avatar = pathAvatar;
+            merchantDto.CoverPicture = pathCoverPicture;
+            merchantDto.User = new UserDto() { Id = _currentUserService.GetLoggedInUserId() };
+            await Mediator.Send(new UpdateMerchantCommand(merchantDto));
+            return Ok(new CustomResponse(200, "Cập nhật thành công"));
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpPut("close")]
-		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
-		public async Task<IActionResult> CloseMerchant([FromBody] MerchantDto merchantDto)
-		{
-			try
-			{
-				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Closed));
-				return Ok(new CustomResponse(200, "Cập nhật thành công"));
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpPut("close")]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
+      public async Task<IActionResult> CloseMerchant([FromBody] MerchantDto merchantDto)
+      {
+         try
+         {
+            await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Closed));
+            return Ok(new CustomResponse(200, "Cập nhật thành công"));
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpPut("deactive")]
-		[Authorize(Roles = Const.Role.AdministrationRole)]
-		public async Task<IActionResult> DeactiveMerchant([FromBody] MerchantDto merchantDto)
-		{
-			try
-			{
-				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.AdminClosed));
-				return Ok(new CustomResponse(200, "Cập nhật thành công"));
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpPut("deactive")]
+      [Authorize(Roles = Const.Role.AdministrationRole)]
+      public async Task<IActionResult> DeactiveMerchant([FromBody] MerchantDto merchantDto)
+      {
+         try
+         {
+            await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.AdminClosed));
+            return Ok(new CustomResponse(200, "Cập nhật thành công"));
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpPut("open")]
-		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
-		public async Task<IActionResult> OpenMerchant([FromBody] MerchantDto merchantDto)
-		{
-			try
-			{
-				if (merchantDto.Status == MerchantStatus.AdminClosed)
-				{
-					return BadRequest(new CustomResponse(400, "Bạn không có quyền cấp quyền cho quán. Vui lòng liên hệ admin để mở lại quán."));
-				}
-				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
-				return Ok(new CustomResponse(200, "Cập nhật thành công"));
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpPut("open")]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
+      public async Task<IActionResult> OpenMerchant([FromBody] MerchantDto merchantDto)
+      {
+         try
+         {
+            if (merchantDto.Status == MerchantStatus.AdminClosed)
+            {
+               return BadRequest(new CustomResponse(400, "Bạn không có quyền cấp quyền cho quán. Vui lòng liên hệ admin để mở lại quán."));
+            }
+            await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
+            return Ok(new CustomResponse(200, "Cập nhật thành công"));
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpPut("approve")]
-		[Authorize(Roles = Const.Role.AdministrationRole)]
-		public async Task<IActionResult> ApproveMerchant([FromBody] MerchantDto merchantDto)
-		{
-			try
-			{
-				await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
-				return Ok(new CustomResponse(200, "Cập nhật thành công"));
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpPut("approve")]
+      [Authorize(Roles = Const.Role.AdministrationRole)]
+      public async Task<IActionResult> ApproveMerchant([FromBody] MerchantDto merchantDto)
+      {
+         try
+         {
+            await Mediator.Send(new UpdateMerchantStatusCommand(merchantDto.Id, MerchantStatus.Approved));
+            return Ok(new CustomResponse(200, "Cập nhật thành công"));
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpGet("my")]
-		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
-		public async Task<IActionResult> GetMerchantCurrentUserId()
-		{
-			try
-			{
-				string userId = _currentUserService.GetLoggedInUserId();
-				IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetMerchantsByUserId(userId));
-				return Ok(merchantList.ToList());
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpGet("my")]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
+      public async Task<IActionResult> GetMerchantCurrentUserId()
+      {
+         try
+         {
+            string userId = _currentUserService.GetLoggedInUserId();
+            IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetMerchantsByUserId(userId));
+            return Ok(merchantList.ToList());
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpGet]
-		public async Task<IActionResult> GetMerchant(int merchantId = -1)
-		{
-			if (merchantId == -1)
-			{
-				try
-				{
-					IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
-					return Ok(merchantList.ToList());
-				}
-				catch (Exception)
-				{
-					return BadRequest(new CustomResponse(400, "Lỗi lấy thông tin cửa hàng"));
-				}
-			}
-			else
-			{
-				try
-				{
-					MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
-					return Ok(merchant);
-				}
-				catch (Exception)
-				{
-					return BadRequest(new CustomResponse(400, "Lỗi lấy thông tin cửa hàng"));
-				}
-			}
-		}
+      [HttpGet]
+      public async Task<IActionResult> GetMerchant(int merchantId = -1)
+      {
+         if (merchantId == -1)
+         {
+            try
+            {
+               IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
+               return Ok(merchantList.ToList());
+            }
+            catch (Exception)
+            {
+               return BadRequest(new CustomResponse(400, "Lỗi lấy thông tin cửa hàng"));
+            }
+         }
+         else
+         {
+            try
+            {
+               MerchantDto merchant = await Mediator.Send(new GetMerchantByIdQuery(merchantId));
+               return Ok(merchant);
+            }
+            catch (Exception)
+            {
+               return BadRequest(new CustomResponse(400, "Lỗi lấy thông tin cửa hàng"));
+            }
+         }
+      }
 
-		[HttpGet("all")]
-		[Authorize(Roles = Const.Role.AdministrationRole)]
-		public async Task<IActionResult> GetAllMerchant()
-		{
-			try
-			{
-				IEnumerable<MerchantDto> merchantList =
-					await Mediator.Send(new GetAllMerchantQuery(MerchantStatus.None));
-				return Ok(merchantList);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpGet("all")]
+      [Authorize(Roles = Const.Role.AdministrationRole)]
+      public async Task<IActionResult> GetAllMerchant()
+      {
+         try
+         {
+            IEnumerable<MerchantDto> merchantList =
+               await Mediator.Send(new GetAllMerchantQuery(MerchantStatus.None));
+            return Ok(merchantList);
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpGet("isExist")]
-		[Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
-		public async Task<IActionResult> IsExistMerchant(int merchantId)
-		{
-			try
-			{
-				var userId = _currentUserService.GetLoggedInUserId();
-				bool result = await Mediator.Send(new CheckExistMerchantQuery(merchantId, userId));
-				return Ok(result);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
+      [HttpGet("isExist")]
+      [Authorize(Roles = Const.Role.MerchantRole + "," + Const.Role.UserRole)]
+      public async Task<IActionResult> IsExistMerchant(int merchantId)
+      {
+         try
+         {
+            var userId = _currentUserService.GetLoggedInUserId();
+            bool result = await Mediator.Send(new CheckExistMerchantQuery(merchantId, userId));
+            return Ok(result);
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
 
-		[HttpGet("getByFeaturedId")]
-		public async Task<IActionResult> GetMerchantByFeaturedDish(int id)
-		{
-			try
-			{
-				List<FeaturedDishDto> featuredDuishCategories
-							 = (await Mediator.Send(new GetAllFeaturedDishQuery(id))).ToList();
-				if (featuredDuishCategories?.Count == 0)
-				{
-					return BadRequest(new CustomResponse(400, "Không tìm thấy món đặc trưng"));
-				}
+      [HttpGet("getByFeaturedId")]
+      public async Task<IActionResult> GetMerchantByFeaturedDish(int id)
+      {
+         try
+         {
+            List<FeaturedDishDto> featuredDuishCategories
+                      = (await Mediator.Send(new GetAllFeaturedDishQuery(id))).ToList();
+            if (featuredDuishCategories?.Count == 0)
+            {
+               return BadRequest(new CustomResponse(400, "Không tìm thấy món đặc trưng"));
+            }
 
-				IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
-				merchantList = merchantList.Where(e => e.FeaturedDishList.Contains(featuredDuishCategories[0], new FeaturedDishComparerId())).ToList();
-				return Ok(merchantList.ToList());
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new CustomResponse(400, ex.Message));
-			}
-		}
-	}
+            IEnumerable<MerchantDto> merchantList = await Mediator.Send(new GetAllMerchantQuery());
+            merchantList = merchantList.Where(e => e.FeaturedDishList.Contains(featuredDuishCategories[0], new FeaturedDishComparerId())).ToList();
+            return Ok(merchantList.ToList());
+         }
+         catch (Exception ex)
+         {
+            return BadRequest(new CustomResponse(400, ex.Message));
+         }
+      }
+   }
 }

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using ThenDelivery.Client.ExtensionMethods;
 
 namespace ThenDelivery.Client.Components.Commons
 {
@@ -15,8 +17,9 @@ namespace ThenDelivery.Client.Components.Commons
 		[Parameter] public decimal? MinValue { get; set; }
 		[Parameter] public decimal? MaxValue { get; set; }
 		[Parameter] public string DisplayFormat { get; set; } = "N0";
+      [Parameter] public Expression<Func<decimal>> ExpressionValue { get; set; }
 
-		protected string ValueString { get; set; }
+      protected string ValueString { get; set; }
 
 		protected override void OnInitialized()
 		{

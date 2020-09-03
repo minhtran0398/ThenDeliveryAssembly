@@ -2,6 +2,16 @@
 {
 	public class ToppingDto
 	{
+      public ToppingDto(ToppingDto toppingDto)
+      {
+			SetData(toppingDto);
+      }
+
+      public ToppingDto()
+      {
+
+      }
+
 		public int Id { get; set; }
 		public int ProductId { get; set; }
 		public string Name { get; set; }

@@ -51,8 +51,15 @@ namespace ThenDelivery.Shared.Dtos
 				}
 			}
 			ToppingList.Clear();
-			ToppingList.AddRange(newData.ToppingList);
-			MenuItem.SetData(newData.MenuItem);
+         foreach (var topping in newData.ToppingList)
+         {
+				ToppingList.Add(new ToppingDto(topping));
+         }
+			if (newData.MenuItem != null && MenuItem == null)
+         {
+				MenuItem = new MenuItemDto();
+				MenuItem.SetData(newData.MenuItem);
+         }
 		}
 	}
 }

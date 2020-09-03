@@ -20,6 +20,7 @@
       <div class="col-md-12 row-item">
          <label>Đơn giá: <span class="text-danger">*</span></label>
          <CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
+                             ExpressionValue="() => ProductModel.UnitPrice"
                              ValueChanged="HandleUnitPriceChanged" />
       </div>
       <div class="col-md-12 row-item">
@@ -36,7 +37,7 @@
          }
          else
          {
-            <AddTopping ToppingList="ProductModel.ToppingList"
+            <AddTopping ToppingListModel="ProductModel.ToppingList"
                         OnCancel="HandleCancelCreateTopping"
                         OnSubmit="HandleSubmitCreateTopping" />
          }

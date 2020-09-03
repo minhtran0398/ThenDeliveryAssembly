@@ -43,7 +43,7 @@
                     TextExpression="() => MerchantModel.PhoneNumber" />
       </div>
       <div class="col-md-6 row-item">
-         <label>Từ khóa tìm kiếm (cách nhau bằng dấu phẩy): </label>
+         <label>Từ khóa tìm kiếm (cách nhau bằng dấu phẩy): <span class="text-danger">*</span></label>
          <DxTextBox Text="@MerchantModel.SearchKey"
                     TextChanged="HandleSearchKeyChanged"
                     TextExpression="() => MerchantModel.SearchKey" />

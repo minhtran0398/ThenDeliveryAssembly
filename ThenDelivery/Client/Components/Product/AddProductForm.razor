@@ -18,6 +18,7 @@
       <div class="col-md-12 row-item">
          <label>Đơn giá: <span class="text-danger">*</span></label>
          <CustomCurrencyEdit InputValue="@ProductModel.UnitPrice"
+                             ExpressionValue="() => ProductModel.UnitPrice"
                              ValueChanged="HandleUnitPriceChanged" />
       </div>
       <div class="col-md-12 row-item">
@@ -43,7 +44,7 @@
          }
          else
          {
-            <AddTopping ToppingList="ProductModel.ToppingList"
+            <AddTopping ToppingListModel="ProductModel.ToppingList"
                         OnCancel="HandleCancelCreateTopping"
                         OnSubmit="HandleSubmitCreateTopping" />
          }
@@ -56,13 +57,14 @@
       </div>
       <div class="col-md-12 add-product__form-footer">
          <DxButton SubmitFormOnClick="false"
-                   Text="Hủy"
-                   @onclick="HandleOnCancel"
-                   RenderStyle="@ButtonRenderStyle.Secondary"
+                   @onclick="HandleOnSubmit"
+                   Enabled="IsEnableSubmit()"
+                   Text="Lưu"
+                   RenderStyle="@ButtonRenderStyle.Success"
                    CssClass="add-product__form-footer-button" />
          <DxButton SubmitFormOnClick="false"
-                   @onclick="HandleOnSubmit"
-                   Text="Lưu"
+                   Text="Hủy"
+                   @onclick="HandleOnCancel"
                    RenderStyle="@ButtonRenderStyle.Secondary"
                    CssClass="add-product__form-footer-button" />
       </div>

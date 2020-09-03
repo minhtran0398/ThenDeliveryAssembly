@@ -6,32 +6,38 @@
 }
 else
 {
-   <EditForm EditContext="FormContext" OnValidSubmit="HandleOnSubmit">
-      @foreach (var toppingItem in ToppingList.Where(e => e.IsDelete == false))
-      {
-         <div class="row">
-            <div class="col-sm-5">
-               <label>Tên món ăn kèm @toppingItem.Id: <span class="text-danger">*</span></label>
-               <DxTextBox NullText="vd: 'Đường'"
-                          Text="@toppingItem.Name"
-                          TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
-                          TextExpression="() => toppingItem.Name" />
-            </div>
-            <div class="col-sm-5">
-               <label>Giá: <span class="text-danger">*</span></label>
-               <CustomCurrencyEdit InputValue="@toppingItem.UnitPrice"
-                                   ValueChanged="async (newValue) => await HandlePriceChanged(newValue, toppingItem.Id)" />
-            </div>
-            <div class="col-sm-2 delete-topping">
+<EditForm EditContext="FormContext" OnValidSubmit="HandleOnSubmit">
+   <FluentValidator Validator="new TempValidator()" />
+   <ValidationSummary />
+   @foreach (var toppingItem in ToppingList.Where(e => e.IsDelete == false))
+   {
+      <div class="row">
+         <div class="col-sm-5">
+            <label>Tên món ăn kèm @toppingItem.Id: <span class="text-danger">*</span></label>
+            <DxTextBox NullText="vd: 'Đường'"
+                       Text="@toppingItem.Name"
+                       TextChanged="async (newValue) => await HandleToppingNameChanged(newValue, toppingItem.Id)"
+                       TextExpression="() => toppingItem.Name" />
+         </div>
+         <div class="col-sm-5">
+            <label>Giá: <span class="text-danger">*</span></label>
+            <CustomCurrencyEdit InputValue="@toppingItem.UnitPrice"
+                                ExpressionValue="() => toppingItem.UnitPrice"
+                                ValueChanged="async (newValue) => await HandlePriceChanged(newValue, toppingItem.Id)" />
+         </div>
+         <div class="col-sm-2 delete-topping">
+            @if (toppingItem.Id != 1)
+            {
                <button type="button"
                        class="btn btn-sm btn-outline-danger"
                        @onclick="async () => await HandleDeleteTopping(toppingItem.Id)">
                   <i class="fas fa-trash-alt"></i>
                </button>
-            </div>
+            }
          </div>
-      }
-   </EditForm>
+      </div>
+   }
+</EditForm>
 }
 <div class="row">
    <div class="col-md-12 row-item">
@@ -45,6 +51,11 @@ else
                 Text="Lưu"
                 Enabled="IsEnableSubmit()"
                 RenderStyle="@ButtonRenderStyle.Success"
+                CssClass="add-product__form-footer-button" />
+      <DxButton SubmitFormOnClick="false"
+                @onclick="HandleOnCancel"
+                Text="Hủy"
+                RenderStyle="@ButtonRenderStyle.Secondary"
                 CssClass="add-product__form-footer-button" />
    </div>
 </div>

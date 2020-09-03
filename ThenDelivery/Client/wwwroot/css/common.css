@@ -14,10 +14,22 @@
 	pointer-events: none;
 }
 
+.table thead th {
+	vertical-align: inherit !important;
+}
+
 .category-item-link{
 	margin-right: 15px;
 	margin-bottom: 15px;
 	display: inline-block;
+}
+
+.dxbs-textbox.custom-invalid.modified .form-control{
+	border-color: red !important;
+}
+
+.dxbs-textbox.custom-invalid .form-control {
+	border-color: red !important;
 }
 
 .category-item{

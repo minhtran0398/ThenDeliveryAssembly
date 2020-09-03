@@ -69,9 +69,8 @@ namespace ThenDelivery.Client.Components.Product
 			IsShowFormTopping = false;
 		}
 
-		protected void HandleSubmitCreateTopping(List<ToppingDto> newValue)
+		protected void HandleSubmitCreateTopping()
 		{
-			ProductModel.ToppingList = newValue;
 			IsShowFormTopping = false;
 		}
 

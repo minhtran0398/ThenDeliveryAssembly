@@ -71,9 +71,8 @@ namespace ThenDelivery.Client.Components.Product
 			IsShowFormTopping = false;
 		}
 
-		protected void HandleSubmitCreateTopping(List<ToppingDto> newValue)
+		protected void HandleSubmitCreateTopping()
 		{
-			ProductModel.ToppingList = newValue;
 			IsShowFormTopping = false;
 		}
 
@@ -85,6 +84,7 @@ namespace ThenDelivery.Client.Components.Product
 		protected void HandleSelectedMenuChanged(MenuItemDto newValue)
 		{
 			ProductModel.MenuItem = newValue;
+			StateHasChanged();
 		}
 
 		protected void HandleUnitPriceChanged(decimal newValue)
@@ -100,6 +100,12 @@ namespace ThenDelivery.Client.Components.Product
 		protected void HandleImageChanged(string newValue)
 		{
 			ProductModel.Image = newValue;
+		}
+
+		protected bool IsEnableSubmit()
+		{
+			if (IsShowFormTopping) return false;
+			return FormContext.Validate();
 		}
 		#endregion
 

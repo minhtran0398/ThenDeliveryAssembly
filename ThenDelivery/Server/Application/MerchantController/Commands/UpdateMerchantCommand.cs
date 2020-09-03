@@ -37,10 +37,11 @@ namespace ThenDelivery.Server.Application.MerchantController.Commands
             using var trans = _dbContext.Database.BeginTransaction();
             try
             {
+					var merchantDb = await _dbContext.Merchants.AsNoTracking().SingleOrDefaultAsync(e => e.Id == request._merchantDto.Id);
                Merchant merchantToUpdate = GetMerchant(request._merchantDto);
-					//Merchant merchant = await _dbContext.Merchants.SingleOrDefaultAsync(e => e.Id == merchantToUpdate.Id);
-					//merchant = merchantToAdd;
-					//_dbContext.Attach(merchantToUpdate);
+					merchantToUpdate.Status = merchantDb.Status;
+					merchantToUpdate.Created = merchantDb.Created;
+					merchantToUpdate.CreatedBy = merchantDb.CreatedBy;
 					_dbContext.Update(merchantToUpdate);
                await _dbContext.SaveChangesAsync();
                request._merchantDto.Id = merchantToUpdate.Id;

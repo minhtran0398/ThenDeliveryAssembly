@@ -1,7 +1,7 @@
 ﻿@inherits CustomCurrencyEditBase
 
 
-<DxTextBox Text="@ValueString"
+<DxTextBox Text="@ValueString" CssClass="@(FormContext.GetCustomCss(ExpressionValue))"
 			  TextChanged="async (newValue) => await HandleValueChanged(newValue)"
 			  TextExpression="() => ValueString"
 			  DisplayFormat="@DisplayFormat"/>

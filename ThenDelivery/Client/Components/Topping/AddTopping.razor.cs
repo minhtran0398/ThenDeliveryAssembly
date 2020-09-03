@@ -1,28 +1,40 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
+using ThenDelivery.Shared.Validation;
 
 namespace ThenDelivery.Client.Components.Topping
 {
-	public class AddToppingBase : CustomComponentBase<AddToppingBase>
+	public class AddToppingBase : CustomComponentBase<AddToppingBase>, IDisposable
 	{
-      [CascadingParameter] public EditContext FormContext { get; set; }
-      [Parameter] public List<ToppingDto> ToppingList { get; set; }
-		[Parameter] public EventCallback<List<ToppingDto>> OnSubmit { get; set; }
+      public EditContext FormContext { get; set; }
+      [Parameter] public List<ToppingDto> ToppingListModel { get; set; }
+		[Parameter] public EventCallback OnSubmit { get; set; }
 		[Parameter] public EventCallback OnCancel { get; set; }
+
+		public List<ToppingDto> ToppingList { get; set; }
 
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			ToppingList ??= new List<ToppingDto>();
+			ToppingList = new List<ToppingDto>();
+			if(ToppingListModel != null)
+         {
+            foreach (var topping in ToppingListModel)
+            {
+					ToppingList.Add(new ToppingDto(topping));
+            }
+         }
 			if (ToppingList.Count == 0)
 			{
 				ToppingList.Add(new ToppingDto() { Id = 1 });
 			}
+			FormContext = new EditContext(new Temp() { ToppingDtoList = ToppingList });
 		}
 
 		protected bool IsEnableSubmit()
@@ -64,16 +76,34 @@ namespace ThenDelivery.Client.Components.Topping
 
 		protected async Task HandleOnCancel()
 		{
-			ToppingList.RemoveAt(ToppingList.Count - 1);
 			await OnCancel.InvokeAsync(null);
+			Dispose();
 		}
 
 		protected async Task HandleOnSubmit()
 		{
 			if (FormContext.Validate())
 			{
-				await OnSubmit.InvokeAsync(ToppingList);
+				if(ToppingListModel is null)
+            {
+					ToppingListModel = new List<ToppingDto>();
+				}
+            else
+            {
+					ToppingListModel.Clear();
+            }
+            foreach (var topping in ToppingList)
+            {
+					ToppingListModel.Add(new ToppingDto(topping));
+            }
+				await OnSubmit.InvokeAsync(null);
+				Dispose();
 			}
 		}
-	}
+
+      public void Dispose()
+      {
+			GC.SuppressFinalize(this);
+		}
+   }
 }
