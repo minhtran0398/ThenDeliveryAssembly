@@ -20,7 +20,7 @@ namespace ThenDelivery.Client.Components.Order
 		ChangeAddress
 	}
 
-	public class PopupConfirmOrderBase : CustomComponentBase<PopupConfirmOrder>
+	public class PopupConfirmOrderBase : CustomComponentBase<PopupConfirmOrder>, IDisposable
 	{
 		[Parameter] public OrderDto Order { get; set; }
 		[Parameter] public EditContext FormContext { get; set; }
@@ -132,5 +132,10 @@ namespace ThenDelivery.Client.Components.Order
 		{
 			SelectedPopup = DisplayPopup.OrderConfirm;
 		}
-	}
+
+      public void Dispose()
+      {
+         GC.SuppressFinalize(this);
+      }
+   }
 }

@@ -151,6 +151,11 @@ namespace ThenDelivery.Client.Pages
 			}
 		}
 
+		protected void HandleReload()
+      {
+			OrderResponse.IsShowPopup = false;
+		}
+
 		protected void HandleConfirmOrder()
 		{
 			IsShowPopupOrderConfirm = true;

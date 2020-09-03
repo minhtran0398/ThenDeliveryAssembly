@@ -71,5 +71,20 @@ namespace ThenDelivery.Shared.Helper.ExtensionMethods
 				_ => throw new ArgumentException("Invalid GetNextStatus Enum Value", nameof(status)),
 			};
 		}
+
+		public static bool CanEdit(this OrderStatus status)
+		{
+			return status switch
+			{
+				OrderStatus.None => true,
+				OrderStatus.OrderSuccess => true,
+				OrderStatus.MerchantAccept => false,
+				OrderStatus.ShipperAccept => false,
+				OrderStatus.Delivery => false,
+				OrderStatus.DeliverySuccess => true,
+				OrderStatus.Cancel => true,
+				_ => throw new ArgumentException("Invalid GetNextStatus Enum Value", nameof(status)),
+			};
+		}
 	}
 }

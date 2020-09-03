@@ -17,13 +17,14 @@ namespace ThenDelivery.Client.Components.Commons
 				try
 				{
 					InputTime.TimeString = newTimeString;
+					await TimeChanged.InvokeAsync(InputTime);
 				}
 				catch (InvalidCastException)
 				{
 
 				}
 			}
-			await TimeChanged.InvokeAsync(InputTime);
+			StateHasChanged();
 			await InvokeAsync(StateHasChanged);
 		}
 	}

@@ -8,6 +8,9 @@ using ThenDelivery.Client.ExtensionMethods;
 using ThenDelivery.Shared.Dtos;
 using ThenDelivery.Shared.Helper;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using Microsoft.Extensions.Logging;
 
 namespace ThenDelivery.Client.Components.Address
 {
@@ -24,6 +27,11 @@ namespace ThenDelivery.Client.Components.Address
 		[Parameter] public List<ShippingAddressDto> ShippingAddressList { get; set; }
 		[Parameter] public EventCallback OnClose { get; set; }
 		[Parameter] public EventCallback OnConfirm { get; set; }
+		public List<CityDto> CityList { get; set; }
+		public List<DistrictDto> DistrictList { get; set; }
+		public List<DistrictDto> CurrentDistrictList { get; set; }
+		public List<WardDto> WardList { get; set; }
+		public List<WardDto> CurrentWardList { get; set; }
 		public ShippingAddressDto ShippingAddress { get; set; }
 		public EditContext FormContext { get; set; }
 		public DateTime DeliveryDate { get; set; }
@@ -31,10 +39,12 @@ namespace ThenDelivery.Client.Components.Address
 
 		public PopupAddressMode AddressMode { get; set; }
 		public CustomTime DeliveryTime { get; set; }
+      public string ErrorMessage { get; set; }
 
-		protected override void OnInitialized()
+      protected override void OnInitialized()
 		{
 			base.OnInitialized();
+			ErrorMessage = string.Empty;
 			DeliveryTime = new CustomTime(Order.DeliveryDateTime);
 			DeliveryDate = Order.DeliveryDateTime.Date;
 			AddressMode = PopupAddressMode.Select;
@@ -50,7 +60,40 @@ namespace ThenDelivery.Client.Components.Address
 			StateHasChanged();
 		}
 
-		protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
+		protected override async Task OnInitializedAsync()
+		{
+			await base.OnInitializedAsync();
+
+			CityList = await HttpClientServer.CustomGetAsync<List<CityDto>>("api/city");
+			DistrictList = await HttpClientServer.CustomGetAsync<List<DistrictDto>>("api/district");
+			WardList = await HttpClientServer.CustomGetAsync<List<WardDto>>("api/ward");
+
+			if (CityList != null && DistrictList != null && WardList != null)
+			{
+				ShippingAddress.City = CityList[0];
+				CurrentDistrictList = DistrictList.FindAll(e => e.CityCode == ShippingAddress.City.CityCode);
+				ShippingAddress.District = CurrentDistrictList[0];
+				CurrentWardList = WardList.FindAll(e => e.DistrictCode == ShippingAddress.District.DistrictCode);
+				ShippingAddress.Ward = CurrentWardList[0];
+			}
+			await InvokeAsync(StateHasChanged);
+		}
+
+		protected override void OnAfterRender(bool firstRender)
+      {
+			ErrorMessage = string.Empty;
+			Logger.LogInformation("OnAfterRender");
+			//if (CityList != null && DistrictList != null && WardList != null)
+			//{
+			//	ShippingAddress.City = CityList[0];
+			//	CurrentDistrictList = DistrictList.FindAll(e => e.CityCode == ShippingAddress.City.CityCode);
+			//	ShippingAddress.District = CurrentDistrictList[0];
+			//	CurrentWardList = WardList.FindAll(e => e.DistrictCode == ShippingAddress.District.DistrictCode);
+			//	ShippingAddress.Ward = CurrentWardList[0];
+			//}
+		}
+
+      protected async Task HanldeEditShippingAddress(ShippingAddressDto address)
 		{
 			AddressMode = PopupAddressMode.SelectEdit;
 			// set value => not set directly to another object
@@ -59,10 +102,13 @@ namespace ThenDelivery.Client.Components.Address
 			await InvokeAsync(StateHasChanged);
 		}
 
-		protected void HandleDeliveryTimeChanged(CustomTime newValue)
+		protected void HandleDeliveryTimeChanged(string newTimeString)
 		{
-			DeliveryTime.Hour = newValue.Hour;
-			DeliveryTime.Minute = newValue.Minute;
+			if (string.IsNullOrWhiteSpace(newTimeString) == false)
+			{
+				DeliveryTime.TimeString = newTimeString;
+			}
+			StateHasChanged();
 		}
 
 		protected string GetStringMode()
@@ -91,19 +137,20 @@ namespace ThenDelivery.Client.Components.Address
 					// not new model of form context => set default value
 					IsShowForm = true;
 					ShippingAddress.SetData(new ShippingAddressDto());
-					FormContext = new EditContext(ShippingAddress);
 					var max = ShippingAddressList?.Max(e => e?.Id) ?? 0;
 					ShippingAddress.Id = max + 1;
+					FormContext = new EditContext(ShippingAddress);
 					AddressMode = PopupAddressMode.CreateNew;
 					break;
 				case PopupAddressMode.CreateNew:
-					//ShippingAddress = null;
+					ShippingAddress.City = CityList[0];
 					IsShowForm = false;
 					AddressMode = PopupAddressMode.SelectEdit;
 					break;
 				default:
 					break;
 			}
+			StateHasChanged();
 			await InvokeAsync(StateHasChanged);
 		}
 
@@ -144,8 +191,24 @@ namespace ThenDelivery.Client.Components.Address
 
 		protected async Task HandleConfirm()
 		{
+			Logger.LogInformation("HandleConfirm");
+			ErrorMessage = string.Empty;
 			if (FormContext.Validate())
 			{
+				// check shipping address is in another order
+				bool canEdit = true;
+				HttpResponseMessage response =
+					await HttpClientServer.GetAsync($"api/order/can-edit-shippingAddress?shippingaddress={ShippingAddress.Id}");
+				if (response.IsSuccessStatusCode)
+				{
+					canEdit = await response.Content.ReadFromJsonAsync<bool>();
+				}
+				if(canEdit == false)
+            {
+					ErrorMessage = "Địa chỉ này đang nằm trong 1 đơn hàng chưa hoàn thành.";
+					return;
+				}
+
 				TimeSpan time = DeliveryTime.ToTimeSpan();
 				Order.DeliveryDateTime = DeliveryDate.Date + time;
 				if (Order.ShippingAddress is null)
@@ -163,6 +226,7 @@ namespace ThenDelivery.Client.Components.Address
 				}
 				else
 				{
+					Logger.LogInformation(Newtonsoft.Json.JsonConvert.SerializeObject(ShippingAddressList));
 					var s = ShippingAddressList.SingleOrDefault(e => e.Id == ShippingAddress.Id);
 					s.SetData(ShippingAddress);
 				}
@@ -173,12 +237,18 @@ namespace ThenDelivery.Client.Components.Address
 		protected void HandleSelectedCityChanged(CityDto newValue)
 		{
 			ShippingAddress.City = newValue;
+			CurrentDistrictList = DistrictList.FindAll(e => e.CityCode == ShippingAddress.City.CityCode);
+			ShippingAddress.District = CurrentDistrictList[0];
+			CurrentWardList = WardList.FindAll(e => e.DistrictCode == ShippingAddress.District.DistrictCode);
+			ShippingAddress.Ward = CurrentWardList[0];
 			StateHasChanged();
 		}
 
 		protected void HandleSelectedDistrictChanged(DistrictDto newValue)
 		{
 			ShippingAddress.District = newValue;
+			CurrentWardList = WardList.FindAll(e => e.DistrictCode == ShippingAddress.District.DistrictCode);
+			ShippingAddress.Ward = CurrentWardList[0];
 			StateHasChanged();
 		}
 

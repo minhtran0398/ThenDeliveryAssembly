@@ -15,7 +15,7 @@ namespace ThenDelivery.Client.Pages
 		protected override async Task OnInitializedAsync()
 		{
 			MerchantList = await HttpClientAnonymous.CustomGetAsync<List<MerchantDto>>("api/merchant");
-			FeaturedDishList = (await HttpClientAnonymous.CustomGetAsync<List<FeaturedDishDto>>("api/featureddish")).Take(10).ToList();
+			FeaturedDishList = (await HttpClientAnonymous.CustomGetAsync<List<FeaturedDishDto>>("api/featureddish")).Take(16).ToList();
 		}
 	}
 }

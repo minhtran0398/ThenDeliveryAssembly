@@ -172,5 +172,21 @@ namespace ThenDelivery.Server.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+
+		[HttpGet("can-edit-shippingAddress")]
+		[Authorize(Roles = Const.Role.UserRole + "," + Const.Role.AdministrationRole)]
+		public async Task<IActionResult> CheckShippingAddressCanEdit(int shippingAddressId)
+      {
+         try
+         {
+				bool canEdit =
+					await Mediator.Send(new CheckShippingAddressCanEditQuery(shippingAddressId));
+				return Ok(canEdit);
+			}
+         catch (Exception)
+         {
+				return BadRequest();
+         }
+      }
 	}
 }

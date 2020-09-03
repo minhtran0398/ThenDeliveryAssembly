@@ -5,119 +5,127 @@
 			CssClass="shipping-info-edit-popup"
          HeaderCssClass="bg-dark text-white p-2"
          FooterCssClass="p-2 modal-footer">
-	<Content>
-		<div class="shipping-info-delivery-time">
-			<span class="font-weight-bold">Thời gian giao hàng</span> <br/>
-			<div class="row">
-				<div class="col">
-					<DxDateEdit Date="@DeliveryDate"
+   <Content>
+      @if (string.IsNullOrWhiteSpace(ErrorMessage) == false)
+      {
+         <div class="text-danger">
+            <span class="font-weight-normal">@ErrorMessage</span>
+         </div>
+      }
+      <div class="shipping-info-delivery-time">
+         <span class="font-weight-bold">Thời gian giao hàng: <span class="text-danger">*</span></span> <br />
+         <div class="row">
+            <div class="col">
+               <DxDateEdit Date="@DeliveryDate"
                            MinDate="@(DateTime.Today)"
                            DisplayFormat="dd/MM/yyyy"
                            DateChanged="HandleDeliveryDateChanged"
                            DateExpression="() => DeliveryDate"
-									SizeMode="SizeMode.Small" />
-				</div>
-				<div class="col">
-					<CustomTimeEdit InputTime="DeliveryTime"
-                               TimeChanged="HandleDeliveryTimeChanged"/>
-				</div>
-			</div>
-		</div>
+                           SizeMode="SizeMode.Small" />
+            </div>
+            <div class="col">
+               <DxTextBox Text="@DeliveryTime.TimeString"
+                          TextExpression="() => DeliveryTime.TimeString"
+                          TextChanged="(newValue) => HandleDeliveryTimeChanged(newValue)" />
+            </div>
+         </div>
+      </div>
       <div class="shipping-info-address">
          <div class="shipping-info-title">
             <span class="font-weight-bold">Chọn địa chỉ giao hàng</span>
             <div class="float-right">
                <a href="javascript:void(0)" class="text-decoration-none"
-                     @onclick="async () => await HandleChangeMode()">@GetStringMode()</a>
+                  @onclick="async () => await HandleChangeMode()">@GetStringMode()</a>
+               </div>
             </div>
-         </div>
-         <div class="shipping-info-address-list">
-            @if (ShippingAddressList is null)
-            {
-               <p>Đang tải...</p>
-            }
-            else if(AddressMode == PopupAddressMode.Select || AddressMode == PopupAddressMode.SelectEdit)
-            {
-               foreach (var addressItem in ShippingAddressList)
+            <div class="shipping-info-address-list">
+               @if (ShippingAddressList is null)
                {
-                  <div class="form-check shipping-info-address-item">
-                     <input class="form-check-input mt-3" type="radio"
-                            id="@addressItem.Id" name="group" checked="@(addressItem.Id == Order.ShippingAddress.Id)"
-                            @onchange="async () => await HandleChangeShippingAddress(addressItem)">
-                     <div class="form-check-label" for="@addressItem.Id">
-                        <span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>
-                        <span>@addressItem.AddressString</span>
-                        <a class="float-right text-decoration-none" href="javascript:void(0)"
-                           @onclick="async () => await HanldeEditShippingAddress(addressItem)">Sửa</a>
-                     </div>
-                  </div>
+                  <p>Đang tải...</p>
                }
-            }
-         </div>
-         <div class="shipping-info-create-address">
-            <EditForm EditContext="FormContext" OnValidSubmit="async () => await HandleConfirm()">
-               <FluentValidator Validator="new ShippingAddressValidator()" />
-               <ValidationSummary />
-               <div class="row">
-                  @if (IsShowForm && ShippingAddress != null && AddressMode != PopupAddressMode.Select)
+               else if (AddressMode == PopupAddressMode.Select || AddressMode == PopupAddressMode.SelectEdit)
+               {
+                  foreach (var addressItem in ShippingAddressList)
                   {
-                     <div class="col-md-6">
-                        <label>Họ tên:</label>
-                        <DxTextBox Text="@ShippingAddress.FullName"
-                                   TextExpression="() => ShippingAddress.FullName"
-                                   TextChanged="async (newValue) => await HandleChangeFullName(newValue)" />
-                     </div>
-                     <div class="col-md-6">
-                        <label>Số điện thoại:</label>
-                        <DxTextBox Text="@ShippingAddress.PhoneNumber"
-                                   TextExpression="() => ShippingAddress.PhoneNumber"
-                                   TextChanged="async (newValue) => await HandleChangePhoneNumber(newValue)" />
-                     </div>
-                     <div class="col-md-6 row-item">
-                        <label>Thành phố: </label>
-                        <DxComboBox NullText="Chọn tỉnh, thành phố ..."
-                                    AllowUserInput="true"
-                                    FilteringMode="DataGridFilteringMode.Contains"
-                                    TextFieldName="DisplayText"
-                                    DataAsync="HandleLoadCitiesAsync"
-                                    SelectedItem="@ShippingAddress.City"
-                                    SelectedItemChanged="HandleSelectedCityChanged"
-                                    SelectedItemExpression="() => ShippingAddress.City" />
-                     </div>
-                     <div class="col-md-6 row-item">
-                        <label>Quận huyện: </label>
-                        <DxComboBox NullText="Chọn quận, huyện ..."
-                                    AllowUserInput="true"
-                                    FilteringMode="DataGridFilteringMode.Contains"
-                                    TextFieldName="DisplayText"
-                                    DataAsync="HandleLoadDistrictsAsync"
-                                    SelectedItem="@ShippingAddress.District"
-                                    SelectedItemChanged="HandleSelectedDistrictChanged"
-                                    SelectedItemExpression="() => ShippingAddress.District" />
-                     </div>
-                     <div class="col-md-6 row-item">
-                        <label>Phường, thị xã: </label>
-                        <DxComboBox NullText="Chọn xã, phường, thị trấn ..."
-                                    AllowUserInput="true"
-                                    FilteringMode="DataGridFilteringMode.Contains"
-                                    TextFieldName="DisplayText"
-                                    DataAsync="HandleLoadWardsAsync"
-                                    SelectedItem="@ShippingAddress.Ward"
-                                    SelectedItemChanged="HandleSelectedWardChanged"
-                                    SelectedItemExpression="() => ShippingAddress.Ward" />
-                     </div>
-                     <div class="col-md-6 row-item">
-                        <label>Địa chỉ nhà: </label>
-                        <DxTextBox Text="@ShippingAddress.HouseNumber"
-                                   TextChanged="HandleHouseNumberChanged"
-                                   TextExpression="() => ShippingAddress.HouseNumber" />
+                     <div class="form-check shipping-info-address-item">
+                        <input class="form-check-input mt-3" type="radio"
+                               id="@addressItem.Id" name="group" checked="@(addressItem.Id == Order.ShippingAddress.Id)"
+                               @onchange="async () => await HandleChangeShippingAddress(addressItem)">
+                        <div class="form-check-label" for="@addressItem.Id">
+                           <span class="d-block"><span class="font-weight-bold">@addressItem.FullName</span> - @addressItem.PhoneNumber</span>
+                           <span>@addressItem.AddressString</span>
+                           <a class="float-right text-decoration-none" href="javascript:void(0)"
+                              @onclick="async () => await HanldeEditShippingAddress(addressItem)">Sửa</a>
+                        </div>
                      </div>
                   }
-               </div>
-            </EditForm>
+               }
+            </div>
+            <div class="shipping-info-create-address">
+               @if (IsShowForm && ShippingAddress != null && AddressMode != PopupAddressMode.Select)
+               {
+               <EditForm EditContext="FormContext" OnValidSubmit="async () => await HandleConfirm()">
+                  <FluentValidator Validator="new ShippingAddressValidator()" />
+                  <ValidationSummary />
+                  <div class="row">
+                        <div class="col-md-6">
+                           <label>Họ tên: <span class="text-danger">*</span></label>
+                           <DxTextBox Text="@ShippingAddress.FullName"
+                                      TextExpression="() => ShippingAddress.FullName"
+                                      TextChanged="async (newValue) => await HandleChangeFullName(newValue)" />
+                        </div>
+                        <div class="col-md-6">
+                           <label>Số điện thoại: <span class="text-danger">*</span></label>
+                           <DxTextBox Text="@ShippingAddress.PhoneNumber"
+                                      TextExpression="() => ShippingAddress.PhoneNumber"
+                                      TextChanged="async (newValue) => await HandleChangePhoneNumber(newValue)" />
+                        </div>
+                        
+                           <div class="col-md-6 row-item">
+                              <label>Thành phố: <span class="text-danger">*</span></label>
+                              <DxComboBox NullText="Chọn tỉnh, thành phố ..."
+                                          AllowUserInput="true"
+                                          FilteringMode="DataGridFilteringMode.Contains"
+                                          TextFieldName="DisplayText"
+                                          Data="CityList"
+                                          SelectedItem="@ShippingAddress.City"
+                                          SelectedItemChanged="HandleSelectedCityChanged"
+                                          SelectedItemExpression="() => ShippingAddress.City" />
+                           </div>
+                           <div class="col-md-6 row-item">
+                              <label>Quận huyện: <span class="text-danger">*</span></label>
+                              <DxComboBox NullText="Chọn quận, huyện ..."
+                                          AllowUserInput="true"
+                                          FilteringMode="DataGridFilteringMode.Contains"
+                                          TextFieldName="DisplayText"
+                                          Data="CurrentDistrictList"
+                                          SelectedItem="@ShippingAddress.District"
+                                          SelectedItemChanged="HandleSelectedDistrictChanged"
+                                          SelectedItemExpression="() => ShippingAddress.District" />
+                           </div>
+                           <div class="col-md-6 row-item">
+                              <label>Phường, thị xã: <span class="text-danger">*</span></label>
+                              <DxComboBox NullText="Chọn xã, phường, thị trấn ..."
+                                          AllowUserInput="true"
+                                          FilteringMode="DataGridFilteringMode.Contains"
+                                          TextFieldName="DisplayText"
+                                          Data="CurrentWardList"
+                                          SelectedItem="@ShippingAddress.Ward"
+                                          SelectedItemChanged="HandleSelectedWardChanged"
+                                          SelectedItemExpression="() => ShippingAddress.Ward" />
+                           </div>
+                           <div class="col-md-6 row-item">
+                              <label>Địa chỉ nhà: <span class="text-danger">*</span></label>
+                              <DxTextBox Text="@ShippingAddress.HouseNumber"
+                                         TextChanged="HandleHouseNumberChanged"
+                                         TextExpression="() => ShippingAddress.HouseNumber" />
+                           </div>
+                  </div>
+               </EditForm>
+               }
+            </div>
          </div>
-      </div>
-	</Content>
+      </Content>
 	<FooterTemplate>
 		<DxButton CssClass="w-100" RenderStyle="ButtonRenderStyle.Dark"
                 Text="Quay lại" SubmitFormOnClick="false"

@@ -37,9 +37,9 @@ namespace ThenDelivery.Client.Components.Merchant
          StateHasChanged();
       }
 
-      protected override async Task OnParametersSetAsync()
+      protected override async Task OnInitializedAsync()
       {
-         await base.OnParametersSetAsync();
+         await base.OnInitializedAsync();
 
          CityList = await HttpClientServer.CustomGetAsync<List<CityDto>>("api/city");
          DistrictList = await HttpClientServer.CustomGetAsync<List<DistrictDto>>("api/district");

@@ -29,10 +29,10 @@ namespace ThenDelivery.Shared.Validation
 			RuleFor(e => e.SearchKey).NotEmpty().WithMessage("Vui lòng nhập từ khóa tìm kiếm")
 				.MaximumLength(20).WithMessage("Từ khóa tìm kiếm tối đa 20 ký tự");
 			RuleFor(e => e.MerTypeList).NotEmpty().WithMessage("Vui lòng chọn loại quán")
-				.When(t => t.MerTypeList.Count > Const.MaxMerTypePerMerchant)
+				.Null().When(t => t.MerTypeList.Count > Const.MaxMerTypePerMerchant)
 				.WithMessage("Loại quán tối đa là 2");
 			RuleFor(e => e.FeaturedDishList).NotEmpty().WithMessage("Vui lòng chọn món đặc trưng cho quán")
-				.When(t => t.MerTypeList.Count > Const.MaxFeaturedDishPerMerchant)
+				.Null().When(t => t.MerTypeList.Count > Const.MaxFeaturedDishPerMerchant)
 				.WithMessage("Số lượng món đặc trưng tối đa là 3");
 		}
 	}
